@@ -103,15 +103,26 @@
     .nav-mobile summary::-webkit-details-marker { display: none; }
     .nav-mobile summary::marker { content: none; }
 
-    /* bars (line icon) inside summary */
-    .nav-mobile .bar {
+    /* SVG-based hamburger icon (3 lines -> morph to X) */
+    .nav-mobile summary svg {
+      width: 22px;
+      height: 18px;
       display: block;
-      width: 20px;
-      height: 2px;
-      background: var(--text, #111);
-      margin: 3px 0;
-      transition: transform 0.2s ease, opacity 0.2s ease;
     }
+    .nav-mobile summary svg .line {
+      stroke: var(--text, #111);
+      stroke-width: 2;
+      stroke-linecap: round;
+      transition: transform 0.22s cubic-bezier(.2,.9,.3,1), opacity 0.18s ease;
+      transform-origin: 50% 50%;
+    }
+
+    /* closed: three horizontal lines */
+    .nav-mobile summary svg .line1 { transform: translateY(0) rotate(0); }
+    .nav-mobile summary svg .line2 { transform: scaleX(1); opacity: 1; }
+    .nav-mobile summary svg .line3 { transform: translateY(0) rotate(0); }
+
+    /* Ensure mobile list has no browser default spacing */
     .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
 
     /* Show hamburger and hide desktop nav at smallest breakpoint */
@@ -131,10 +142,11 @@
       }
       .nav-mobile[open] ul a { display: block; padding: 0.5rem 1rem; }
 
-      /* hamburger -> X animation (three .bar spans) */
-      .nav-mobile[open] .bar:nth-child(1) { transform: translateY(5px) rotate(45deg); }
-      .nav-mobile[open] .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
-      .nav-mobile[open] .bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+      /* morph SVG lines into an X when open */
+      .nav-mobile[open] summary svg .line1 { transform: translateY(6px) rotate(45deg); }
+      .nav-mobile[open] summary svg .line2 { transform: scaleX(0); opacity: 0; }
+      .nav-mobile[open] summary svg .line3 { transform: translateY(-6px) rotate(-45deg); }
+
       header { gap: 0.5rem; align-items: center; }
     }
 
@@ -174,9 +186,13 @@
     <details class="nav-mobile" aria-label="Mobile navigation">
       <summary aria-haspopup="true" aria-controls="nav-list-mobile">
         <span class="sr-only">Menu</span>
-        <span class="bar" aria-hidden="true"></span>
-        <span class="bar" aria-hidden="true"></span>
-        <span class="bar" aria-hidden="true"></span>
+
+        <!-- inline SVG hamburger (3 lines) -->
+        <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+          <line class="line line1" x1="3" y1="6" x2="21" y2="6"></line>
+          <line class="line line2" x1="3" y1="12" x2="21" y2="12"></line>
+          <line class="line line3" x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
       </summary>
 
       <ul id="nav-list-mobile">
