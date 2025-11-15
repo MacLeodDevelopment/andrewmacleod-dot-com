@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Andrew MacLeod - Consultant Software Engineer</title>
+  <meta name="description" content="Portfolio website for Your Name" />
+
+  <!-- Non-blocking stylesheet load (preload -> stylesheet) with noscript fallback -->
+  <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="styles.css"></noscript>
+
+  <!-- Tiny critical CSS for hero/profile (keeps layout stable before full stylesheet loads) -->
+  <style>
+    /* HERO: keep image left of the text and allow it to shrink smoothly */
+    .hero {
+      display: flex;
+      align-items: flex-start;      /* changed: align items to the top so image lines up with text */
+      gap: 1rem;
+      flex-wrap: nowrap;            /* prevent the image from pushing text below on mid/large viewports */
+      padding: 4rem 0;
+    }
+
+    .hero .hero-text {
+      flex: 1 1 auto;               /* text takes remaining space */
+      min-width: 0;                 /* allow text to shrink/wrap inside flex item */
+    }
+
+    .hero .profile {
+      flex: 0 0 auto;               /* don't force profile to grow */
+      width: clamp(96px, 18vw, 180px); /* responsive: 96px min, scales with viewport, max 180px */
+      aspect-ratio: 1 / 1;          /* preserve square shape and reserve layout space */
+      height: auto;                 /* height follows width via aspect-ratio */
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      min-width: 56px;              /* safety minimum so it doesn't shrink too small */
+      align-self: flex-start;       /* ensure the image itself stays aligned to the top of the text */
+    }
+
+    @media (max-width: 520px) {
+      .hero { padding: 3rem 0; gap: 0.75rem; }
+      /* keep profile left but slightly smaller on narrow viewports */
+      .hero .profile { width: clamp(80px, 28vw, 140px); }
+    }
+
+    /* Smallest viewports: stack the image above the text */
+    @media (max-width: 420px) {
+      .hero {
+        flex-direction: column;    /* stack vertically */
+        align-items: center;       /* center content */
+        text-align: center;        /* center text when stacked */
+        gap: 0.75rem;
+        padding: 2.5rem 0;
+      }
+      .hero .profile {
+        width: clamp(96px, 28vw, 140px); /* scale down appropriately */
+        order: -1;                 /* ensure image sits above the hero text */
+        align-self: center;
+        margin-bottom: 0.5rem;
+      }
+      .hero .hero-text {
+        width: 100%;
+      }
+      .hero h1 { margin-top: 0; }
+    }
+
+    /* ---------------- NAV / HAMBURGER ---------------- */
+    .menu-toggle {
+      display: none;
+      appearance: none;
+      border: 0;
+      background: transparent;
+      padding: 0.25rem;
+      margin-left: 0.5rem;
+      width: 44px;
+      height: 44px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .menu-toggle:focus-visible { outline: 3px solid rgba(0,0,0,0.12); outline-offset: 2px; }
+    .menu-toggle .bar {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      margin: 3px 0;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    /* Small-screen behavior: show hamburger, hide regular nav until opened */
+    @media (max-width: 420px) {
+      .menu-toggle { display: inline-flex; }
+      nav#main-nav ul { display: none; }
+      nav#main-nav.open ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.75rem 0;
+        background: var(--header-bg);
+        border-top: 1px solid var(--border);
+      }
+      nav#main-nav.open ul a {
+        display: block;
+        padding: 0.5rem 1rem;
+      }
+      /* make header layout accommodate toggle neatly */
+      header { gap: 0.5rem; align-items: center; }
+    }
+
+    /* animate hamburger -> X when open */
+    .menu-toggle[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+    .menu-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .menu-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+  </style>
+
+  <!-- Optionally include a tiny critical inline style block here (2–5 rules) for header/hero
+       to further avoid any visible shift before external CSS loads. -->
+  <!-- ...existing code... -->
+</head>
+
+<body>
+  <header>
+    <a href="#" aria-label="Go to home"><strong>Andrew MacLeod</strong></a>
+
+    <!-- hamburger toggle (hidden on wider viewports) -->
+    <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle menu">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+
+    <nav id="main-nav" aria-label="Main navigation">
+      <ul>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero" id="home">
+      <!-- profile image (responsive) + text -->
+       <!-- srcset="images/profile-800.jpg 800w, images/profile-400.jpg 400w, images/profile-200.jpg 200w" -->
+      
+      <img
+        src="images/mac-profile-512.jpg"
+        srcset="images/mac-profile-512.jpg 512w, images/mac-profile-360.jpg 360w, images/mac-profile-256.jpg 256w, images/mac-profile-128.jpg 128w"
+        sizes="(max-width:520px) 140px, 180px"
+        alt="Andrew MacLeod"
+        class="profile"
+        width="180"
+        height="180"
+      >
+
+      <div class="hero-text">
+        <h1>Hello! I'm Andrew MacLeod</h1>
+        <p>Designer & Developer creating clear, modern, readable web experiences for all users.</p>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Selected Work</h2>
+      <div class="projects">
+        <div class="project-card">
+          <h3>Project One</h3>
+          <p>An interactive project demonstrating clean design and accessibility-first thinking.</p>
+        </div>
+        <div class="project-card">
+          <h3>Project Two</h3>
+          <p>A modern web experience showcasing responsive layouts and engaging user interactions.</p>
+        </div>
+        <div class="project-card">
+          <h3>Project Three</h3>
+          <p>A project that emphasizes clarity, usability, and readability for all users.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <h2>About Me</h2>
+      <p>I design and build web interfaces that are visually engaging, easy to read, and highly accessible. My focus is clarity, usability, and a modern, professional aesthetic.</p>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Contact</h2>
+      <p>Reach out via email at <a href="mailto:your@email.com">your@email.com</a>. Open to collaborations and freelance opportunities.</p>
+    </section>
+  </main>
+  
+  <footer>
+    © <span id="year"></span> Your Name
+  </footer>
+
+  <script>
+    // year injection (existing) + menu toggle
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    (function () {
+      const btn = document.querySelector('.menu-toggle');
+      const nav = document.getElementById('main-nav');
+      if (!btn || !nav) return;
+
+      btn.addEventListener('click', function () {
+        const isOpen = nav.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(isOpen));
+      });
+
+      // close menu when a nav link is clicked (small viewports)
+      nav.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A' && nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // optional: close menu on Escape
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && nav.classList.contains('open')) {
+          nav.classList.remove('open');
+          btn.setAttribute('aria-expanded', 'false');
+          btn.focus();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
