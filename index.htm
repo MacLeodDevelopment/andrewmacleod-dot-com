@@ -4,171 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Andrew MacLeod - Consultant Software Engineer</title>
-  <meta name="description" content="Portfolio website for Your Name" />
+  <meta name="description" content="Portfolio website for Andrew MacLeod" />
 
   <!-- Non-blocking stylesheet load (preload -> stylesheet) with noscript fallback -->
   <link rel="preload" href="styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <noscript><link rel="stylesheet" href="styles.css"></noscript>
 
-  <!-- Tiny critical CSS for hero/profile (keeps layout stable before full stylesheet loads) -->
+  <!-- Minimal critical CLS-prevention inline styles only -->
   <style>
-    /* HERO: keep image left of the text and allow it to shrink smoothly */
-    .hero {
+    /* Prevent layout shift: reserve space for header before CSS loads */
+    header {
+      min-height: 64px;
       display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      flex-wrap: nowrap;
-      padding: 4rem 0;
+      justify-content: space-between;
+      align-items: center;
     }
-
-    .hero .hero-text {
-      flex: 1 1 auto;
-      min-width: 0;
-    }
-
-    .hero .profile {
-      flex: 0 0 auto;
-      width: clamp(96px, 18vw, 180px);
-      aspect-ratio: 1 / 1;
-      height: auto;
-      border-radius: 50%;
-      object-fit: cover;
-      display: block;
-      min-width: 56px;
-      align-self: flex-start;
-    }
-
-    @media (max-width: 520px) {
-      .hero { padding: 3rem 0; gap: 0.75rem; }
-      .hero .profile { width: clamp(80px, 28vw, 140px); }
-    }
-
+    /* Prevent layout shift: reserve space for hero before CSS loads */
+    .hero { display: flex; align-items: flex-start; gap: 1rem; flex-wrap: nowrap; }
+    .hero .profile { flex: 0 0 auto; width: clamp(96px, 18vw, 180px); aspect-ratio: 1 / 1; border-radius: 50%; }
+    .hero .hero-text { flex: 1 1 auto; min-width: 0; }
+    /* Prevent layout shift: reserve width for year */
+    #year { display: inline-block; min-width: 3ch; text-align: right; }
+    /* Mobile: stack hero vertically */
     @media (max-width: 420px) {
-      .hero {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 0.75rem;
-        padding: 2.5rem 0;
-      }
-      .hero .profile {
-        width: clamp(96px, 28vw, 140px);
-        order: -1;
-        align-self: center;
-        margin-bottom: 0.5rem;
-      }
+      .hero { flex-direction: column; align-items: center; text-align: center; gap: 0.75rem; }
+      .hero .profile { order: -1; align-self: center; }
       .hero .hero-text { width: 100%; }
-      .hero h1 { margin-top: 0; }
-    }
-
-    /* ---------------- NAV: desktop + JS-free mobile hamburger ---------------- */
-    /* Desktop navigation (visible on larger viewports) */
-    nav.nav-desktop {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    nav.nav-desktop ul {
-      display: flex;
-      gap: 1.2rem;
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      align-items: center;
-    }
-
-    nav.nav-desktop a {
-      display: inline-block;
-      padding: 0.35rem 0.5rem;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    /* Mobile disclosure/hamburger (hidden on desktop) */
-    .nav-mobile { display: none; }
-    .nav-mobile summary {
-      list-style: none;
-      cursor: pointer;
-      border: 0;
-      background: transparent;
-      padding: 0.5rem;
-      width: 48px;
-      height: 48px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-      flex-shrink: 0;
-    }
-    /* hide default arrow/marker */
-    .nav-mobile summary::-webkit-details-marker { display: none; }
-    .nav-mobile summary::marker { content: none; }
-
-    /* SVG-based hamburger icon (3 lines -> morph to X) */
-    .nav-mobile summary svg {
-      width: 28px;
-      height: 28px;
-      display: block;
-      overflow: visible;
-    }
-    .nav-mobile summary svg .line {
-      stroke: var(--text, #111);
-      stroke-width: 2;
-      stroke-linecap: round;
-      transition: transform 0.22s cubic-bezier(.2,.9,.3,1), opacity 0.18s ease;
-      transform-origin: 7px 14px;
-    }
-
-    /* closed: three horizontal lines */
-    .nav-mobile summary svg .line1 { transform: translateY(0) rotate(0); }
-    .nav-mobile summary svg .line2 { transform: scaleX(1); opacity: 1; }
-    .nav-mobile summary svg .line3 { transform: translateY(0) rotate(0); }
-
-    /* Ensure mobile list has no browser default spacing */
-    .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
-
-    /* Show hamburger and hide desktop nav at smallest breakpoint */
-    @media (max-width: 420px) {
-      nav.nav-desktop { display: none; }   /* hide desktop nav on tiny screens */
-      .nav-mobile { display: inline-flex; }/* show mobile disclosure */
-      .nav-mobile summary { display: inline-flex; }
-      .nav-mobile ul { display: none; }
-      .nav-mobile[open] ul {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        padding: 0.75rem 0;
-        background: var(--header-bg, #f0f4ff);
-        border-top: 1px solid var(--border, #d0d0d0);
-        margin: 0;
-      }
-      .nav-mobile[open] ul a { display: block; padding: 0.5rem 1rem; }
-
-      /* morph SVG lines into an X when open */
-      .nav-mobile[open] summary svg .line1 { transform: rotate(45deg); }
-      .nav-mobile[open] summary svg .line2 { transform: scaleX(0); opacity: 0; }
-      .nav-mobile[open] summary svg .line3 { transform: rotate(-45deg); }
-
-      header { gap: 0.5rem; align-items: center; }
-    }
-
-    /* small helper for visually-hidden label text */
-    .sr-only {
-      position: absolute !important;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0 0 0 0);
-      white-space: nowrap;
-      border: 0;
     }
   </style>
-
-  <!-- Optionally include a tiny critical inline style block here (2–5 rules) for header/hero
-       to further avoid any visible shift before external CSS loads. -->
-  <!-- ...existing code... -->
 </head>
 
 <body>
@@ -184,19 +47,16 @@
       </ul>
     </nav>
 
-    <!-- Mobile-only JS-free hamburger: visible only at the smallest breakpoint (CSS controls show/hide) -->
+    <!-- Mobile-only JS-free hamburger: visible only at the smallest breakpoint -->
     <details class="nav-mobile" aria-label="Mobile navigation">
       <summary aria-haspopup="true" aria-controls="nav-list-mobile">
         <span class="sr-only">Menu</span>
-
-        <!-- inline SVG hamburger (3 lines) -->
         <svg viewBox="0 0 28 28" role="img" aria-hidden="true" focusable="false">
           <line class="line line1" x1="4" y1="7" x2="24" y2="7"></line>
           <line class="line line2" x1="4" y1="14" x2="24" y2="14"></line>
           <line class="line line3" x1="4" y1="21" x2="24" y2="21"></line>
         </svg>
       </summary>
-
       <ul id="nav-list-mobile">
         <li><a href="#projects">Projects</a></li>
         <li><a href="#about">About</a></li>
@@ -207,9 +67,6 @@
 
   <main class="container">
     <section class="hero" id="home">
-      <!-- profile image (responsive) + text -->
-       <!-- srcset="images/profile-800.jpg 800w, images/profile-400.jpg 400w, images/profile-200.jpg 200w" -->
-      
       <img
         src="images/mac-profile-512.jpg"
         srcset="images/mac-profile-512.jpg 512w, images/mac-profile-360.jpg 360w, images/mac-profile-256.jpg 256w, images/mac-profile-128.jpg 128w"
@@ -221,8 +78,8 @@
       >
 
       <div class="hero-text">
-        <h1>I am Andrew MacLeod of the Clan MacLeod</h1>
-        <p>I was born in the village of Glenfinnan on the shores of Loch Shiel. And I am a Software Engineer.</p>
+        <h1>Hello! <br /> I'm Andrew MacLeod</h1>
+        <p>and I am a Software Engineer.</p>
       </div>
     </section>
 
