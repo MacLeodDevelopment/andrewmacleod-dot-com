@@ -91,13 +91,14 @@
       cursor: pointer;
       border: 0;
       background: transparent;
-      padding: 0.25rem;
-      width: 44px;
-      height: 44px;
+      padding: 0.5rem;
+      width: 48px;
+      height: 48px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       border-radius: 6px;
+      flex-shrink: 0;
     }
     /* hide default arrow/marker */
     .nav-mobile summary::-webkit-details-marker { display: none; }
@@ -105,16 +106,17 @@
 
     /* SVG-based hamburger icon (3 lines -> morph to X) */
     .nav-mobile summary svg {
-      width: 22px;
-      height: 18px;
+      width: 28px;
+      height: 28px;
       display: block;
+      overflow: visible;
     }
     .nav-mobile summary svg .line {
       stroke: var(--text, #111);
       stroke-width: 2;
       stroke-linecap: round;
       transition: transform 0.22s cubic-bezier(.2,.9,.3,1), opacity 0.18s ease;
-      transform-origin: 50% 50%;
+      transform-origin: 7px 14px;
     }
 
     /* closed: three horizontal lines */
@@ -143,9 +145,9 @@
       .nav-mobile[open] ul a { display: block; padding: 0.5rem 1rem; }
 
       /* morph SVG lines into an X when open */
-      .nav-mobile[open] summary svg .line1 { transform: translateY(6px) rotate(45deg); }
+      .nav-mobile[open] summary svg .line1 { transform: rotate(45deg); }
       .nav-mobile[open] summary svg .line2 { transform: scaleX(0); opacity: 0; }
-      .nav-mobile[open] summary svg .line3 { transform: translateY(-6px) rotate(-45deg); }
+      .nav-mobile[open] summary svg .line3 { transform: rotate(-45deg); }
 
       header { gap: 0.5rem; align-items: center; }
     }
@@ -188,10 +190,10 @@
         <span class="sr-only">Menu</span>
 
         <!-- inline SVG hamburger (3 lines) -->
-        <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
-          <line class="line line1" x1="3" y1="6" x2="21" y2="6"></line>
-          <line class="line line2" x1="3" y1="12" x2="21" y2="12"></line>
-          <line class="line line3" x1="3" y1="18" x2="21" y2="18"></line>
+        <svg viewBox="0 0 28 28" role="img" aria-hidden="true" focusable="false">
+          <line class="line line1" x1="4" y1="7" x2="24" y2="7"></line>
+          <line class="line line2" x1="4" y1="14" x2="24" y2="14"></line>
+          <line class="line line3" x1="4" y1="21" x2="24" y2="21"></line>
         </svg>
       </summary>
 
