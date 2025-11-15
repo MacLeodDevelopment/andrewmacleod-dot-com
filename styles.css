@@ -1,5 +1,5 @@
 /* Variables, dark-mode, forced-colors, resets and layout
-   (moved out of index.htm to improve maintainability) */
+   (optimized: consolidated rules, reduced repetition, added reduced-motion support) */
 
 :root{
   --bg: #ffffff;
@@ -66,15 +66,28 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
 }
 
 /* Images: prefer explicit width/height attributes when available.
-   aspect-ratio is a fallback to reserve space. */
-img { width: 100%; height: auto; aspect-ratio: 16 / 9; display: block; border-radius: var(--radius); }
+   Use max-width so images don't unintentionally overflow containers. */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+}
 
+/* Links and focus */
 a { color: var(--link); text-decoration: none; }
 a:hover, a:focus { text-decoration: underline; }
-a:focus-visible, button:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
 
 /* --------- LAYOUT --------- */
 /* Reserve header height so sticky behavior doesn't cause a shift */
@@ -95,12 +108,7 @@ header a, header strong { color: var(--text); }
 .container { width: var(--max-width); margin: 0 auto; padding: 2rem 0; }
 
 /* --------- NAVIGATION --------- */
-/* Desktop navigation (visible on larger viewports) */
-nav.nav-desktop {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+nav.nav-desktop { display: flex; align-items: center; gap: 1rem; }
 nav.nav-desktop ul {
   display: flex;
   gap: 1.2rem;
@@ -112,7 +120,6 @@ nav.nav-desktop ul {
 nav.nav-desktop a {
   display: inline-block;
   padding: 0.35rem 0.5rem;
-  text-decoration: none;
   color: inherit;
   font-weight: 600;
   background-color: transparent;
@@ -137,11 +144,9 @@ nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
   border-radius: 6px;
   flex-shrink: 0;
 }
-/* Hide default arrow/marker */
 .nav-mobile summary::-webkit-details-marker { display: none; }
 .nav-mobile summary::marker { content: none; }
 
-/* SVG-based hamburger icon (3 lines -> morph to X) */
 .nav-mobile summary svg {
   width: 28px;
   height: 28px;
@@ -155,13 +160,6 @@ nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
   transition: transform 0.22s cubic-bezier(.2,.9,.3,1), opacity 0.18s ease;
   transform-origin: 7px 14px;
 }
-
-/* Closed: three horizontal lines */
-.nav-mobile summary svg .line1 { transform: translateY(0) rotate(0); }
-.nav-mobile summary svg .line2 { transform: scaleX(1); opacity: 1; }
-.nav-mobile summary svg .line3 { transform: translateY(0) rotate(0); }
-
-/* Ensure mobile list has no browser default spacing */
 .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
 
 /* --------- HERO --------- */
@@ -173,10 +171,7 @@ nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
   flex-wrap: nowrap;
   padding: 4rem 0;
 }
-.hero .hero-text {
-  flex: 1 1 auto;
-  min-width: 0;
-}
+.hero .hero-text { flex: 1 1 auto; min-width: 0; }
 .hero .profile {
   flex: 0 0 auto;
   width: clamp(96px, 18vw, 180px);
@@ -192,9 +187,16 @@ nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
 .hero p { max-width: 60ch; font-size: 1.25rem; color: var(--muted); margin: 0 auto; }
 
 /* --------- SECTION HEADINGS --------- */
-h2 { font-size: 2rem; margin: 3rem 0 1.2rem; color: var(--text); border-left: 4px solid var(--link); padding-left: 0.6rem; }
+h2 {
+  font-size: 2rem;
+  margin: 3rem 0 1.2rem;
+  color: var(--text);
+  border-left: 4px solid var(--link);
+  padding-left: 0.6rem;
+}
 
 /* --------- PROJECT GRID --------- */
+/* single-column by default (cards full width of container) */
 .projects { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
 .project-card {
   background-color: var(--card-bg);
@@ -207,6 +209,7 @@ h2 { font-size: 2rem; margin: 3rem 0 1.2rem; color: var(--text); border-left: 4p
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  width: 100%;
 }
 .project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
 .project-card h3 { margin-bottom: 0.5rem; font-size: 1.4rem; color: var(--text); }
@@ -242,7 +245,7 @@ footer {
   border: 0;
 }
 
-/* --------- RESPONSIVE: TABLETS (520px and down) --------- */
+/* --------- RESPONSIVE: TABLETS (<=520px) --------- */
 @media (max-width: 520px) {
   .hero { padding: 3rem 0; gap: 0.75rem; }
   .hero .profile { width: clamp(80px, 28vw, 140px); }
@@ -251,9 +254,8 @@ footer {
   .project-card h3 { font-size: 1.25rem; }
 }
 
-/* --------- RESPONSIVE: MOBILE (420px and down) --------- */
+/* --------- RESPONSIVE: MOBILE (<=420px) --------- */
 @media (max-width: 420px) {
-  /* Hero section stacks vertically */
   .hero {
     flex-direction: column;
     align-items: center;
@@ -286,7 +288,7 @@ footer {
   }
   .nav-mobile[open] ul a { display: block; padding: 0.5rem 1rem; }
 
-  /* Morph SVG lines into an X when open */
+  /* Hamburger animation -> X */
   .nav-mobile[open] summary svg .line1 { transform: rotate(45deg); }
   .nav-mobile[open] summary svg .line2 { transform: scaleX(0); opacity: 0; }
   .nav-mobile[open] summary svg .line3 { transform: rotate(-45deg); }
@@ -294,7 +296,7 @@ footer {
   header { gap: 0.5rem; align-items: center; }
 }
 
-/* --------- DARK MODE ADJUSTMENTS --------- */
+/* Dark mode fine-tuning */
 @media (prefers-color-scheme: dark) {
   nav.nav-desktop a:hover { background-color: rgba(122,180,255,0.08); }
   h2 { border-left-color: #4dabf5; }
