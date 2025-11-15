@@ -15,105 +15,141 @@
     /* HERO: keep image left of the text and allow it to shrink smoothly */
     .hero {
       display: flex;
-      align-items: flex-start;      /* changed: align items to the top so image lines up with text */
+      align-items: flex-start;
       gap: 1rem;
-      flex-wrap: nowrap;            /* prevent the image from pushing text below on mid/large viewports */
+      flex-wrap: nowrap;
       padding: 4rem 0;
     }
 
     .hero .hero-text {
-      flex: 1 1 auto;               /* text takes remaining space */
-      min-width: 0;                 /* allow text to shrink/wrap inside flex item */
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .hero .profile {
-      flex: 0 0 auto;               /* don't force profile to grow */
-      width: clamp(96px, 18vw, 180px); /* responsive: 96px min, scales with viewport, max 180px */
-      aspect-ratio: 1 / 1;          /* preserve square shape and reserve layout space */
-      height: auto;                 /* height follows width via aspect-ratio */
+      flex: 0 0 auto;
+      width: clamp(96px, 18vw, 180px);
+      aspect-ratio: 1 / 1;
+      height: auto;
       border-radius: 50%;
       object-fit: cover;
       display: block;
-      min-width: 56px;              /* safety minimum so it doesn't shrink too small */
-      align-self: flex-start;       /* ensure the image itself stays aligned to the top of the text */
+      min-width: 56px;
+      align-self: flex-start;
     }
 
     @media (max-width: 520px) {
       .hero { padding: 3rem 0; gap: 0.75rem; }
-      /* keep profile left but slightly smaller on narrow viewports */
       .hero .profile { width: clamp(80px, 28vw, 140px); }
     }
 
-    /* Smallest viewports: stack the image above the text */
     @media (max-width: 420px) {
       .hero {
-        flex-direction: column;    /* stack vertically */
-        align-items: center;       /* center content */
-        text-align: center;        /* center text when stacked */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
         gap: 0.75rem;
         padding: 2.5rem 0;
       }
       .hero .profile {
-        width: clamp(96px, 28vw, 140px); /* scale down appropriately */
-        order: -1;                 /* ensure image sits above the hero text */
+        width: clamp(96px, 28vw, 140px);
+        order: -1;
         align-self: center;
         margin-bottom: 0.5rem;
       }
-      .hero .hero-text {
-        width: 100%;
-      }
+      .hero .hero-text { width: 100%; }
       .hero h1 { margin-top: 0; }
     }
 
-    /* ---------------- NAV / HAMBURGER ---------------- */
-    .menu-toggle {
-      display: none;
-      appearance: none;
+    /* ---------------- NAV: desktop + JS-free mobile hamburger ---------------- */
+    /* Desktop navigation (visible on larger viewports) */
+    nav.nav-desktop {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    nav.nav-desktop ul {
+      display: flex;
+      gap: 1.2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+
+    nav.nav-desktop a {
+      display: inline-block;
+      padding: 0.35rem 0.5rem;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Mobile disclosure/hamburger (hidden on desktop) */
+    .nav-mobile { display: none; }
+    .nav-mobile summary {
+      list-style: none;
+      cursor: pointer;
       border: 0;
       background: transparent;
       padding: 0.25rem;
-      margin-left: 0.5rem;
       width: 44px;
       height: 44px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
       border-radius: 6px;
     }
-    .menu-toggle:focus-visible { outline: 3px solid rgba(0,0,0,0.12); outline-offset: 2px; }
-    .menu-toggle .bar {
+    /* hide default arrow/marker */
+    .nav-mobile summary::-webkit-details-marker { display: none; }
+    .nav-mobile summary::marker { content: none; }
+
+    /* bars (line icon) inside summary */
+    .nav-mobile .bar {
       display: block;
       width: 20px;
       height: 2px;
-      background: var(--text);
+      background: var(--text, #111);
       margin: 3px 0;
       transition: transform 0.2s ease, opacity 0.2s ease;
     }
+    .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
 
-    /* Small-screen behavior: show hamburger, hide regular nav until opened */
+    /* Show hamburger and hide desktop nav at smallest breakpoint */
     @media (max-width: 420px) {
-      .menu-toggle { display: inline-flex; }
-      nav#main-nav ul { display: none; }
-      nav#main-nav.open ul {
+      nav.nav-desktop { display: none; }   /* hide desktop nav on tiny screens */
+      .nav-mobile { display: inline-flex; }/* show mobile disclosure */
+      .nav-mobile summary { display: inline-flex; }
+      .nav-mobile ul { display: none; }
+      .nav-mobile[open] ul {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
         padding: 0.75rem 0;
-        background: var(--header-bg);
-        border-top: 1px solid var(--border);
+        background: var(--header-bg, #f0f4ff);
+        border-top: 1px solid var(--border, #d0d0d0);
+        margin: 0;
       }
-      nav#main-nav.open ul a {
-        display: block;
-        padding: 0.5rem 1rem;
-      }
-      /* make header layout accommodate toggle neatly */
+      .nav-mobile[open] ul a { display: block; padding: 0.5rem 1rem; }
+
+      /* hamburger -> X animation (three .bar spans) */
+      .nav-mobile[open] .bar:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+      .nav-mobile[open] .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+      .nav-mobile[open] .bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
       header { gap: 0.5rem; align-items: center; }
     }
 
-    /* animate hamburger -> X when open */
-    .menu-toggle[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(5px) rotate(45deg); }
-    .menu-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
-    .menu-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+    /* small helper for visually-hidden label text */
+    .sr-only {
+      position: absolute !important;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+      white-space: nowrap;
+      border: 0;
+    }
   </style>
 
   <!-- Optionally include a tiny critical inline style block here (2–5 rules) for header/hero
@@ -125,20 +161,30 @@
   <header>
     <a href="#" aria-label="Go to home"><strong>Andrew MacLeod</strong></a>
 
-    <!-- hamburger toggle (hidden on wider viewports) -->
-    <button class="menu-toggle" aria-controls="main-nav" aria-expanded="false" aria-label="Toggle menu">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-
-    <nav id="main-nav" aria-label="Main navigation">
+    <!-- Desktop nav: visible on all sizes except the smallest -->
+    <nav class="nav-desktop" aria-label="Main navigation">
       <ul>
         <li><a href="#projects">Projects</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </nav>
+
+    <!-- Mobile-only JS-free hamburger: visible only at the smallest breakpoint (CSS controls show/hide) -->
+    <details class="nav-mobile" aria-label="Mobile navigation">
+      <summary aria-haspopup="true" aria-controls="nav-list-mobile">
+        <span class="sr-only">Menu</span>
+        <span class="bar" aria-hidden="true"></span>
+        <span class="bar" aria-hidden="true"></span>
+        <span class="bar" aria-hidden="true"></span>
+      </summary>
+
+      <ul id="nav-list-mobile">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </details>
   </header>
 
   <main class="container">
@@ -196,36 +242,7 @@
   </footer>
 
   <script>
-    // year injection (existing) + menu toggle
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    (function () {
-      const btn = document.querySelector('.menu-toggle');
-      const nav = document.getElementById('main-nav');
-      if (!btn || !nav) return;
-
-      btn.addEventListener('click', function () {
-        const isOpen = nav.classList.toggle('open');
-        btn.setAttribute('aria-expanded', String(isOpen));
-      });
-
-      // close menu when a nav link is clicked (small viewports)
-      nav.addEventListener('click', function (e) {
-        if (e.target.tagName === 'A' && nav.classList.contains('open')) {
-          nav.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-        }
-      });
-
-      // optional: close menu on Escape
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && nav.classList.contains('open')) {
-          nav.classList.remove('open');
-          btn.setAttribute('aria-expanded', 'false');
-          btn.focus();
-        }
-      });
-    })();
   </script>
 </body>
 </html>
