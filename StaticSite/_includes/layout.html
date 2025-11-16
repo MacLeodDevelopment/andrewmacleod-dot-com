@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Andrew MacLeod - Consultant Software Engineer</title>
+  <meta name="description" content="Portfolio website for Andrew MacLeod" />
+
+  <link rel="preload" href="/styles/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="/styles/main.css">
+  </noscript>
+
+  <!-- Minimal critical CLS-prevention inline styles only -->
+  <style>
+    /* Prevent layout shift: reserve space for header before CSS loads */
+    header {
+      min-height: 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Prevent layout shift: reserve space for hero before CSS loads */
+    .hero {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      flex-wrap: nowrap;
+    }
+
+    .hero .profile {
+      flex: 0 0 auto;
+      width: clamp(96px, 18vw, 180px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+    }
+
+    .hero .hero-text {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    /* Prevent layout shift: reserve width for year */
+    #year {
+      display: inline-block;
+      min-width: 3ch;
+      text-align: right;
+    }
+
+    /* Mobile: stack hero vertically */
+    @media (max-width: 420px) {
+      .hero {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0.75rem;
+      }
+
+      .hero .profile {
+        order: -1;
+        align-self: center;
+      }
+
+      .hero .hero-text {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <a href="#" aria-label="Go to home"><strong>Andrew MacLeod</strong></a>
+
+    <!-- Desktop nav: visible on all sizes except the smallest -->
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <ul>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- Mobile-only JS-free hamburger: visible only at the smallest breakpoint -->
+    <details class="nav-mobile" aria-label="Mobile navigation">
+      <summary aria-haspopup="true" aria-controls="nav-list-mobile">
+        <span class="sr-only">Menu</span>
+        <svg viewBox="0 0 28 28" role="img" aria-hidden="true" focusable="false">
+          <line class="line line1" x1="4" y1="7" x2="24" y2="7"></line>
+          <line class="line line2" x1="4" y1="14" x2="24" y2="14"></line>
+          <line class="line line3" x1="4" y1="21" x2="24" y2="21"></line>
+        </svg>
+      </summary>
+      <ul id="nav-list-mobile">
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </details>
+  </header>
+  <main class="container">
+    <section class="hero" id="home">
+      <img src="images/mac-profile-512.jpg"
+        srcset="images/mac-profile-512.jpg 512w, images/mac-profile-360.jpg 360w, images/mac-profile-256.jpg 256w, images/mac-profile-128.jpg 128w"
+        sizes="(max-width:520px) 140px, 180px" alt="Andrew MacLeod" class="profile" width="180" height="180">
+
+      <div class="hero-text">
+        <h1>{{ title | default: "Hello! <br> I'm Andrew MacLeod" }}</h1>
+        <p>{{ subtitle }}</p>
+      </div>
+    </section>
+
+    {{ content }}
+
+  </main>
+
+  <footer>
+    © <span id="year"></span> Andrew MacLeod. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+
+</html>

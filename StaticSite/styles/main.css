@@ -1,0 +1,303 @@
+/* Variables, dark-mode, forced-colors, resets and layout
+   (optimized: consolidated rules, reduced repetition, added reduced-motion support) */
+
+:root{
+  --bg: #ffffff;
+  --text: #111111;
+  --muted: #444444;
+  --link: #1a73e8;
+  --header-bg: #f0f4ff;
+  --card-bg: #ffffff;
+  --border: #d0d0d0;
+  --footer-bg: #e6f0ff;
+  --focus: #1a73e8;
+  --shadow: rgba(0,0,0,0.05);
+  --max-width: min(900px, 90%);
+  --radius: 0.5rem;
+}
+
+/* Dark mode / high-contrast-aware overrides */
+@media (prefers-color-scheme: dark) {
+  :root{
+    --bg: #0b0b10;
+    --text: #e6eef8;
+    --muted: #cfd8e3;
+    --link: #7ab4ff;
+    --header-bg: #0f1220;
+    --card-bg: #111219;
+    --border: #22242a;
+    --footer-bg: #07070a;
+    --focus: #7ab4ff;
+    --shadow: rgba(0,0,0,0.6);
+  }
+}
+
+@media (prefers-contrast: more) {
+  :root{
+    --border: #9aa0a6;
+    --shadow: rgba(0,0,0,0.12);
+  }
+}
+
+/* Forced-colors (Windows high contrast) */
+@media (forced-colors: active) {
+  :root{
+    --bg: Canvas;
+    --text: CanvasText;
+    --link: Highlight;
+    --header-bg: Canvas;
+    --card-bg: Canvas;
+    --border: Highlight;
+    --footer-bg: Canvas;
+    --focus: Highlight;
+  }
+  * { forced-color-adjust: none; }
+}
+
+/* --------- RESET / BASE --------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text);
+  background-color: var(--bg);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color-scheme: light dark;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Images: prefer explicit width/height attributes when available.
+   Use max-width so images don't unintentionally overflow containers. */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+}
+
+/* Links and focus */
+a { color: var(--link); text-decoration: none; }
+a:hover, a:focus { text-decoration: underline; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* --------- LAYOUT --------- */
+/* Reserve header height so sticky behavior doesn't cause a shift */
+header {
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--header-bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 2px solid var(--border);
+  min-height: 64px; /* reserved space to reduce CLS when header becomes sticky */
+}
+header a, header strong { color: var(--text); }
+
+.container { width: var(--max-width); margin: 0 auto; padding: 2rem 0; }
+
+/* --------- NAVIGATION --------- */
+nav.nav-desktop { display: flex; align-items: center; gap: 1rem; }
+nav.nav-desktop ul {
+  display: flex;
+  gap: 1.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+nav.nav-desktop a {
+  display: inline-block;
+  padding: 0.35rem 0.5rem;
+  color: inherit;
+  font-weight: 600;
+  background-color: transparent;
+  border-radius: 0.4rem;
+  transition: background 0.15s, color 0.15s;
+}
+nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
+
+/* Mobile disclosure/hamburger (hidden on desktop) */
+.nav-mobile { display: none; }
+.nav-mobile summary {
+  list-style: none;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  padding: 0.5rem;
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+.nav-mobile summary::-webkit-details-marker { display: none; }
+.nav-mobile summary::marker { content: none; }
+
+.nav-mobile summary svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  overflow: visible;
+}
+.nav-mobile summary svg .line {
+  stroke: var(--text);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: transform 0.22s cubic-bezier(.2,.9,.3,1), opacity 0.18s ease;
+  transform-origin: 7px 14px;
+}
+.nav-mobile ul { list-style: none; margin: 0; padding: 0; }
+
+/* --------- HERO --------- */
+/* Reserve vertical space for hero so content below doesn't jump */
+.hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: nowrap;
+  padding: 4rem 0;
+}
+.hero .hero-text { flex: 1 1 auto; min-width: 0; }
+.hero .profile {
+  flex: 0 0 auto;
+  width: clamp(96px, 18vw, 180px);
+  aspect-ratio: 1 / 1;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  min-width: 56px;
+  align-self: flex-start;
+}
+.hero h1 { font-size: clamp(2.5rem, 7vw, 3.8rem); font-weight: 800; margin-bottom: 1rem; color: var(--text); }
+.hero p { max-width: 60ch; font-size: 1.25rem; color: var(--muted); margin: 0 auto; }
+
+/* --------- SECTION HEADINGS --------- */
+h2 {
+  font-size: 2rem;
+  margin: 3rem 0 1.2rem;
+  color: var(--text);
+  border-left: 4px solid var(--link);
+  padding-left: 0.6rem;
+}
+
+/* --------- PROJECT GRID --------- */
+/* single-column by default (cards full width of container) */
+.projects { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+.project-card {
+  background-color: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px var(--shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+}
+.project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.project-card h3 { margin-bottom: 0.5rem; font-size: 1.4rem; color: var(--text); }
+.project-card p { color: var(--muted); font-size: 1rem; }
+
+/* --------- ABOUT / CONTACT --------- */
+.about p, .contact p { max-width: 60ch; margin-bottom: 1rem; color: var(--muted); line-height: 1.8; }
+.contact a { color: var(--link); font-weight: 600; }
+
+/* Reserve a small inline width for year to avoid a visible shift when JS writes the value */
+#year { display: inline-block; min-width: 3ch; text-align: right; }
+
+/* --------- FOOTER --------- */
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--text);
+  font-size: 0.95rem;
+  border-top: 2px solid var(--border);
+  background-color: var(--footer-bg);
+}
+
+/* --------- SCREEN READER ONLY --------- */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------- RESPONSIVE: TABLETS (<=520px) --------- */
+@media (max-width: 520px) {
+  .hero { padding: 3rem 0; gap: 0.75rem; }
+  .hero .profile { width: clamp(80px, 28vw, 140px); }
+  .hero h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.6rem; }
+  .project-card h3 { font-size: 1.25rem; }
+}
+
+/* --------- RESPONSIVE: MOBILE (<=420px) --------- */
+@media (max-width: 420px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 2.5rem 0;
+  }
+  .hero .profile {
+    width: clamp(96px, 28vw, 140px);
+    order: -1;
+    align-self: center;
+    margin-bottom: 0.5rem;
+  }
+  .hero .hero-text { width: 100%; }
+  .hero h1 { margin-top: 0; }
+
+  /* Navigation: hide desktop, show mobile */
+  nav.nav-desktop { display: none; }
+  .nav-mobile { display: inline-flex; }
+  .nav-mobile summary { display: inline-flex; }
+  .nav-mobile ul { display: none; }
+  .nav-mobile[open] ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem 0;
+    background: var(--header-bg);
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+  .nav-mobile[open] ul a { display: block; padding: 0.5rem 1rem; }
+
+  /* Hamburger animation -> X */
+  .nav-mobile[open] summary svg .line1 { transform: rotate(45deg); }
+  .nav-mobile[open] summary svg .line2 { transform: scaleX(0); opacity: 0; }
+  .nav-mobile[open] summary svg .line3 { transform: rotate(-45deg); }
+
+  header { gap: 0.5rem; align-items: center; }
+}
+
+/* Dark mode fine-tuning */
+@media (prefers-color-scheme: dark) {
+  nav.nav-desktop a:hover { background-color: rgba(122,180,255,0.08); }
+  h2 { border-left-color: #4dabf5; }
+}
