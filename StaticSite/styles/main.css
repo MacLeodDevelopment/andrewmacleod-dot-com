@@ -184,7 +184,7 @@ nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
   align-self: flex-start;
 }
 .hero h1 { font-size: clamp(2.5rem, 7vw, 3.8rem); font-weight: 800; margin-bottom: 1rem; color: var(--text); }
-.hero p { max-width: 60ch; font-size: 1.25rem; color: var(--muted); margin: 0 auto; }
+.hero p { max-width: 60ch; font-size: 1.25rem; color: var(--muted); margin: 0 0; }
 
 /* --------- SECTION HEADINGS --------- */
 h2 {

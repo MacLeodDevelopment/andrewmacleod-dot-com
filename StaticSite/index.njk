@@ -1,17 +1,16 @@
 ---
 subtitle: and I am a Software Engineer.
-layout: layout.html
+layout: layout.njk
 ---
 
 <section id="projects">
-
     <h2>Selected Work</h2>
     <div class="projects">
-        {% for experience in collections.experience %}
+        {% for experience in collections.experience | sort(attribute="data.order") %}
 
         <div class="project-card">
             <h3><a href="{{ experience.url }}">{{ experience.data.title }}</a></h3>
-            <p>{{ experience.content }}</p>
+            {{ experience.content | safe }}
         </div>
 
         {% endfor %}

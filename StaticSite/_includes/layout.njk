@@ -72,14 +72,14 @@
 
 <body>
   <header>
-    <a href="#" aria-label="Go to home"><strong>Andrew MacLeod</strong></a>
+    <a href="{{ '/' | url }}#" aria-label="Go to home"><strong>Andrew MacLeod</strong></a>
 
     <!-- Desktop nav: visible on all sizes except the smallest -->
     <nav class="nav-desktop" aria-label="Main navigation">
       <ul>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="{{ '/' | url }}#projects">Projects</a></li>
+        <li><a href="{{ '/' | url }}#about">About</a></li>
+        <li><a href="{{ '/' | url }}#contact">Contact</a></li>
       </ul>
     </nav>
 
@@ -94,25 +94,25 @@
         </svg>
       </summary>
       <ul id="nav-list-mobile">
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/#about">About</a></li>
+        <li><a href="/#contact">Contact</a></li>
       </ul>
     </details>
   </header>
   <main class="container">
     <section class="hero" id="home">
-      <img src="images/mac-profile-512.jpg"
-        srcset="images/mac-profile-512.jpg 512w, images/mac-profile-360.jpg 360w, images/mac-profile-256.jpg 256w, images/mac-profile-128.jpg 128w"
+      <img src="/images/mac-profile-512.jpg"
+        srcset="/images/mac-profile-512.jpg 512w, /images/mac-profile-360.jpg 360w, /images/mac-profile-256.jpg 256w, /images/mac-profile-128.jpg 128w"
         sizes="(max-width:520px) 140px, 180px" alt="Andrew MacLeod" class="profile" width="180" height="180">
 
       <div class="hero-text">
-        <h1>{{ title | default: "Hello! <br> I'm Andrew MacLeod" }}</h1>
+        <h1>{{ title | default("Hello! <br> I am Andrew MacLeod") | safe }}</h1>
         <p>{{ subtitle }}</p>
       </div>
     </section>
 
-    {{ content }}
+    {{ content | safe }}
 
   </main>
 
