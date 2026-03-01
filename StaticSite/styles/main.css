@@ -310,6 +310,10 @@ footer {
   /* Show mobile nav */
   .nav-mobile { display: inline-block; }
   nav.nav-desktop { display: none; }
+
+  main > section {
+    scroll-margin-top: var(--header-height);
+  }
 }
 
 /* --------- DARK MODE FINE-TUNING --------- */
