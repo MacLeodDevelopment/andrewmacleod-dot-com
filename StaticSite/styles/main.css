@@ -1,7 +1,7 @@
-/* Variables, dark-mode, forced-colors, resets and layout
-   (optimized: consolidated rules, reduced repetition, added reduced-motion support) */
-
-:root{
+/* -----------------------------------------
+   VARIABLES, COLOR MODES, AND RESETS
+----------------------------------------- */
+:root {
   --bg: #ffffff;
   --text: #111111;
   --muted: #444444;
@@ -14,11 +14,12 @@
   --shadow: rgba(0,0,0,0.05);
   --max-width: min(900px, 90%);
   --radius: 0.5rem;
+  --header-height: 64px;
 }
 
-/* Dark mode / high-contrast-aware overrides */
+/* Dark mode overrides */
 @media (prefers-color-scheme: dark) {
-  :root{
+  :root {
     --bg: #0b0b10;
     --text: #e6eef8;
     --muted: #cfd8e3;
@@ -33,15 +34,14 @@
 }
 
 @media (prefers-contrast: more) {
-  :root{
+  :root {
     --border: #9aa0a6;
     --shadow: rgba(0,0,0,0.12);
   }
 }
 
-/* Forced-colors (Windows high contrast) */
 @media (forced-colors: active) {
-  :root{
+  :root {
     --bg: Canvas;
     --text: CanvasText;
     --link: Highlight;
@@ -75,12 +75,37 @@ body {
   flex-direction: column;
 }
 
+/* --------- HEADER (FIXED) --------- */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--header-bg);
+  border-bottom: 2px solid var(--border);
+  height: var(--header-height);
+  width: 100%;
+}
+header a, header strong { color: var(--text); }
+
+/* --------- MAIN CONTENT --------- */
 main {
   flex: 1;
+  padding-top: var(--header-height); /* avoid content under fixed header */
 }
+.container { width: var(--max-width); margin: 0 auto; padding: 2rem 0; }
 
-/* Images: prefer explicit width/height attributes when available.
-   Use max-width so images don't unintentionally overflow containers. */
+/* --------- LINKS & FOCUS --------- */
+a { color: var(--link); text-decoration: none; }
+a:hover, a:focus { text-decoration: underline; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+/* --------- IMAGES --------- */
 img {
   display: block;
   max-width: 100%;
@@ -89,36 +114,12 @@ img {
   border-radius: var(--radius);
 }
 
-/* Links and focus */
-a { color: var(--link); text-decoration: none; }
-a:hover, a:focus { text-decoration: underline; }
-:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
-
-/* Respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; animation: none !important; }
-}
-
-/* --------- LAYOUT --------- */
-/* Reserve header height so sticky behavior doesn't cause a shift */
-header {
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--header-bg);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  border-bottom: 2px solid var(--border);
-  min-height: 64px; /* reserved space to reduce CLS when header becomes sticky */
-}
-header a, header strong { color: var(--text); }
-
-.container { width: var(--max-width); margin: 0 auto; padding: 2rem 0; }
-
 /* --------- NAVIGATION --------- */
-nav.nav-desktop { display: flex; align-items: center; gap: 1rem; }
+nav.nav-desktop {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 nav.nav-desktop ul {
   display: flex;
   gap: 1.2rem;
@@ -138,21 +139,23 @@ nav.nav-desktop a {
 }
 nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
 
-/* Mobile disclosure/hamburger (hidden on desktop) */
-.nav-mobile { display: none; }
+/* --------- MOBILE HAMBURGER --------- */
+.nav-mobile {
+  display: none;
+}
 .nav-mobile summary {
   list-style: none;
   cursor: pointer;
   border: 0;
   background: transparent;
-  padding: 0.5rem;
   width: 48px;
   height: 48px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  flex-shrink: 0;
+  position: relative;
+  z-index: 101;
 }
 .nav-mobile summary::-webkit-details-marker { display: none; }
 .nav-mobile summary::marker { content: none; }
@@ -161,7 +164,6 @@ nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
   width: 28px;
   height: 28px;
   display: block;
-  overflow: visible;
 }
 .nav-mobile summary svg .line {
   stroke: var(--text);
@@ -170,10 +172,37 @@ nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
   transition: transform 0.22s cubic-bezier(.2,.9,.3,1), opacity 0.18s ease;
   transform-origin: 7px 14px;
 }
-.nav-mobile ul { list-style: none; margin: 0; padding: 0; }
+
+.nav-mobile ul {
+  display: none;
+  position: fixed; 
+  top: var(--header-height); /* below fixed header */
+  left: 0;
+  width: 100vw; /* full viewport width */
+  background-color: var(--header-bg);
+  border-top: 1px solid var(--border);
+  padding: 0.5rem 0;
+  margin: 0;
+  list-style: none;
+  z-index: 100;
+  flex-direction: column;
+  height: auto;
+}
+
+.nav-mobile[open] ul { display: flex; }
+.nav-mobile[open] ul a {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+}
+
+/* Hamburger animation */
+.nav-mobile[open] summary svg .line1 { transform: rotate(45deg); }
+.nav-mobile[open] summary svg .line2 { transform: scaleX(0); opacity: 0; }
+.nav-mobile[open] summary svg .line3 { transform: rotate(-45deg); }
 
 /* --------- HERO --------- */
-/* Reserve vertical space for hero so content below doesn't jump */
 .hero {
   display: flex;
   align-items: flex-start;
@@ -194,7 +223,7 @@ nav.nav-desktop a:hover { background-color: rgba(26,115,232,0.08); }
   align-self: flex-start;
 }
 .hero h1 { font-size: clamp(2.5rem, 7vw, 3.8rem); font-weight: 800; margin-bottom: 1rem; color: var(--text); }
-.hero p { max-width: 60ch; font-size: 1.25rem; color: var(--muted); margin: 0 0; }
+.hero p { max-width: 60ch; font-size: 1.25rem; color: var(--muted); }
 
 /* --------- SECTION HEADINGS --------- */
 h2 {
@@ -206,7 +235,6 @@ h2 {
 }
 
 /* --------- PROJECT GRID --------- */
-/* single-column by default (cards full width of container) */
 .projects { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
 .project-card {
   background-color: var(--card-bg);
@@ -229,9 +257,6 @@ h2 {
 .about p, .contact p { max-width: 60ch; margin-bottom: 1rem; color: var(--muted); line-height: 1.8; }
 .contact a { color: var(--link); font-weight: 600; }
 
-/* Reserve a small inline width for year to avoid a visible shift when JS writes the value */
-#year { display: inline-block; min-width: 3ch; text-align: right; }
-
 /* --------- FOOTER --------- */
 footer {
   text-align: center;
@@ -242,7 +267,7 @@ footer {
   background-color: var(--footer-bg);
 }
 
-/* --------- SCREEN READER ONLY --------- */
+/* Screen reader only */
 .sr-only {
   position: absolute !important;
   width: 1px;
@@ -282,32 +307,18 @@ footer {
   .hero .hero-text { width: 100%; }
   .hero h1 { margin-top: 0; }
 
-  /* Navigation: hide desktop, show mobile */
+  /* Show mobile nav */
+  .nav-mobile { display: inline-block; }
   nav.nav-desktop { display: none; }
-  .nav-mobile { display: inline-flex; }
-  .nav-mobile summary { display: inline-flex; }
-  .nav-mobile ul { display: none; }
-  .nav-mobile[open] ul {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.75rem 0;
-    background: var(--header-bg);
-    border-top: 1px solid var(--border);
-    margin: 0;
-  }
-  .nav-mobile[open] ul a { display: block; padding: 0.5rem 1rem; }
-
-  /* Hamburger animation -> X */
-  .nav-mobile[open] summary svg .line1 { transform: rotate(45deg); }
-  .nav-mobile[open] summary svg .line2 { transform: scaleX(0); opacity: 0; }
-  .nav-mobile[open] summary svg .line3 { transform: rotate(-45deg); }
-
-  header { gap: 0.5rem; align-items: center; }
 }
 
-/* Dark mode fine-tuning */
+/* --------- DARK MODE FINE-TUNING --------- */
 @media (prefers-color-scheme: dark) {
   nav.nav-desktop a:hover { background-color: rgba(122,180,255,0.08); }
   h2 { border-left-color: #4dabf5; }
+}
+
+/* --------- REDUCED MOTION --------- */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
 }
