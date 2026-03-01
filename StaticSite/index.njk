@@ -1,0 +1,31 @@
+---
+subtitle: and I am a Software Engineer.
+layout: layout.njk
+---
+
+<section id="projects">
+    <h2>Selected Work</h2>
+    <div class="projects">
+        {% for experience in collections.experience | sort(attribute="data.order") %}
+
+        <div class="project-card">
+            <h3><a href="{{ experience.url }}">{{ experience.data.title }}</a></h3>
+            {{ experience.content | safe }}
+        </div>
+
+        {% endfor %}
+    </div>
+</section>
+
+<section id="about" class="about">
+    <h2>About Me</h2>
+    <p>I design and build web interfaces that are visually engaging, easy to read, and highly accessible. My focus is
+        clarity, usability, and a modern, professional aesthetic.</p>
+</section>
+
+<section id="contact" class="contact">
+    <h2>Contact</h2>
+    <p>Reach out via email at <a href="mailto:andrewmacleod.com@gmail.com">andrewmacleod.com@gmail.com</a>. Open to
+        collaborations and freelance opportunities.</p>
+</section>
+
