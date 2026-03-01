@@ -1,16 +1,32 @@
 ---
+title: 'Hello! <br /> I am Andrew MacLeod <span class="sr-only">of the Clan MacLeod.</span>'
 subtitle: and I am a Software Engineer.
 layout: layout.njk
 ---
 
-<section id="projects">
-    <h2>Selected Work</h2>
-    <div class="projects">
+<section id="experience">
+    <h2>Experience</h2>
+
+    <p>
+        I currently work as Principal Engineer for a property-tech company in London.<br />
+        Below are some of the things I've done. <br />
+        You can also read more about me on 
+        <a href="https://www.linkedin.com/in/andrewmacleodnottingham"
+            target="_blank"
+            rel="noopener"
+            title="Andrew MacLeod LinkedIn Profile"
+            >LinkedIn <span class="sr-only">(opens in a new tab)</span>
+        </a>.
+    </p>
+
+    <div class="experience">
         {% for experience in collections.experience | sort(attribute="data.order") %}
 
-        <div class="project-card">
-            <h3><a href="{{ experience.url }}">{{ experience.data.title }}</a></h3>
-            {{ experience.content | safe }}
+        <div class="experience-card">
+            <h3><a href="{{ experience.url }}">{{ experience.data.linkFriendlyTitle }}</a></h3>
+            <p>
+                {{ experience.data.intro }}
+            </p>
         </div>
 
         {% endfor %}

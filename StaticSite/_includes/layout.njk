@@ -77,7 +77,7 @@
     <!-- Desktop nav: visible on all sizes except the smallest -->
     <nav class="nav-desktop" aria-label="Main navigation">
       <ul>
-        <li><a href="{{ '/' | url }}#projects">Projects</a></li>
+        <li><a href="{{ '/' | url }}#experience">Experience</a></li>
         <li><a href="{{ '/' | url }}#about">About</a></li>
         <li><a href="{{ '/' | url }}#contact">Contact</a></li>
       </ul>
@@ -94,7 +94,7 @@
         </svg>
       </summary>
       <ul id="nav-list-mobile">
-        <li><a href="/#projects">Projects</a></li>
+        <li><a href="/#experience">Experience</a></li>
         <li><a href="/#about">About</a></li>
         <li><a href="/#contact">Contact</a></li>
       </ul>
@@ -108,7 +108,7 @@
         sizes="(max-width:520px) 140px, 180px" alt="Andrew MacLeod" class="profile" width="180" height="180">
 
       <div class="hero-text">
-        <h1>{{ title | default("Hello! <br> I am Andrew MacLeod") | safe }}</h1>
+        <h1>{{ (title or "Hello! <br> I am Andrew MacLeod") | safe }}</h1>
         <p>{{ subtitle }}</p>
       </div>
     </section>

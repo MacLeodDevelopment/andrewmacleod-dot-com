@@ -234,9 +234,13 @@ h2 {
   padding-left: 0.6rem;
 }
 
-/* --------- PROJECT GRID --------- */
-.projects { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
-.project-card {
+/* --------- EXPERIENCE GRID --------- */
+.experience { 
+  display: grid; 
+  grid-template-columns: 1fr; gap: 1.5rem;
+  margin-top: 1.5rem;
+ }
+.experience-card {
   background-color: var(--card-bg);
   padding: 1.5rem;
   border-radius: 1rem;
@@ -249,9 +253,9 @@ h2 {
   justify-content: flex-start;
   width: 100%;
 }
-.project-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
-.project-card h3 { margin-bottom: 0.5rem; font-size: 1.4rem; color: var(--text); }
-.project-card p { color: var(--muted); font-size: 1rem; }
+.experience-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.12); }
+.experience-card h3 { margin-bottom: 0.5rem; font-size: 1.4rem; color: var(--text); }
+.experience-card p { color: var(--muted); font-size: 1rem; }
 
 /* --------- ABOUT / CONTACT --------- */
 .about p, .contact p { max-width: 60ch; margin-bottom: 1rem; color: var(--muted); line-height: 1.8; }
@@ -280,13 +284,48 @@ footer {
   border: 0;
 }
 
+/* -----------------------------------------
+   External link indicator (refined)
+----------------------------------------- */
+
+/* Only apply to external HTTP links that open in a new tab */
+a[target="_blank"][href^="http"] {
+  position: relative;
+}
+
+/* SVG icon */
+a[target="_blank"][href^="http"]::after {
+  content: "";
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-left: 0.35rem;
+  vertical-align: text-top;
+
+  background-color: currentColor;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M7 17L17 7M17 7H8M17 7v9'/%3E%3C/svg%3E");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+
+  opacity: 0.75;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+/* Subtle hover/focus effect */
+a[target="_blank"][href^="http"]:hover::after,
+a[target="_blank"][href^="http"]:focus-visible::after {
+  transform: translate(2px, -2px);
+  opacity: 1;
+}
+
 /* --------- RESPONSIVE: TABLETS (<=520px) --------- */
 @media (max-width: 520px) {
   .hero { padding: 3rem 0; gap: 0.75rem; }
   .hero .profile { width: clamp(80px, 28vw, 140px); }
   .hero h1 { font-size: 2.5rem; }
   h2 { font-size: 1.6rem; }
-  .project-card h3 { font-size: 1.25rem; }
+  .experience-card h3 { font-size: 1.25rem; }
 }
 
 /* --------- RESPONSIVE: MOBILE (<=420px) --------- */
