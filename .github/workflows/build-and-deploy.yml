@@ -1,0 +1,39 @@
+name: Build 11ty and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Static Site Repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: StaticSite
+        run: npm install
+
+      - name: Build 11ty
+        working-directory: StaticSite
+        run: npx @11ty/eleventy
+
+      - name: Deploy to user site repo
+        run: |
+          cd StaticSite/_site
+          git init
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git branch -M main
+          git remote add origin https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/MacLeodDevelopment/macleoddevelopment.github.io.git
+          git add .
+          git commit -m "Deploy site"
+          git push --force origin main
