@@ -12,4 +12,4 @@ C#.NET · Durandal · Knockout JS · HTML · CSS · JavaScript · SQL Server · 
 
 ## Care Partner
 
-TODO AMACLEOD
+I worked as part of a team building an application for the NHS for keeping track of patient records. The role involved improving processes in a team of junior engineers needed help with delivering in a professional way. 
