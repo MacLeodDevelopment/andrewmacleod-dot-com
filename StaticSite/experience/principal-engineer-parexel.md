@@ -1,6 +1,6 @@
 ---
 title: "Parexel / Calyx"
-subtitle: "I worked as Principal Software Engineer from 2016 to 2021."
+subtitle: "Principal Software Engineer 2016 to 2021."
 linkFriendlyTitle: "Principal Software Engineer at Parexel / Calyx"
 order: 2
 intro: "I led multiple software teams architecting and building solutions for clinical research in a highly-regulated industry." 
@@ -21,4 +21,4 @@ I designed and built solutions for a modern clinical platform which replaced exi
 
 ## Sensors
 
-I was recruited to Parexel to lead a team tasked with designing and building a system to capture data from portable and wearable clinical devices, at scale. 
+I was recruited to Parexel to lead a team tasked with designing and building a system to capture data from portable and wearable clinical devices at scale. 
