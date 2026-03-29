@@ -14,7 +14,7 @@ C#.NET · SQL Server · HTML · CSS · JavaScript
 
 ### Role 
 
-I worked as part of a software team designing and developing features for a C#.NET Content Management System (CMS) used by government and the NHS. 
+I worked as part of a software team designing and developing features for a C#.NET Content Management System (CMS) used by the Government and the NHS. 
 
 ## Raleigh Bikes
 
