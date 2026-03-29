@@ -1,6 +1,6 @@
 ---
 title: "Ideagen"
-subtitle: "I worked as Lead Software Engineer from 2014 to 2016."
+subtitle: "Lead Software Engineer 2014 to 2016."
 linkFriendlyTitle: "Senior/Lead Software Engineer at Ideagen"
 order: 3
 intro: "I worked as a senior engineer and team lead, running an agile process delivering software to the customer in an iterative way." 
