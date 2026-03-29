@@ -1,6 +1,6 @@
 ---
 title: "CGI / BJSS"
-subtitle: "I worked as a Senior Software Engineering Consultant from 2021 to 2026."
+subtitle: "Senior Software Engineering Consultant 2021 to 2026."
 linkFriendlyTitle: "Senior Consultant at CGI / BJSS"
 order: 1
 intro: "I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK." 
@@ -16,7 +16,7 @@ Skills: Azure · Blazor · C#.NET · React.js · Angular · Amazon Web Services 
 
 I worked as a tech and team lead for a software team, modernising a legacy product.
 
-I also implemented a modern security solution in response to a hostile-state-sponsored cyber attack.
+I also implemented a modern security solution in response to a hostile state-sponsored cyber attack.
 
 ## Senior Front-end Engineer for British Airways
 
@@ -36,7 +36,7 @@ I worked as a consultant engineer, fixing and modernising a broken application.
 
 ## Kingspan
 
-I worked as tech lead, test lead and platform engineer, extending functionality of a customer-facing website and back office tools for designing complex insulation for constructions.
+I worked as tech lead, test lead and platform engineer, extending functionality of a customer-facing website and back office tools for designing complex insulation for the construction industry. 
 
 ## Frasers Group 
 
