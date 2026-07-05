@@ -261,6 +261,85 @@ h2 {
 .about p, .contact p { max-width: 60ch; margin-bottom: 1rem; color: var(--muted); line-height: 1.8; }
 .contact a { color: var(--link); font-weight: 600; }
 
+/* --------- CONTACT FORM --------- */
+
+#contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    width: 100%;
+    margin-top: 1.5rem;
+
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px var(--shadow);
+    padding: 1.5rem;
+}
+
+#contact-form label {
+  font-weight: 600;
+}
+
+#contact-form input,
+#contact-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  color: var(--text);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+#contact-form input:focus,
+#contact-form textarea:focus {
+  border-color: var(--focus);
+}
+
+#contact-form textarea {
+  min-height: 10rem;
+  resize: vertical;
+}
+
+#contact-form button {
+  align-self: flex-start;
+  padding: 0.75rem 1.5rem;
+  font: inherit;
+  font-weight: 600;
+  color: #fff;
+  background: var(--link);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+#contact-form button:hover {
+  filter: brightness(0.95);
+}
+
+#contact-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#contact-status {
+  min-height: 1.5rem;
+  color: var(--muted);
+}
+
+.turnstile-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
 /* --------- FOOTER --------- */
 footer {
   text-align: center;
