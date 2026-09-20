@@ -5,6 +5,7 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy("images"); 
     eleventyConfig.addPassthroughCopy("interests/**/*.jpg");    
     eleventyConfig.addPassthroughCopy("cheeky.htm");
+    eleventyConfig.addPassthroughCopy("CNAME");
 
     return {
         dir: {
