@@ -1,0 +1,299 @@
+---
+title: "Innellan Pier"
+subtitle: "Photos and history of Innellan Pier."
+layout: gallery-layout.njk
+---
+
+<style>
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  .gallery-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+  }
+  .gallery-card img:hover {
+    transform: scale(1.03);
+  }
+</style>
+
+<h2>Paddle Steamers and Innellan Pier</h2>
+
+Click any image to expand and zoom in.
+
+{% set photos = [
+  {
+    title: "Duchess of Fife",
+    desc: "At Innellan Pier — 2 Jan 1952",
+    full_title: "Duchess of Fife at Innellan Pier",
+    full_desc: "2 January 1952",
+    file: "001-Duchess-of-Fife-at-Innellan-Pier-02-JAN-1952"
+  },
+  {
+    title: "King Edward",
+    desc: "At Innellan Pier — Aug 1949",
+    full_title: "King Edward at Innellan Pier",
+    full_desc: "August 1949",
+    file: "002-King-Edward-at-Innellan-Pier-Aug-1949"
+  },
+  {
+    title: "Jeanie Deans",
+    desc: "At Innellan Pier",
+    full_title: "Jeanie Deans at Innellan Pier",
+    full_desc: "Paddle Steamer Jeanie Deans at Innellan Pier",
+    file: "003-Jeanie-Deans-Innellan-Pier"
+  },
+  {
+    title: "Caledonia",
+    desc: "At Innellan Pier",
+    full_title: "Caledonia at Innellan Pier",
+    full_desc: "Paddle Steamer Caledonia at Innellan Pier",
+    file: "004-Caledonia-Innellan-Pier"
+  },
+  {
+    title: "Saint Columba",
+    desc: "At Innellan Pier",
+    full_title: "Saint Columba at Innellan Pier",
+    full_desc: "MacBrayne Turbine Steamer Saint Columba at Innellan Pier",
+    file: "005-Saint-Columba-Innellan-Pier"
+  },
+  {
+    title: "King George V",
+    desc: "At Innellan Pier",
+    full_title: "King George V at Innellan Pier",
+    full_desc: "Turbine Steamer King George V at Innellan Pier",
+    file: "006-King-George-V-Innellan-Pier"
+  },
+  {
+    title: "Lochnevis",
+    desc: "At Innellan Pier",
+    full_title: "Lochnevis at Innellan Pier",
+    full_desc: "MacBrayne Motor Vessel Lochnevis at Innellan Pier",
+    file: "007-Lochnevis-Innellan-Pier"
+  },
+  {
+    title: "Waverley",
+    desc: "At Innellan Pier",
+    full_title: "Waverley at Innellan Pier",
+    full_desc: "Paddle Steamer Waverley at Innellan Pier",
+    file: "008-Waverley-Innellan-Pier"
+  },
+  {
+    title: "MV Arran",
+    desc: "At Innellan Pier",
+    full_title: "MV Arran at Innellan Pier",
+    full_desc: "Clyde Car Ferry MV Arran at Innellan Pier",
+    file: "009-Arran-Innellan-Pier"
+  },
+  {
+    title: "TS Queen Mary II",
+    desc: "At Innellan Pier",
+    full_title: "TS Queen Mary II at Innellan Pier",
+    full_desc: "Turbine Steamer Queen Mary II at Innellan Pier",
+    file: "010-Queen-Mary-II-Innellan-Pier"
+  },
+  {
+    title: "TS Queen Mary II",
+    desc: "Calling at Innellan Pier",
+    full_title: "TS Queen Mary II at Innellan Pier",
+    full_desc: "Turbine Steamer Queen Mary II calling at Innellan Pier",
+    file: "011-Queen-Mary-II-Innellan-Pier"
+  },
+  {
+    title: "Clyde 'Maid' Motor Vessel",
+    desc: "At Innellan Pier",
+    full_title: "Clyde Maid at Innellan Pier",
+    full_desc: "One of the Clyde 'Maid' class motor vessels at Innellan Pier",
+    file: "012-Maid-Innellan-Pier"
+  },
+  {
+    title: "Car Ferry by Night",
+    desc: "At Innellan Pier",
+    full_title: "Car Ferry by Night",
+    full_desc: "Night view of a Clyde car ferry calling at Innellan Pier",
+    file: "013-Car-Ferry-By-Night-Innellan-Pier"
+  },
+  {
+    title: "Dawnlight I",
+    desc: "At Innellan Pier",
+    full_title: "Dawnlight I at Innellan Pier",
+    full_desc: "Clyde puffer Dawnlight I at Innellan Pier",
+    file: "014-Dawnlight-I-Innellan-Pier"
+  },
+  {
+    title: "Lady Morven",
+    desc: "At Innellan Pier",
+    full_title: "Lady Morven at Innellan Pier",
+    full_desc: "Local vessel Lady Morven at Innellan Pier",
+    file: "015-Lady-Morven-Innellan-Pier"
+  },
+  {
+    title: "The Second Snark",
+    desc: "At Innellan Pier",
+    full_title: "The Second Snark at Innellan Pier",
+    full_desc: "Denny excursion vessel The Second Snark at Innellan Pier",
+    file: "016-The-Second-Snark-Innellan-Pier"
+  },
+  {
+    title: "Spartan",
+    desc: "Clyde Puffer at Innellan Pier",
+    full_title: "Clyde Puffer Spartan at Innellan Pier",
+    full_desc: "Puffer Spartan calling at Innellan Pier",
+    file: "017-Spartan-Innellan-Pier"
+  },
+  {
+    title: "TSMV Loch Fyne (Last Call)",
+    desc: "30 Sep 1969",
+    full_title: "TSMV Loch Fyne — Last Call",
+    full_desc: "MacBrayne steamer Loch Fyne making her last call at Innellan Pier on 30 September 1969",
+    file: "018-MacBrayne-Loch-Fyne-Last-Call-Innellan-Pier-30-SEP-1969"
+  },
+  {
+    title: "CRSC Club Cruise",
+    desc: "5 Sep 1970",
+    full_title: "Clyde River Steamer Club Cruise",
+    full_desc: "CRSC charter call at Innellan Pier on 5 September 1970",
+    file: "019-Clyde-River-Steamer-Club-Cruise-Innellan-Pier-05-SEP-1970"
+  },
+  {
+    title: "CRSC Club Cruise",
+    desc: "5 Sep 1970",
+    full_title: "Clyde River Steamer Club Cruise",
+    full_desc: "CRSC charter call at Innellan Pier on 5 September 1970",
+    file: "020-Clyde-River-Steamer-Club-Cruise-Innellan-Pier-05-SEP-1970"
+  },
+  {
+    title: "Harry Murphy",
+    desc: "25 Sep 1971",
+    full_title: "Harry Murphy at Innellan Pier",
+    full_desc: "25 September 1971",
+    file: "021-Harry-Murphy-Innellan-Pier-25-SEP-1971"
+  },
+  {
+    title: "Maid of Argyll",
+    desc: "25 Sep 1971",
+    full_title: "Maid of Argyll at Innellan Pier",
+    full_desc: "25 September 1971",
+    file: "022-Maid-of-Argyll-Innellan-Pier-25-SEP-1971"
+  },
+  {
+    title: "Harry Murphy",
+    desc: "25 Sep 1971",
+    full_title: "Harry Murphy at Innellan Pier",
+    full_desc: "25 September 1971",
+    file: "023-Harry-Murphy-Innellan-Pier-25-SEP-1971"
+  },
+  {
+    title: "Maid of Argyll",
+    desc: "25 Sep 1971",
+    full_title: "Maid of Argyll at Innellan Pier",
+    full_desc: "25 September 1971",
+    file: "024-Maid-of-Argyll-Innellan-Pier-25-SEP-1971"
+  },
+  {
+    title: "Harry Murphy",
+    desc: "25 Sep 1971",
+    full_title: "Harry Murphy at Innellan Pier",
+    full_desc: "25 September 1971",
+    file: "025-Harry-Murphy-Innellan-Pier-25-SEP-1971"
+  },
+  {
+    title: "Innellan Pier",
+    desc: "25 Sep 1971",
+    full_title: "Innellan Pier",
+    full_desc: "25 September 1971",
+    file: "026-Innellan-Pier-25-SEP-1971"
+  },
+  {
+    title: "Last Call Before Winter",
+    desc: "30 Sep 1971",
+    full_title: "Last Call Before Winter",
+    full_desc: "30 September 1971",
+    file: "027-Last-Call-Before-Winter-Innellan-Pier-30-SEP-1971"
+  },
+  {
+    title: "Waverley",
+    desc: "At Innellan Pier — 1972",
+    full_title: "Waverley at Innellan Pier",
+    full_desc: "1972",
+    file: "028-Waverley-Innellan-Pier-1972"
+  },
+  {
+    title: "Waverley",
+    desc: "At Innellan Pier — 1972",
+    full_title: "Waverley at Innellan Pier",
+    full_desc: "1972",
+    file: "029-Waverley-Innellan-Pier-1972"
+  },
+  {
+    title: "Innellan Pier",
+    desc: "10 Sep 1972",
+    full_title: "Innellan Pier",
+    full_desc: "10 September 1972",
+    file: "030-Innellan-Pier-10-SEP-1972"
+  },
+  {
+    title: "Harry Murphy",
+    desc: "16 Sep 1972",
+    full_title: "Harry Murphy at Innellan Pier",
+    full_desc: "16 September 1972",
+    file: "031-Harry-Murphy-Innellan-Pier-16-SEP-1972"
+  },
+  {
+    title: "Waverley (Final Sail)",
+    desc: "Leaving for Rothesay — 30 Sep 1972",
+    full_title: "Waverley Leaving Innellan for Rothesay",
+    full_desc: "Leaving Innellan for Rothesay for the last time — 30 September 1972",
+    file: "032-Waverley-Leaving-Innellan-for-Rothesay-for-the-Last-Time-30-SEP-1972"
+  },
+  {
+    title: "Waverley (Final Return)",
+    desc: "Returning to Innellan — 30 Sep 1972",
+    full_title: "Waverley Leaving Rothesay for Innellan",
+    full_desc: "Leaving Rothesay for Innellan for the last time — 30 September 1972",
+    file: "033-Waverley-Leaving-Rothesay-for-Innellan-for-the-Last-Time-30-SEP-1972"
+  },
+  {
+    title: "Last Steamer Approach",
+    desc: "Approaching Innellan Pier",
+    full_title: "Last Steamer Approaches Innellan Pier",
+    full_desc: "The last steamer approaching the pier prior to closure",
+    file: "034-Last-Steamer-Approaches-Innellan-Pier"
+  },
+  {
+    title: "Final Departure",
+    desc: "30 Sep 1972",
+    full_title: "Last Steamer Departs Innellan Pier",
+    full_desc: "Final departure on 30 September 1972 marking the end of regular steamer services at Innellan Pier",
+    file: "035-Last-Steamer-Departs-Innellan-Pier-30-SEP-1972"
+  },
+  {
+    title: "Innellan Pier Staff",
+    desc: "Final Day — 30 Sep 1972",
+    full_title: "Innellan Pier Staff",
+    full_desc: "Pier staff gathered on the final day of operation — 30 September 1972",
+    file: "036-Staff-Innellan-Pier-30-SEP-1972"
+  }
+] %}
+
+<div class="gallery-grid">
+  {% for item in photos %}
+    <a href="/interests/innellan-pier/images/{{ item.file }}.jpg" 
+       class="gallery-card glightbox" 
+       data-gallery="innellan" 
+       data-title="{{ item.full_title }}" 
+       data-description="{{ item.full_desc }}">
+      <img src="/interests/innellan-pier/images/{{ item.file }}-Thumbnail.jpg" alt="{{ item.full_title }}" loading="lazy" />
+      <div class="gallery-card-content">
+        <h3 class="gallery-card-title">{{ item.title }}</h3>
+        <p class="gallery-card-desc">{{ item.desc }}</p>
+      </div>
+    </a>
+  {% endfor %}
+</div>

@@ -1,0 +1,19 @@
+---
+layout: layout.njk
+---
+
+<!-- Include GLightbox Styles -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
+
+{{ content | safe }}
+
+<!-- Include GLightbox Script -->
+<script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+<script>
+  const lightbox = GLightbox({
+    selector: '.glightbox',
+    touchNavigation: true,
+    loop: true,
+    zoomable: true
+  });
+</script>
