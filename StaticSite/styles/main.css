@@ -138,7 +138,8 @@ a:focus {
 }
 
 /* --------- IMAGES --------- */
-img {
+/* Exclude GLightbox images so global aspect-ratio doesn't distort them */
+img:not(.gslide-image img) {
   display: block;
   max-width: 100%;
   height: auto;
@@ -569,12 +570,13 @@ a[target="_blank"][href^="http"]:focus-visible::after {
 }
 
 /* -----------------------------------------
-   GLIGHTBOX CUSTOM THEMING & DARK MODE
+   GLIGHTBOX THEME OVERRIDES
 ----------------------------------------- */
-/* Style the slide description container on large screens */
+/* Dark/Light mode adaptation for caption panel */
 .gslide-description {
   background-color: var(--card-bg) !important;
   color: var(--text) !important;
+  max-height: 140px;
 }
 
 .gslide-title {
@@ -591,7 +593,7 @@ a[target="_blank"][href^="http"]:focus-visible::after {
   opacity: 1 !important;
 }
 
-/* Fix modal background & close/navigation controls */
+/* Background overlay & controls */
 .goverlay {
   background: rgba(0, 0, 0, 0.85) !important;
 }
