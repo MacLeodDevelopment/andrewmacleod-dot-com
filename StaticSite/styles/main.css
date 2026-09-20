@@ -555,6 +555,55 @@ a[target="_blank"][href^="http"]:focus-visible::after {
   line-height: 1.4;
 }
 
+/* Custom Lightbox Typography */
+.gslide-title {
+  font-family: var(--font-heading, inherit) !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.gslide-desc {
+  font-family: var(--font-body, inherit) !important;
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* -----------------------------------------
+   GLIGHTBOX CUSTOM THEMING & DARK MODE
+----------------------------------------- */
+/* Style the slide description container on large screens */
+.gslide-description {
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+}
+
+.gslide-title {
+  font-family: var(--font-heading, inherit) !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text) !important;
+}
+
+.gslide-desc {
+  font-family: var(--font-body, inherit) !important;
+  font-size: 0.95rem;
+  color: var(--muted) !important;
+  opacity: 1 !important;
+}
+
+/* Fix modal background & close/navigation controls */
+.goverlay {
+  background: rgba(0, 0, 0, 0.85) !important;
+}
+
+.gnext, .gprev, .gclose {
+  background-color: transparent !important;
+}
+
+.gnext path, .gprev path, .gclose path {
+  fill: var(--text) !important;
+}
+
 /* --------- RESPONSIVE: TABLETS (<=520px) --------- */
 @media (max-width: 520px) {
   .hero {
