@@ -1,6 +1,8 @@
 ---
 title: "FACE Recording & Measurement Systems"
 subtitle: "Senior Software Engineer 2013 to 2014."
+metaTitle: "Senior Software Engineer at FACE Recording & Measurement Systems - Andrew MacLeod"
+metaDescription: "I worked as a senior engineer in a team, mentoring junior developers to help them improve and build software with a professional approach."
 linkFriendlyTitle: "Senior Software Engineer at FACE Recording & Measurement Systems"
 order: 4
 intro: "I worked as a senior engineer in a team, mentoring junior developers to help them improve and build software with a professional approach." 

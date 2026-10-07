@@ -51,7 +51,11 @@ StaticSite/                              The Eleventy project (all real work hap
 ## Templates
 
 ### `layout.njk` (every page)
-- `<title>` and meta description are **hard-coded** ("Andrew MacLeod - Consultant Software Engineer"). Page front matter does not change them.
+- `<title>` and meta description come from the front matter fields `metaTitle` and `metaDescription`. If a page omits them, the layout falls back to "Andrew MacLeod - Consultant Software Engineer" and "Portfolio website for Andrew MacLeod".
+  - Every page sets both. Add them to every new page.
+  - `metaTitle` is the full title, ending in " - Andrew MacLeod".
+  - These are separate from `title` because `title` can contain HTML and is used as the hero heading.
+  - Nunjucks autoescape is on, so `&` and `"` in these values are escaped correctly.
 - Stylesheet is loaded non-blocking (`preload` + `onload` swap, `<noscript>` fallback). Inline `<style>` holds only critical CLS-prevention rules for the header, hero and `#year`. If hero/header sizing changes in `main.css`, update these inline rules to match.
 - Header has two navs with the same links:
   - `nav.nav-desktop` uses the `url` filter.
@@ -73,6 +77,8 @@ Required front matter:
 ```yaml
 title: "Company"                 # hero h1 on the detail page
 subtitle: "Role YYYY to YYYY."   # hero subtitle
+metaTitle: "<linkFriendlyTitle> - Andrew MacLeod"   # <title>
+metaDescription: "Same text as intro."                # meta description
 linkFriendlyTitle: "Role at Company"  # card heading on home page
 order: 1                          # sort key on home page (ascending, 1 = most recent)
 intro: "One-sentence summary."   # card text on home page
@@ -129,10 +135,10 @@ Current order:
 - Performance and CLS matter. Images need explicit `width`/`height` and `srcset`, gallery thumbnails need `loading="lazy"`, and the CSS loads non-blocking.
 - No front-end framework or bundler. Keep JS inline and minimal; CDN libraries only when needed (GLightbox, Turnstile).
 - British English in content.
+- Line endings: `core.autocrlf=true`, so files are LF in the repo and CRLF in the working tree. When editing files with scripts, keep CRLF consistent. A stray lone `\r` makes git treat the file as binary.
 - Commit messages are short and imperative ("Update text", "Add CNAME").
 
 ## Known quirks / possible improvements (not yet fixed)
-- `<title>` and meta description are the same on every page.
 - The mobile-nav click handler's smooth-scroll branch never runs. It checks `href.startsWith('#')`, but every href starts with `/`. Closing the menu still works.
 - `cheeky.htm` links to `Content/bootstrap.min.css`, which doesn't exist, so it renders unstyled.
 - No-op `addPassthroughCopy({})` in the config.

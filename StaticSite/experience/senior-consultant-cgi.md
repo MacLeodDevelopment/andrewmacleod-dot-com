@@ -1,6 +1,8 @@
 ---
 title: "CGI / BJSS"
 subtitle: "Senior Software Engineering Consultant 2021 to 2026."
+metaTitle: "Senior Consultant at CGI / BJSS - Andrew MacLeod"
+metaDescription: "I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK."
 linkFriendlyTitle: "Senior Consultant at CGI / BJSS"
 order: 1
 intro: "I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK." 

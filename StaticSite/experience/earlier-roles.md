@@ -1,6 +1,8 @@
 ---
 title: "Earlier Roles"
 subtitle: "I worked in a number of different graphic and web design roles in the early part of my career."
+metaTitle: "Earlier Roles - Graphic Designer to Programmer - Andrew MacLeod"
+metaDescription: "My first job was doing graphic design for a financial company in London. I gradually moved into web design and subsequently web application development."
 linkFriendlyTitle: "Earlier Roles - Graphic Designer to Programmer"
 order: 5
 intro: "My first job was doing graphic design for a financial company in London. I gradually moved into web design and subsequently web application development." 
