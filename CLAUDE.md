@@ -42,7 +42,7 @@ StaticSite/                              The Eleventy project (all real work hap
 ## Eleventy config (`StaticSite/.eleventy.js`)
 
 - `dir`: input `.`, includes `_includes`, output `_site`. There is no `_data/` directory.
-- Passthrough copies: `styles`, `images`, `interests/**/*.jpg`, `cheeky.htm`, `CNAME`. There is also a no-op `addPassthroughCopy({})`.
+- Passthrough copies: `styles`, `images`, `interests/**/*.jpg`, `cheeky.htm`, `CNAME`.
 - **Adding a new gallery's images**: `.jpg` files under `interests/**` are copied automatically. Other extensions (`.png`, `.webp`, …) or image folders elsewhere need a new `addPassthroughCopy` line.
 - `.md` files are processed with Liquid as the template engine (Eleventy default). `.njk` files use Nunjucks.
 - No plugins, no custom filters/shortcodes, no `pathPrefix`. The layout uses the built-in `url` filter on the desktop nav only.
@@ -139,7 +139,6 @@ Current order:
 - Commit messages are short and imperative ("Update text", "Add CNAME").
 
 ## Known quirks / possible improvements (not yet fixed)
-- No-op `addPassthroughCopy({})` in the config.
 - The workflow uses `actions/checkout@v3` (old) and `npm install` rather than `npm ci`.
 - GLightbox CDN URLs aren't version-pinned, and the CSS `<link>` sits in `<body>`.
 - The root `.gitignore` is mostly an unrelated .NET template.
