@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="/styles/main.css">
   </noscript>
 
+  {% if lightbox %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.1/dist/css/glightbox.min.css" />
+  {% endif %}
+
   <!-- Minimal critical CLS-prevention inline styles only -->
   <style>
     /* Prevent layout shift: reserve space for header before CSS loads */

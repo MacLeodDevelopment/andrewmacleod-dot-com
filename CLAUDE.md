@@ -8,7 +8,7 @@ This repo holds the **source only**. A GitHub Action builds the site and force-p
 
 ```
 .github/workflows/build-and-deploy.yml   CI: build + deploy (see below)
-.gitignore                               .NET template + `_site`, `node_modules`
+.gitignore                               `_site`, `node_modules`
 README.md, LICENSE (MIT, code), CONTENT_LICENSE (content © Andrew MacLeod, no reuse)
 Design/                                  Old hand-written HTML/CSS mockup (index.htm, styles.css). NOT built or deployed — historical reference only.
 StaticSite/                              The Eleventy project (all real work happens here)
@@ -34,7 +34,7 @@ StaticSite/                              The Eleventy project (all real work hap
 - Local build: `npx @11ty/eleventy` → `StaticSite/_site/`
 - Eleventy does **not** clean `_site`, so stale pages from renamed or deleted files stay there locally. Delete `_site` before you check output. CI always starts clean.
 - Don't build with a different `--output` while `StaticSite/_site` exists. The input dir is `.`, so Eleventy would treat the old `_site/` as input and re-render it.
-- **Deploy**: any push to `main` triggers `.github/workflows/build-and-deploy.yml`. It runs Node 20, `npm install`, and `npx @11ty/eleventy` in `StaticSite/`. It then `git init`s `_site/` and **force-pushes** it to `MacLeodDevelopment/macleoddevelopment.github.io` (main), authenticating with the `DEPLOY_TOKEN` secret.
+- **Deploy**: any push to `main` triggers `.github/workflows/build-and-deploy.yml`. It uses `actions/checkout@v7` and `actions/setup-node@v7`, and runs Node 22 (matching local), `npm ci`, and `npx @11ty/eleventy` in `StaticSite/`. `npm ci` needs `package-lock.json` to stay in sync with `package.json`. It then `git init`s `_site/` and **force-pushes** it to `MacLeodDevelopment/macleoddevelopment.github.io` (main), authenticating with the `DEPLOY_TOKEN` secret.
   - Pushing to `main` publishes live. Treat it as outward-facing.
   - The hosting repo's history is overwritten on every deploy, so nothing should be edited there by hand.
 - There are no tests, linting, or formatting tools.
@@ -68,7 +68,10 @@ StaticSite/                              The Eleventy project (all real work hap
 - Anchor scrolling is smooth through CSS only: `scroll-behavior: smooth` on `html, body`, turned off under `prefers-reduced-motion`. `scroll-margin-top` on `h2` keeps headings clear of the fixed header. Don't add JS scrolling.
 
 ### `gallery-layout.njk`
-Chains to `layout.njk`. It loads GLightbox CSS/JS from jsDelivr (unpinned versions) inside `<body>` and initialises it with `GLightbox({ selector: '.glightbox', zoomable: true })`.
+Chains to `layout.njk` and sets `lightbox: true` in its front matter.
+- When `lightbox` is true, `layout.njk` adds the GLightbox stylesheet to `<head>`.
+- `gallery-layout.njk` loads the GLightbox script after the content and initialises it with `GLightbox({ selector: '.glightbox', zoomable: true })`.
+- Both files come from jsDelivr's npm path, pinned to `glightbox@3.3.1`. When upgrading, change the version in both `layout.njk` and `gallery-layout.njk`.
 
 ## Content patterns
 
@@ -139,6 +142,5 @@ Current order:
 - Commit messages are short and imperative ("Update text", "Add CNAME").
 
 ## Known quirks / possible improvements (not yet fixed)
-- The workflow uses `actions/checkout@v3` (old) and `npm install` rather than `npm ci`.
-- GLightbox CDN URLs aren't version-pinned, and the CSS `<link>` sits in `<body>`.
-- The root `.gitignore` is mostly an unrelated .NET template.
+- `.gslide-title` and `.gslide-desc` are each defined twice in `main.css`.
+- `npm audit` (Oct 2026) reports 15 vulnerabilities in Eleventy's build-time dependencies, e.g. `ws`. These are dev and build tooling only and nothing is shipped to the live site. Try `npm audit fix`, but not `--force`, which may change Eleventy's major version.
