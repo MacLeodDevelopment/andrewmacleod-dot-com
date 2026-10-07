@@ -623,6 +623,29 @@ a[target="_blank"][href^="http"]:focus-visible::after {
   fill: var(--text) !important;
 }
 
+/* GLightbox sets overflow: hidden on html and body while open. Combined with
+   our height: 100% that clips the page to one screen, which resets the scroll
+   position. GLightbox only applies height: auto from 769px, so apply it at all
+   widths to keep the scroll position on small screens. */
+.glightbox-open {
+  height: auto;
+}
+
+/* While an image is pinch-zoomed (GLightbox writes scale3d into its inline
+   style), hide the caption and undim the image so the text doesn't cover it. */
+.gslide-description {
+  transition: opacity 0.2s ease;
+}
+
+.gslide:has(.gslide-image img[style*="scale3d"]) .gslide-description {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.gslide:has(.gslide-image img[style*="scale3d"]) .gslide-media {
+  opacity: 1;
+}
+
 /* --------- RESPONSIVE: TABLETS (<=520px) --------- */
 @media (max-width: 520px) {
   .hero {

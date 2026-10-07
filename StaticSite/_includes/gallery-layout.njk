@@ -12,4 +12,16 @@ const lightbox = GLightbox({
   selector: '.glightbox',
   zoomable: true
 });
+
+// GLightbox treats a drag that starts on the caption's title or padding as a
+// swipe, and closes the lightbox when it's vertical. Keep touches inside the
+// caption away from its swipe handler so the caption can be scrolled.
+lightbox.on('slide_after_load', ({ slideNode }) => {
+  const caption = slideNode.querySelector('.gslide-description');
+  if (!caption) return;
+
+  ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(type => {
+    caption.addEventListener(type, event => event.stopPropagation(), { passive: true });
+  });
+});
 </script>

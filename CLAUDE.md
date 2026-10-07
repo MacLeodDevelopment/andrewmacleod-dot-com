@@ -72,6 +72,10 @@ Chains to `layout.njk` and sets `lightbox: true` in its front matter.
 - When `lightbox` is true, `layout.njk` adds the GLightbox stylesheet to `<head>`.
 - `gallery-layout.njk` loads the GLightbox script after the content and initialises it with `GLightbox({ selector: '.glightbox', zoomable: true })`.
 - Both files come from jsDelivr's npm path, pinned to `glightbox@3.3.1`. When upgrading, change the version in both `layout.njk` and `gallery-layout.njk`.
+- Mobile workarounds. They rely on GLightbox 3.3.1 internals, so retest on a phone after any upgrade.
+  - **Swipe-to-close from the caption:** GLightbox's swipe handler only ignores touches that start inside `.gslide-desc`. A vertical drag that starts on the caption's title or padding closes the lightbox. Fixed in `gallery-layout.njk`: on `slide_after_load`, touch events are stopped from propagating out of `.gslide-description`.
+  - **Caption over a zoomed image:** pinch zoom writes `scale3d(...)` into the image's inline style. CSS in `main.css` uses `.gslide:has(img[style*="scale3d"])` to hide the caption and undim the image while zoomed.
+  - **Scroll position lost on close:** `.glightbox-open { height: auto }` in `main.css` is needed at all widths. Without it, our `html, body { height: 100% }` plus GLightbox's `overflow: hidden` resets the scroll position below 769px.
 
 ## Content patterns
 
