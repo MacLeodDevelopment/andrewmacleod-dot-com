@@ -13,7 +13,7 @@ README.md, LICENSE (MIT, code), CONTENT_LICENSE (content © Andrew MacLeod, no r
 Design/                                  Old hand-written HTML/CSS mockup (index.htm, styles.css). NOT built or deployed — historical reference only.
 StaticSite/                              The Eleventy project (all real work happens here)
   .eleventy.js                           Config
-  package.json                           Only dep: @11ty/eleventy ^3.1.2 (devDependency). No npm scripts.
+  package.json                           Only dep: @11ty/eleventy ^3.1.6 (devDependency). No npm scripts.
   CNAME                                  "andrewmacleod.com" — passthrough-copied so the Pages repo keeps the custom domain
   index.njk                              Home page: Experience cards, About, Contact form
   _includes/layout.njk                   Base layout (head, header/nav, hero, footer)
@@ -143,4 +143,8 @@ Current order:
 
 ## Known quirks / possible improvements (not yet fixed)
 - `.gslide-title` and `.gslide-desc` are each defined twice in `main.css`.
-- `npm audit` (Oct 2026) reports 15 vulnerabilities in Eleventy's build-time dependencies, e.g. `ws`. These are dev and build tooling only and nothing is shipped to the live site. Try `npm audit fix`, but not `--force`, which may change Eleventy's major version.
+- `npm audit` (Oct 2026, Eleventy 3.1.6) reports 9 remaining vulnerabilities (5 high, 4 moderate). None has an upstream fix, and nothing from them is shipped to the live site:
+  - `braces` (every version), via `chokidar@3`, which is used by `nunjucks` and `eleventy-dev-server`. This is a DoS from untrusted glob patterns, and the only glob patterns here are our own.
+  - `sprintf-js` (every version), via `argparse` → `js-yaml@3` → `gray-matter`. This is a DoS from untrusted format strings, which we don't use.
+  - Accepted risk. Recheck when Eleventy 4 is stable.
+  - **Never run `npm audit fix --force`.** It "fixes" these by downgrading Eleventy to 0.6.0.
