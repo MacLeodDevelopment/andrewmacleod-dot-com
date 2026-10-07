@@ -65,7 +65,8 @@ StaticSite/                              The Eleventy project (all real work hap
   - `title`: output with `| safe`, so HTML is allowed. Falls back to "Hello! I am Andrew MacLeod".
   - `subtitle`: shown under the title.
   - The profile image always shows.
-- Footer year is set by inline JS.
+- Footer year is set by inline JS. Another small inline script closes the mobile menu when a link is clicked.
+- Anchor scrolling is smooth through CSS only: `scroll-behavior: smooth` on `html, body`, turned off under `prefers-reduced-motion`. `scroll-margin-top` on `h2` keeps headings clear of the fixed header. Don't add JS scrolling.
 
 ### `gallery-layout.njk`
 Chains to `layout.njk`. It loads GLightbox CSS/JS from jsDelivr (unpinned versions) inside `<body>` and initialises it with `GLightbox({ selector: '.glightbox', zoomable: true })`.
@@ -139,7 +140,6 @@ Current order:
 - Commit messages are short and imperative ("Update text", "Add CNAME").
 
 ## Known quirks / possible improvements (not yet fixed)
-- The mobile-nav click handler's smooth-scroll branch never runs. It checks `href.startsWith('#')`, but every href starts with `/`. Closing the menu still works.
 - `cheeky.htm` links to `Content/bootstrap.min.css`, which doesn't exist, so it renders unstyled.
 - No-op `addPassthroughCopy({})` in the config.
 - The workflow uses `actions/checkout@v3` (old) and `npm install` rather than `npm ci`.

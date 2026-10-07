@@ -128,17 +128,12 @@
   </script>
 
   <script>
+  // Close the mobile menu after a link is chosen.
+  // Smooth scrolling to anchors is handled by scroll-behavior in main.css.
   document.querySelectorAll('.nav-mobile ul a').forEach(link => {
-    link.addEventListener('click', event => {
+    link.addEventListener('click', () => {
       const details = link.closest('.nav-mobile');
       if (details) details.removeAttribute('open');
-
-      // Smooth scroll if the link is an anchor
-      const targetId = link.getAttribute('href');
-      if (targetId && targetId.startsWith('#')) {
-        const targetEl = document.querySelector(targetId);
-        if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth' });
-      }
     });
   });
 </script>

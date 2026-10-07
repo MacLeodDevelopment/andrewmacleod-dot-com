@@ -699,6 +699,11 @@ a[target="_blank"][href^="http"]:focus-visible::after {
 
 /* --------- REDUCED MOTION --------- */
 @media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto;
+  }
+
   * {
     transition: none !important;
     animation: none !important;
