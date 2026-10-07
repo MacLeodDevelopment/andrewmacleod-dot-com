@@ -25,8 +25,7 @@ StaticSite/                              The Eleventy project (all real work hap
   interests/innellan-pier/images/        NNN-Name.jpg + NNN-Name-Thumbnail.jpg pairs (36 photos)
   images/                                Profile photo at 128/256/360/512px
   styles/main.css                        Single global stylesheet (~700 lines)
-  cheeky.htm                             Standalone legacy "Perfect Omelette" page, not linked from anywhere, passthrough-copied as-is
-  _site/                                 Build output (gitignored)
+  cheeky.htm                             Standalone legacy "Perfect Omelette" page, not linked from anywhere, passthrough-copied as-is. Self-contained, with a small inline `<style>` (sans-serif, narrow column); it doesn't use main.css.  _site/                                 Build output (gitignored)
 ```
 
 ## Build, run, deploy
@@ -140,7 +139,6 @@ Current order:
 - Commit messages are short and imperative ("Update text", "Add CNAME").
 
 ## Known quirks / possible improvements (not yet fixed)
-- `cheeky.htm` links to `Content/bootstrap.min.css`, which doesn't exist, so it renders unstyled.
 - No-op `addPassthroughCopy({})` in the config.
 - The workflow uses `actions/checkout@v3` (old) and `npm install` rather than `npm ci`.
 - GLightbox CDN URLs aren't version-pinned, and the CSS `<link>` sits in `<body>`.
