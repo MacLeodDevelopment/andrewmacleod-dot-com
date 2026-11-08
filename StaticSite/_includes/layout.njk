@@ -89,11 +89,11 @@
     <div class="sheet">
       <div class="row">
         <div class="page-head">
-          <div class="frame">
+          <a class="frame" href="{{ '/' | url }}">
             <img src="/images/andrew-macleod-profile-256.jpg"
               srcset="/images/andrew-macleod-profile-128.jpg 128w, /images/andrew-macleod-profile-256.jpg 256w"
-              sizes="112px" alt="Andrew MacLeod" width="112" height="112">
-          </div>
+              sizes="112px" alt="Andrew MacLeod, home page" width="112" height="112">
+          </a>
           <div>
             <p class="m">{% if rev %}Experience · Rev {{ rev }}{% else %}{{ label or "Datasheet" }}{% endif %}</p>
             <h1>{{ (title or "Andrew MacLeod") | safe }}</h1>
