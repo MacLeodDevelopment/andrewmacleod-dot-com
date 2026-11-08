@@ -5,13 +5,15 @@ metaTitle: "Senior Consultant at CGI / BJSS - Andrew MacLeod"
 metaDescription: "I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK."
 linkFriendlyTitle: "Senior Consultant at CGI / BJSS"
 order: 1
+rev: "E"
+years: "2021 – 2026"
+role: "Senior consultant"
 intro: "I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK." 
 ---
 
 ### Tech Stack:
 
 Azure · Blazor · C#.NET · React.js · Angular · Amazon Web Services (AWS) · Docker · Kubernetes · WSL · GitHub Actions · Azure DevOps · ASP.NET MVC · Node.js · OAuth · Azure Cosmos DB · MongoDB · Microsoft SQL Server · Entity Framework · KnockoutJS · Next.js · BUnit · Jest · MS Test · NUnit · Playwright · SpecFlow
-Skills: Azure · Blazor · C#.NET · React.js · Angular · Amazon Web Services (AWS) · Docker · Kubernetes · WSL · GitHub Actions · Azure DevOps · ASP.NET MVC · Node.js · OAuth · Azure Cosmos DB · MongoDB · Microsoft SQL Server · Entity Framework · KnockoutJS · Next.js · BUnit · Jest · MS Test · NUnit · Playwright · SpecFlow
 
 
 ## Tech Lead for United Health Group (Optum) 

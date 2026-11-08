@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Concept 3: Bento Grid - Andrew MacLeod</title>
+<meta name="description" content="Design concept: a modern bento-grid layout with gradient accents for andrewmacleod.com.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap">
+<style>
+/* =========================================================
+   CONCEPT 3 — BENTO GRID
+   The home page as a dashboard of tiles: who, now, sectors,
+   stack, experience, interests, contact. Soft gradient mesh
+   behind, crisp tiles in front.
+   ========================================================= */
+:root {
+  --bg: #f4f5fb;
+  --tile: #ffffff;
+  --text: #121528;
+  --muted: #4f5470;
+  --line: #e3e5f0;
+  --c1: #6d4aff;   /* violet */
+  --c2: #00a3a3;   /* teal */
+  --c3: #ff6b4a;   /* coral */
+  --accent: #5533e6; /* text-safe violet */
+  --chip: #eeeafe;
+  --shadow: 0 1px 2px rgba(18,21,40,.05), 0 10px 30px -10px rgba(18,21,40,.12);
+  --radius: 22px;
+  --max: min(1180px, 92%);
+  --display: "Space Grotesk", system-ui, sans-serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0b14;
+    --tile: #13152a;
+    --text: #eef0ff;
+    --muted: #a9aed0;
+    --line: #23264a;
+    --accent: #a995ff;
+    --chip: #211d45;
+    --shadow: 0 1px 2px rgba(0,0,0,.5), 0 10px 30px -10px rgba(0,0,0,.6);
+  }
+}
+@media (prefers-contrast: more) {
+  :root { --muted: var(--text); --line: var(--text); }
+  .mesh { display: none; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 1rem/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.05; margin: 0 0 .5rem; letter-spacing: -.02em; }
+h2 { scroll-margin-top: 100px; }
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+img { max-width: 100%; height: auto; display: block; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 1rem; top: -100px; background: var(--accent); color: #fff; padding: .5rem 1rem; z-index: 100; border-radius: 8px; }
+.skip:focus { top: 1rem; }
+.wrap { width: var(--max); margin-inline: auto; }
+
+/* Gradient mesh background (decorative) */
+.mesh { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.mesh i { position: absolute; width: 45vmax; height: 45vmax; border-radius: 50%; filter: blur(80px); opacity: .35; }
+.mesh i:nth-child(1) { background: var(--c1); top: -15vmax; left: -10vmax; animation: drift 22s ease-in-out infinite alternate; }
+.mesh i:nth-child(2) { background: var(--c2); top: 20vmax; right: -15vmax; animation: drift 26s ease-in-out infinite alternate-reverse; }
+.mesh i:nth-child(3) { background: var(--c3); bottom: -20vmax; left: 25vmax; opacity: .22; animation: drift 30s ease-in-out infinite alternate; }
+@media (prefers-color-scheme: dark) { .mesh i { opacity: .22; } .mesh i:nth-child(3) { opacity: .12; } }
+@keyframes drift { to { transform: translate(6vmax, 4vmax) scale(1.1); } }
+
+/* ---------- Floating pill header ---------- */
+header { position: sticky; top: .75rem; z-index: 50; margin-top: .75rem; }
+.header-inner {
+  display: flex; align-items: center; justify-content: space-between; min-height: 60px;
+  padding: 0 .6rem 0 1.25rem; border-radius: 999px;
+  background: color-mix(in srgb, var(--tile) 75%, transparent);
+  backdrop-filter: blur(14px) saturate(1.5);
+  border: 1px solid var(--line); box-shadow: var(--shadow);
+}
+.brand { white-space: nowrap; font: 700 1.1rem var(--display); color: var(--text); text-decoration: none; display: flex; align-items: center; gap: .6rem; }
+.brand .mark { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; color: #fff; font-size: .85rem; background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.nav-desktop ul, .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
+.nav-desktop ul { display: flex; gap: .25rem; }
+.nav-desktop a, .nav-mobile a { display: block; padding: .5rem 1rem; border-radius: 999px; color: var(--text); text-decoration: none; font-weight: 500; font-size: .95rem; transition: background .2s; }
+.nav-desktop a:hover, .nav-mobile a:hover { background: var(--chip); }
+.nav-desktop li:last-child a { background: var(--text); color: var(--bg); }
+.nav-mobile { display: none; position: relative; }
+.nav-mobile summary { list-style: none; cursor: pointer; width: 44px; height: 44px; display: grid; place-items: center; border-radius: 50%; }
+.nav-mobile summary::-webkit-details-marker { display: none; }
+.nav-mobile svg { width: 24px; height: 24px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.nav-mobile ul { position: absolute; right: 0; top: calc(100% + 10px); background: var(--tile); border: 1px solid var(--line); border-radius: 18px; padding: .4rem; min-width: 12rem; box-shadow: var(--shadow); }
+
+/* ---------- Bento ---------- */
+main { padding: 2rem 0 3rem; }
+.bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1rem; }
+.tile {
+  background: var(--tile); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: clamp(1.25rem, 2.5vw, 1.75rem); box-shadow: var(--shadow); position: relative; overflow: hidden;
+}
+.label { font: 500 .75rem/1 var(--sans); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 0 0 .9rem; display: flex; align-items: center; gap: .5rem; }
+
+.t-hello { grid-column: span 4; grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-end; min-height: 340px; }
+.t-hello h1 { font-size: clamp(2.6rem, 6.5vw, 5rem); }
+.grad { background: linear-gradient(90deg, var(--c1), var(--c2) 60%, var(--c3)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+@media (prefers-contrast: more), (forced-colors: active) { .grad { background: none; color: var(--text); } }
+.t-hello p { font-size: 1.15rem; color: var(--muted); margin: 0; max-width: 40ch; }
+.t-photo { grid-column: span 2; grid-row: span 2; padding: 0; min-height: 280px; }
+.t-photo img { width: 100%; height: 100%; object-fit: cover; }
+.t-photo .status { position: absolute; left: 1rem; bottom: 1rem; right: 1rem; background: color-mix(in srgb, var(--tile) 82%, transparent); backdrop-filter: blur(10px); border-radius: 14px; padding: .6rem .9rem; font-size: .85rem; display: flex; align-items: center; gap: .6rem; }
+.pulse { width: 10px; height: 10px; border-radius: 50%; background: #18b26b; box-shadow: 0 0 0 0 rgba(24,178,107,.6); animation: pulse 2s infinite; flex: none; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(24,178,107,0); } 100% { box-shadow: 0 0 0 0 rgba(24,178,107,0); } }
+
+.t-now { grid-column: span 2; background: linear-gradient(150deg, var(--c1), #3b1fd1); color: #fff; border: 0; }
+.t-now .label { color: rgba(255,255,255,.8); }
+.t-now strong { font: 700 1.5rem/1.15 var(--display); display: block; }
+.t-sectors { grid-column: span 2; }
+.chips { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; }
+.chips li { background: var(--chip); padding: .3rem .75rem; border-radius: 999px; font-size: .88rem; font-weight: 500; }
+.t-stack { grid-column: span 2; padding-inline: 0; }
+.t-stack .label { padding-inline: clamp(1.25rem, 2.5vw, 1.75rem); }
+.marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.marquee ul { display: flex; gap: .5rem; width: max-content; list-style: none; margin: 0 0 .5rem; padding: 0; animation: scroll 30s linear infinite; }
+.marquee ul.rev { animation-direction: reverse; }
+.marquee li { border: 1px solid var(--line); padding: .35rem .8rem; border-radius: 10px; font-size: .88rem; white-space: nowrap; }
+.marquee:hover ul { animation-play-state: paused; }
+@keyframes scroll { to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee { mask-image: none; } .marquee ul { flex-wrap: wrap; width: auto; padding-inline: 1.5rem; } .marquee ul [aria-hidden] { display: none; } }
+
+/* Experience tiles */
+.section-title { grid-column: 1 / -1; display: flex; align-items: end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-top: 2.5rem; }
+.section-title h2 { font-size: clamp(2rem, 4vw, 2.8rem); margin: 0; }
+.section-title p { margin: 0; color: var(--muted); max-width: 52ch; }
+.job { grid-column: span 2; display: flex; flex-direction: column; transition: transform .25s ease, box-shadow .25s ease; }
+.job.big { grid-column: span 3; }
+.job:hover, .job:focus-within { transform: translateY(-4px); box-shadow: 0 20px 40px -18px color-mix(in srgb, var(--c1) 55%, transparent); }
+.job .years { font: 500 .8rem var(--sans); color: var(--accent); background: var(--chip); padding: .2rem .6rem; border-radius: 999px; align-self: flex-start; margin-bottom: 1rem; }
+.job h3 { font-size: 1.3rem; }
+.job h3 a { color: var(--text); text-decoration: none; }
+.job h3 a::after { content: ""; position: absolute; inset: 0; }
+.job p { color: var(--muted); margin: 0 0 1rem; flex: 1; }
+.job .arrow { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--chip); color: var(--accent); align-self: flex-end; transition: transform .25s, background .25s, color .25s; }
+.job:hover .arrow { transform: rotate(-45deg); background: var(--accent); color: var(--tile); }
+.job::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: linear-gradient(90deg, var(--c1), var(--c2)); opacity: 0; transition: opacity .25s; }
+.job:hover::before { opacity: 1; }
+
+/* About / interests / contact */
+.t-about { grid-column: span 3; }
+.t-about p { font-size: 1.2rem; }
+.t-pier { grid-column: span 3; padding: 0; min-height: 240px; color: #fff; }
+.t-pier img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.t-pier:hover img { transform: scale(1.05); }
+.t-pier .over { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 30%, rgba(5,8,20,.85)); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; }
+.t-pier .label { color: rgba(255,255,255,.85); }
+.t-pier h3 { font-size: 1.6rem; }
+.t-pier a { color: #fff; text-decoration: none; }
+.t-pier a::after { content: ""; position: absolute; inset: 0; }
+.t-pier a:focus-visible { outline: none; }
+.t-pier:focus-within { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+.t-contact { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1.4fr; gap: 2rem; }
+.t-contact h2 { font-size: clamp(2rem, 4vw, 2.8rem); }
+.t-contact .intro p { color: var(--muted); }
+form { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.full { grid-column: 1 / -1; }
+label { display: block; font-weight: 500; font-size: .9rem; margin-bottom: .35rem; }
+input, textarea { width: 100%; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 14px; padding: .8rem 1rem; transition: border-color .2s, box-shadow .2s; }
+input:focus-visible, textarea:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent); }
+textarea { min-height: 8rem; resize: vertical; }
+.turnstile-stub { border: 1px dashed var(--line); border-radius: 14px; padding: .8rem; display: grid; place-items: center; font-size: .85rem; color: var(--muted); }
+button { font: 600 1rem var(--sans); color: #fff; border: 0; border-radius: 14px; padding: .9rem 1.5rem; cursor: pointer; background: linear-gradient(135deg, var(--c1), #3b1fd1); transition: transform .2s, box-shadow .2s; }
+button:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -10px var(--c1); }
+#contact-status { margin: 0; color: var(--muted); }
+
+footer { padding: 1rem 0 2.5rem; text-align: center; font-size: .9rem; color: var(--muted); }
+footer a { color: inherit; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .bento { grid-template-columns: repeat(4, 1fr); }
+  .t-hello { grid-column: span 4; grid-row: auto; min-height: 0; }
+  .t-photo { grid-column: span 2; grid-row: auto; }
+  .t-now, .t-sectors { grid-column: span 2; }
+  .t-stack { grid-column: span 4; }
+  .job, .job.big { grid-column: span 2; }
+  .t-about, .t-pier, .t-contact { grid-column: span 4; }
+}
+@media (max-width: 620px) {
+  .bento { grid-template-columns: 1fr; }
+  .bento > * { grid-column: 1 / -1 !important; }
+  .t-photo { min-height: 320px; }
+  .t-contact, form { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .nav-desktop { display: none; }
+  .nav-mobile { display: block; }
+  .t-hello { text-align: center; }
+  .t-hello p { margin-inline: auto; }
+}
+@media (forced-colors: active) {
+  .tile { border: 1px solid CanvasText; }
+  .t-now { background: Canvas; color: CanvasText; }
+}
+/* Display fonts make the nav wider than the live site, so the hamburger takes over at 640px, not 420px */
+@media (max-width: 640px) { .nav-desktop { display: none; } .nav-mobile { display: block; } }
+</style>
+</head>
+<body>
+<div class="mesh" aria-hidden="true"><i></i><i></i><i></i></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="wrap">
+  <div class="header-inner">
+    <a class="brand" href="#" aria-label="Go to home"><span class="mark" aria-hidden="true">AM</span>Andrew MacLeod</a>
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Interests</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <details class="nav-mobile">
+      <summary><span class="sr-only">Menu</span>
+        <svg viewBox="0 0 28 28" aria-hidden="true" focusable="false"><line x1="4" y1="9" x2="24" y2="9"/><line x1="4" y1="19" x2="24" y2="19"/></svg>
+      </summary>
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Interests</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </details>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <div class="bento">
+    <section class="tile t-hello" id="home">
+      <p class="label">👋 Hello</p>
+      <h1>I'm Andrew MacLeod,<span class="sr-only"> of the Clan MacLeod,</span><br><span class="grad">software engineer.</span></h1>
+      <p>I lead teams and build dependable software for healthcare, clinical research and government.</p>
+    </section>
+
+    <div class="tile t-photo">
+      <img src="../../StaticSite/images/andrew-macleod-profile-512.jpg" srcset="../../StaticSite../../StaticSite/images/andrew-macleod-profile-512.jpg 512w, ../../StaticSite/images/andrew-macleod-profile-360.jpg 360w" sizes="(max-width:620px) 92vw, 380px" width="380" height="380" alt="Andrew MacLeod">
+      <div class="status"><span class="pulse" aria-hidden="true"></span>Based in the UK · open to a chat</div>
+    </div>
+
+    <div class="tile t-now">
+      <p class="label">Right now</p>
+      <strong>Principal Engineer</strong>
+      <span>at a property-tech company in London</span>
+    </div>
+
+    <div class="tile t-sectors">
+      <p class="label">Sectors</p>
+      <ul class="chips">
+        <li>Healthcare</li><li>Clinical research</li><li>Government</li><li>Aviation</li><li>Retail</li><li>Utilities</li>
+      </ul>
+    </div>
+
+    <div class="tile t-stack">
+      <p class="label">Stack highlights</p>
+      <div class="marquee">
+        <ul>
+          <li>C#.NET</li><li>Azure</li><li>Blazor</li><li>React</li><li>Angular</li><li>AWS</li><li>Docker</li><li>Kubernetes</li>
+          <li aria-hidden="true">C#.NET</li><li aria-hidden="true">Azure</li><li aria-hidden="true">Blazor</li><li aria-hidden="true">React</li><li aria-hidden="true">Angular</li><li aria-hidden="true">AWS</li><li aria-hidden="true">Docker</li><li aria-hidden="true">Kubernetes</li>
+        </ul>
+        <ul class="rev">
+          <li>GitHub Actions</li><li>SQL Server</li><li>Cosmos DB</li><li>Playwright</li><li>Next.js</li><li>11ty</li><li>Node.js</li>
+          <li aria-hidden="true">GitHub Actions</li><li aria-hidden="true">SQL Server</li><li aria-hidden="true">Cosmos DB</li><li aria-hidden="true">Playwright</li><li aria-hidden="true">Next.js</li><li aria-hidden="true">11ty</li><li aria-hidden="true">Node.js</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title">
+      <h2 id="experience">Experience</h2>
+      <p>Some of the things I've done in previous roles. More on <a href="https://www.linkedin.com/in/andrewmacleodnottingham" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+    </div>
+
+    <article class="tile job big">
+      <span class="years">2021 – 2026</span>
+      <h3><a href="#">Senior Consultant at CGI / BJSS</a></h3>
+      <p>I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK.</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </article>
+    <article class="tile job big">
+      <span class="years">2016 – 2021</span>
+      <h3><a href="#">Principal Software Engineer at Parexel / Calyx</a></h3>
+      <p>I led multiple software teams architecting and building solutions for clinical research in a highly-regulated industry.</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </article>
+    <article class="tile job">
+      <span class="years">2014 – 2016</span>
+      <h3><a href="#">Senior/Lead Software Engineer at Ideagen</a></h3>
+      <p>I worked as a senior engineer and team lead, running an agile process delivering software to the customer in an iterative way.</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </article>
+    <article class="tile job">
+      <span class="years">2013 – 2014</span>
+      <h3><a href="#">Senior Software Engineer at FACE</a></h3>
+      <p>I worked as a senior engineer in a team, mentoring junior developers to help them improve and build software with a professional approach.</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </article>
+    <article class="tile job">
+      <span class="years">Earlier</span>
+      <h3><a href="#">Earlier Roles: Graphic Designer to Programmer</a></h3>
+      <p>My first job was doing graphic design for a financial company in London. I gradually moved into web design and subsequently web application development.</p>
+      <span class="arrow" aria-hidden="true">→</span>
+    </article>
+
+    <section class="tile t-about">
+      <p class="label">About</p>
+      <h2 id="about">About Me</h2>
+      <p>I like to cook, read, and play retro computer games.</p>
+      <ul class="chips"><li>🍳 Cooking</li><li>📚 Reading</li><li>🕹️ Retro games</li></ul>
+    </section>
+    <div class="tile t-pier">
+      <img src="../../StaticSite/interests/innellan-pier/images/004-Caledonia-Innellan-Pier-Thumbnail.jpg" width="600" height="431" alt="" loading="lazy">
+      <div class="over">
+        <p class="label">Interests · Photo gallery</p>
+        <h3><a href="#">Innellan Pier</a></h3>
+        <span>A gallery and history of a Clyde steamer pier.</span>
+      </div>
+    </div>
+
+    <section class="tile t-contact">
+      <div class="intro">
+        <p class="label">Contact</p>
+        <h2 id="contact">Let's build something.</h2>
+        <p>Feel free to get in touch.</p>
+      </div>
+      <form id="contact-form">
+        <div class="full"><label for="email">Your email</label><input id="email" name="email" type="email" maxlength="256" required autocomplete="email"></div>
+        <div class="full"><label for="message">Message</label><textarea id="message" name="message" maxlength="1000" required></textarea></div>
+        <div class="turnstile-stub">Turnstile widget</div>
+        <button type="submit">Send message</button>
+        <p id="contact-status" class="full" aria-live="polite"></p>
+      </form>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> Andrew MacLeod. All rights reserved. · <a href="index.html">← All concepts</a></div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('.nav-mobile ul a').forEach(a => a.addEventListener('click', () => a.closest('details').removeAttribute('open')));
+document.getElementById('contact-form').addEventListener('submit', e => { e.preventDefault(); document.getElementById('contact-status').textContent = 'Demo only: the message was not sent.'; });
+</script>
+<!-- concept-bar -->
+<div class="cbar-spacer" aria-hidden="true"></div>
+<nav class="cbar" aria-label="Design concepts">
+  <a class="cb-arrow" href="02-retro-terminal.html" aria-label="Previous design">&lsaquo;</a>
+  <a class="cb-all" href="index.html">All designs</a>
+  <span class="cb-n">Design 3 of 10</span>
+  <a class="cb-fb" href="index.html#feedback">Vote</a>
+  <a class="cb-arrow" href="04-swiss-type.html" aria-label="Next design">&rsaquo;</a>
+</nav>
+<style>
+.cbar-spacer{height:72px}
+nav.cbar{all:initial;position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:2px;padding:4px;background:#111;color:#fff;border:1px solid #555;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3);white-space:nowrap;max-width:calc(100vw - 16px);box-sizing:border-box}
+nav.cbar a,nav.cbar span{all:initial;display:inline-block;box-sizing:border-box;padding:9px 10px;border-radius:7px;color:#fff;font:500 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+nav.cbar .cb-arrow{font-size:20px;padding:5px 12px 7px}
+nav.cbar span.cb-n{color:#bbb;cursor:default;font-variant-numeric:tabular-nums}
+nav.cbar a:hover{background:#333}
+nav.cbar a:focus-visible{outline:2px solid #ffd54a;outline-offset:1px}
+nav.cbar a.cb-fb{background:#ffd54a;color:#111;font-weight:700}
+nav.cbar a.cb-fb:hover{background:#ffe27a}
+@media (max-width:480px){nav.cbar a.cb-all{display:none}}
+@media (forced-colors:active){nav.cbar{border:1px solid CanvasText}}
+@media print{nav.cbar,.cbar-spacer{display:none}}
+</style>
+<!-- /concept-bar -->
+</body>
+</html>

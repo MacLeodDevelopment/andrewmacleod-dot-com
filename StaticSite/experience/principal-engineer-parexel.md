@@ -5,6 +5,9 @@ metaTitle: "Principal Software Engineer at Parexel / Calyx - Andrew MacLeod"
 metaDescription: "I led multiple software teams architecting and building solutions for clinical research in a highly-regulated industry."
 linkFriendlyTitle: "Principal Software Engineer at Parexel / Calyx"
 order: 2
+rev: "D"
+years: "2016 – 2021"
+role: "Principal engineer"
 intro: "I led multiple software teams architecting and building solutions for clinical research in a highly-regulated industry." 
 ---
 

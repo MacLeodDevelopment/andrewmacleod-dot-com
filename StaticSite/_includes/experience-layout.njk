@@ -1,0 +1,21 @@
+---
+layout: layout.njk
+---
+
+<div class="row sec">
+  <div class="sec-label">
+    <p class="m">Rev {{ rev }}</p>
+    <h2>Details</h2>
+    <table class="specs">
+      <caption class="sr-only">Role summary</caption>
+      <tbody>
+        <tr><th scope="row">Dates</th><td>{{ years }}</td></tr>
+        <tr><th scope="row">Role</th><td>{{ role }}</td></tr>
+      </tbody>
+    </table>
+    <p><a class="back-link" href="/#experience"><span aria-hidden="true">←</span> Revision history</a></p>
+  </div>
+  <div class="cell prose">
+    {{ content | safe }}
+  </div>
+</div>

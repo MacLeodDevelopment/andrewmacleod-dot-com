@@ -1,4 +1,4 @@
 {
-    "layout": "layout.njk",
+    "layout": "experience-layout.njk",
     "tags": ["experience"]
 }

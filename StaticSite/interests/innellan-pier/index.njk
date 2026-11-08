@@ -3,12 +3,10 @@ title: "Innellan Pier"
 subtitle: "Photos and history of Innellan Pier."
 metaTitle: "Innellan Pier Photos and History - Andrew MacLeod"
 metaDescription: "Photos and history of Innellan Pier on the Firth of Clyde, from the steamers that called there to its closure in 1972."
+label: "Interests · Gallery"
 layout: gallery-layout.njk
 ---
 
-<h2>Paddle Steamers and Innellan Pier</h2>
-
-Click any image to expand and zoom in.
 
 {% set photos = [
   {
@@ -278,6 +276,14 @@ Click any image to expand and zoom in.
   }
 ] %}
 
+<div class="row sec">
+  <div class="sec-label">
+    <p class="m">Section 1</p>
+    <h2>Paddle Steamers and Innellan Pier</h2>
+    <p>Select any image to expand it, and pinch or click to zoom.</p>
+    <p><a class="back-link" href="/interests/"><span aria-hidden="true">←</span> Interests</a></p>
+  </div>
+  <div class="cell">
 <div class="gallery-grid">
   {% for item in photos %}
     <a href="/interests/innellan-pier/images/{{ item.file }}.jpg" 
@@ -285,11 +291,13 @@ Click any image to expand and zoom in.
        data-gallery="innellan" 
        data-title="{{ item.full_title }}" 
        data-description="{{ item.full_desc }}">
-      <img src="/interests/innellan-pier/images/{{ item.file }}-Thumbnail.jpg" alt="{{ item.full_title }}" loading="lazy" />
+      <img src="/interests/innellan-pier/images/{{ item.file }}-Thumbnail.jpg" alt="{{ item.full_title }}" width="600" height="450" loading="lazy" />
       <div class="gallery-card-content">
         <h3 class="gallery-card-title">{{ item.title }}</h3>
         <p class="gallery-card-desc">{{ item.desc }}</p>
       </div>
     </a>
   {% endfor %}
+</div>
+  </div>
 </div>

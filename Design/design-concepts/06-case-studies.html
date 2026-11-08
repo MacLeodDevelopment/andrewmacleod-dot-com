@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Concept 6: Case Studies - Andrew MacLeod</title>
+<meta name="description" content="Design concept: a consultancy-style portfolio led by case studies.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Concept 6 — Case Studies.
+   Reads like a small consultancy's site: a clear statement, then the
+   work. Projects are the unit, not employers. Hairlines, no cards. */
+:root {
+  --bg: #fafaf9;
+  --ink: #0c0c0d;
+  --muted: #5b5e66;
+  --line: #e2e2e0;
+  --hover: #f1f1ee;
+  --accent: #0f7b5f;
+  --sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "Geist Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0b0c0d; --ink: #f2f2f0; --muted: #9a9ea6; --line: #23262a; --hover: #141618; --accent: #4fd1a5; }
+}
+@media (prefers-contrast: more) { :root { --muted: var(--ink); --line: var(--ink); } }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+img { display: block; max-width: 100%; height: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 1rem; top: 1rem; background: var(--ink); color: var(--bg); padding: .4rem .8rem; z-index: 99; }
+.wrap { width: min(1160px, 90%); margin: 0 auto; }
+.mono { font-family: var(--mono); font-size: .8rem; color: var(--muted); }
+
+/* Header */
+header { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.bar { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.home { text-decoration: none; font-weight: 600; white-space: nowrap; }
+.home span { color: var(--muted); font-weight: 400; margin-left: .5rem; }
+.nav-desktop ul, .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
+.nav-desktop ul { display: flex; gap: 2rem; }
+.nav-desktop a { text-decoration: none; color: var(--muted); font-size: .95rem; }
+.nav-desktop a:hover { color: var(--ink); }
+.nav-desktop li:last-child a { color: var(--ink); border-bottom: 1px solid var(--ink); }
+.nav-mobile { display: none; position: relative; }
+.nav-mobile summary { list-style: none; cursor: pointer; font-size: .95rem; font-weight: 500; padding: .35rem 0; }
+.nav-mobile summary::-webkit-details-marker { display: none; }
+.nav-mobile ul { position: absolute; right: 0; top: calc(100% + 12px); background: var(--bg); border: 1px solid var(--line); min-width: 12rem; padding: .4rem 0; }
+.nav-mobile a { display: block; padding: .6rem 1rem; text-decoration: none; }
+.nav-mobile a:hover { background: var(--hover); }
+
+/* Hero */
+.hero { display: grid; grid-template-columns: 1fr 300px; gap: 4rem; padding: clamp(4rem, 10vw, 7.5rem) 0 clamp(3rem, 7vw, 5rem); align-items: end; }
+h1 { font-size: clamp(2.3rem, 5.4vw, 4.1rem); line-height: 1.05; letter-spacing: -.035em; font-weight: 600; margin: 0; max-width: 17ch; }
+h1 .q { color: var(--muted); }
+.intro { margin: 1.75rem 0 0; max-width: 52ch; color: var(--muted); font-size: 1.15rem; }
+.facts { border-top: 1px solid var(--ink); }
+.facts img { width: 88px; height: 88px; object-fit: cover; border-radius: 50%; margin: 1rem 0 .5rem; filter: grayscale(.2); }
+.facts dl { margin: 0; }
+.facts div { display: grid; grid-template-columns: 6.5rem 1fr; gap: .5rem; padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .92rem; }
+.facts dt { font-family: var(--mono); font-size: .78rem; color: var(--muted); padding-top: .15rem; }
+.facts dd { margin: 0; }
+
+.sectors { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); list-style: none; margin: 0; padding: 0; }
+.sectors li { flex: 1 1 auto; padding: 1rem 1.25rem; border-right: 1px solid var(--line); font-size: .95rem; text-align: center; white-space: nowrap; }
+.sectors li:last-child { border-right: 0; }
+
+/* Sections */
+section { padding: clamp(3.5rem, 8vw, 6rem) 0 0; }
+.sec-head { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; margin-bottom: 2rem; align-items: baseline; }
+h2 { font-size: 1.6rem; letter-spacing: -.02em; font-weight: 600; margin: 0; scroll-margin-top: 90px; }
+.sec-head p { margin: 0; color: var(--muted); max-width: 56ch; }
+
+/* Case studies */
+.cases { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.case { position: relative; display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 2rem; padding: 1.75rem 1rem; margin: 0 -1rem; border-bottom: 1px solid var(--line); transition: background .2s; }
+.case:hover, .case:focus-within { background: var(--hover); }
+.case .who { font-weight: 600; }
+.case .who small { display: block; font-weight: 400; color: var(--muted); font-size: .9rem; margin-top: .15rem; }
+.case h3 { font-size: 1.35rem; line-height: 1.25; letter-spacing: -.015em; font-weight: 600; margin: 0 0 .5rem; }
+.case h3 a { text-decoration: none; }
+.case h3 a::after { content: ""; position: absolute; inset: 0; }
+.case p { margin: 0; color: var(--muted); }
+.case ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; align-content: start; }
+.case li { font-family: var(--mono); font-size: .75rem; border: 1px solid var(--line); padding: .15rem .45rem; border-radius: 3px; color: var(--muted); }
+.case .arrow { position: absolute; right: 1rem; top: 1.75rem; color: var(--accent); opacity: 0; transform: translateX(-6px); transition: opacity .2s, transform .2s; }
+.case:hover .arrow, .case:focus-within .arrow { opacity: 1; transform: none; }
+
+/* Employers */
+.roles { width: 100%; border-collapse: collapse; }
+.roles th, .roles td { text-align: left; padding: 1rem 0; border-bottom: 1px solid var(--line); vertical-align: top; font-weight: 400; }
+.roles thead th { font-family: var(--mono); font-size: .78rem; color: var(--muted); border-bottom: 1px solid var(--ink); padding-top: 0; }
+.roles td.y { font-family: var(--mono); font-size: .85rem; color: var(--muted); white-space: nowrap; width: 9rem; }
+.roles th[scope="row"] a { font-weight: 600; text-decoration: none; }
+.roles th[scope="row"] a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+.roles td.r { color: var(--muted); }
+
+.about { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+.about p { margin: 0 0 .75rem; font-size: 1.15rem; max-width: 50ch; }
+.about a { text-decoration-color: var(--accent); text-underline-offset: .2em; }
+
+/* Contact */
+.contact { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; border-top: 1px solid var(--ink); padding-top: 2.5rem; }
+.contact .big { font-size: clamp(2rem, 4.2vw, 3rem); line-height: 1.05; letter-spacing: -.03em; font-weight: 600; margin: 0 0 1rem; }
+.contact p { color: var(--muted); margin: 0; }
+label { display: block; font-family: var(--mono); font-size: .78rem; color: var(--muted); margin-bottom: .35rem; }
+input, textarea { width: 100%; font: inherit; color: var(--ink); background: transparent; border: 0; border-bottom: 1px solid var(--line); padding: .5rem 0 .6rem; border-radius: 0; margin-bottom: 1.5rem; }
+input:focus-visible, textarea:focus-visible { outline: none; border-bottom-color: var(--accent); box-shadow: 0 1px 0 var(--accent); }
+textarea { min-height: 6.5rem; resize: vertical; }
+.turnstile-stub { font-family: var(--mono); font-size: .75rem; color: var(--muted); border: 1px dashed var(--line); padding: .6rem; margin-bottom: 1.25rem; text-align: center; }
+button { font: 500 1rem var(--sans); color: var(--bg); background: var(--ink); border: 0; padding: .85rem 1.5rem; cursor: pointer; display: inline-flex; gap: .6rem; align-items: center; }
+button:hover { background: var(--accent); color: #fff; }
+#contact-status { margin: 1rem 0 0; color: var(--muted); font-size: .95rem; }
+
+footer { margin-top: 5rem; border-top: 1px solid var(--line); }
+footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1.5rem 0 2rem; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 2.5rem; }
+  .facts { max-width: 420px; }
+  .case { grid-template-columns: 1fr 2fr; }
+  .case ul { grid-column: 2; }
+}
+@media (max-width: 640px) {
+  .nav-desktop { display: none; }
+  .nav-mobile { display: block; }
+  .home span { display: none; }
+  .sec-head, .about, .contact { grid-template-columns: 1fr; gap: 1rem; }
+  .case { grid-template-columns: 1fr; gap: .6rem; }
+  .case ul { grid-column: auto; }
+  .case .arrow { display: none; }
+  .sectors li { flex-basis: 50%; border-bottom: 1px solid var(--line); }
+  .roles td.y { width: auto; }
+  .roles thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .roles tr { display: grid; grid-template-columns: 1fr; padding: .9rem 0; border-bottom: 1px solid var(--line); }
+  .roles th, .roles td { border: 0; padding: .1rem 0; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap bar">
+    <a class="home" href="#">Andrew MacLeod<span>Software Engineer</span></a>
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <details class="nav-mobile">
+      <summary>Menu</summary>
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </details>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap hero">
+    <div>
+      <h1>I modernise critical software, <span class="q">and lead the teams that build it.</span><span class="sr-only"> Andrew MacLeod of the Clan MacLeod, Software Engineer.</span></h1>
+      <p class="intro">Hello, I'm Andrew MacLeod. For over a decade I've worked on systems where reliability matters: healthcare, clinical research and government.</p>
+    </div>
+    <div class="facts">
+      <img src="../../StaticSite/images/andrew-macleod-profile-256.jpg" srcset="../../StaticSite../../StaticSite/images/andrew-macleod-profile-128.jpg 128w, ../../StaticSite/images/andrew-macleod-profile-256.jpg 256w" sizes="88px" width="88" height="88" alt="Andrew MacLeod">
+      <dl>
+        <div><dt>Now</dt><dd>Principal Engineer, property-tech, London</dd></div>
+        <div><dt>Before</dt><dd>CGI / BJSS, Parexel / Calyx, Ideagen</dd></div>
+        <div><dt>Stack</dt><dd>C#/.NET, Azure, React, Angular, AWS</dd></div>
+      </dl>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <ul class="sectors" aria-label="Sectors">
+      <li>Healthcare</li><li>Clinical research</li><li>Government</li><li>Aviation</li><li>Retail</li><li>Utilities</li>
+    </ul>
+  </div>
+
+  <section class="wrap" aria-labelledby="work">
+    <div class="sec-head">
+      <h2 id="work">Selected work</h2>
+      <p>A few projects from the last ten years. Client names are given where they're already public.</p>
+    </div>
+    <ul class="cases">
+      <li class="case">
+        <div class="who">United Health Group (Optum)<small>Tech lead · CGI / BJSS</small></div>
+        <div><h3><a href="#">Modernising a legacy product, and responding to a state-sponsored cyber attack</a></h3><p>Led the team modernising a legacy product, and implemented a modern security solution after a hostile attack.</p></div>
+        <ul><li>Healthcare</li><li>Security</li><li>Modernisation</li></ul>
+        <span class="arrow" aria-hidden="true">→</span>
+      </li>
+      <li class="case">
+        <div class="who">Bill &amp; Melinda Gates Foundation<small>Team lead · Parexel</small></div>
+        <div><h3><a href="#">A mobile app to track COVID-19 where social distancing wasn't possible</a></h3><p>Designed and released an app for sub-Saharan Africa, gathering information about the spread of the pandemic.</p></div>
+        <ul><li>Mobile</li><li>Public health</li></ul>
+        <span class="arrow" aria-hidden="true">→</span>
+      </li>
+      <li class="case">
+        <div class="who">Clinical platform<small>Principal engineer · Parexel</small></div>
+        <div><h3><a href="#">Replacing legacy clinical systems, planned across ten teams</a></h3><p>Designed a pluggable UI framework for other teams to build on, and planned months of work across ten software teams.</p></div>
+        <ul><li>Architecture</li><li>Planning</li><li>UI framework</li></ul>
+        <span class="arrow" aria-hidden="true">→</span>
+      </li>
+      <li class="case">
+        <div class="who">Veterinary Medicines Directorate<small>Tech lead · CGI / BJSS</small></div>
+        <div><h3><a href="#">Simplifying an overly complex government system</a></h3><p>Analysed, troubleshot and simplified a problematic platform as tech lead and platform engineer.</p></div>
+        <ul><li>Platform</li><li>UK Government</li></ul>
+        <span class="arrow" aria-hidden="true">→</span>
+      </li>
+      <li class="case">
+        <div class="who">Wearable sensors<small>Engineering lead · Parexel</small></div>
+        <div><h3><a href="#">Capturing data from wearable clinical devices at scale</a></h3><p>Recruited to lead the team designing and building the system.</p></div>
+        <ul><li>Wearables</li><li>Data at scale</li></ul>
+        <span class="arrow" aria-hidden="true">→</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="wrap" aria-labelledby="experience">
+    <div class="sec-head">
+      <h2 id="experience">Experience</h2>
+      <p>The full history, with more on <a href="https://www.linkedin.com/in/andrewmacleodnottingham" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+    </div>
+    <table class="roles">
+      <thead><tr><th scope="col">Years</th><th scope="col">Company</th><th scope="col">Role</th></tr></thead>
+      <tbody>
+        <tr><td class="y">2021 – 2026</td><th scope="row"><a href="#">CGI / BJSS</a></th><td class="r">Senior Software Engineering Consultant</td></tr>
+        <tr><td class="y">2016 – 2021</td><th scope="row"><a href="#">Parexel / Calyx</a></th><td class="r">Principal Software Engineer</td></tr>
+        <tr><td class="y">2014 – 2016</td><th scope="row"><a href="#">Ideagen</a></th><td class="r">Senior / Lead Software Engineer</td></tr>
+        <tr><td class="y">2013 – 2014</td><th scope="row"><a href="#">FACE</a></th><td class="r">Senior Software Engineer</td></tr>
+        <tr><td class="y">Earlier</td><th scope="row"><a href="#">Earlier roles</a></th><td class="r">Graphic designer to programmer</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="wrap" aria-labelledby="about">
+    <div class="about">
+      <h2 id="about">About</h2>
+      <div>
+        <p>I started in graphic design, which is probably why I still care how software looks as well as how it works.</p>
+        <p>Outside work I like to cook, read, and play retro computer games. I also keep a <a href="#">history of Innellan Pier</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="contact">
+    <div class="contact">
+      <div>
+        <h2 id="contact" class="sr-only">Contact</h2>
+        <p class="big">Have a system that needs untangling?</p>
+        <p>Feel free to get in touch.</p>
+      </div>
+      <form id="contact-form">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" maxlength="256" required autocomplete="email">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" maxlength="1000" required></textarea>
+        <div class="turnstile-stub">Turnstile</div>
+        <button type="submit">Send message <span aria-hidden="true">→</span></button>
+        <p id="contact-status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap mono"><span>© <span id="year"></span> Andrew MacLeod</span><span>Built with Eleventy</span></div>
+</footer>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('.nav-mobile ul a').forEach(a => a.addEventListener('click', () => a.closest('details').removeAttribute('open')));
+document.getElementById('contact-form').addEventListener('submit', e => { e.preventDefault(); document.getElementById('contact-status').textContent = 'This is a design concept; nothing was sent.'; });
+</script>
+<!-- concept-bar -->
+<div class="cbar-spacer" aria-hidden="true"></div>
+<nav class="cbar" aria-label="Design concepts">
+  <a class="cb-arrow" href="05-clyde-coast.html" aria-label="Previous design">&lsaquo;</a>
+  <a class="cb-all" href="index.html">All designs</a>
+  <span class="cb-n">Design 6 of 10</span>
+  <a class="cb-fb" href="index.html#feedback">Vote</a>
+  <a class="cb-arrow" href="07-docs.html" aria-label="Next design">&rsaquo;</a>
+</nav>
+<style>
+.cbar-spacer{height:72px}
+nav.cbar{all:initial;position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:2px;padding:4px;background:#111;color:#fff;border:1px solid #555;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3);white-space:nowrap;max-width:calc(100vw - 16px);box-sizing:border-box}
+nav.cbar a,nav.cbar span{all:initial;display:inline-block;box-sizing:border-box;padding:9px 10px;border-radius:7px;color:#fff;font:500 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+nav.cbar .cb-arrow{font-size:20px;padding:5px 12px 7px}
+nav.cbar span.cb-n{color:#bbb;cursor:default;font-variant-numeric:tabular-nums}
+nav.cbar a:hover{background:#333}
+nav.cbar a:focus-visible{outline:2px solid #ffd54a;outline-offset:1px}
+nav.cbar a.cb-fb{background:#ffd54a;color:#111;font-weight:700}
+nav.cbar a.cb-fb:hover{background:#ffe27a}
+@media (max-width:480px){nav.cbar a.cb-all{display:none}}
+@media (forced-colors:active){nav.cbar{border:1px solid CanvasText}}
+@media print{nav.cbar,.cbar-spacer{display:none}}
+</style>
+<!-- /concept-bar -->
+</body>
+</html>

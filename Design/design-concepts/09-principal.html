@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Concept 9: Principal - Andrew MacLeod</title>
+<meta name="description" content="Design concept: a premium consultant one-pager.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+/* Concept 9 — Principal.
+   A calm, premium consultant page: deep ink bands, a refined serif
+   for headlines, services backed by real projects. */
+:root {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --ink: #12161f;
+  --muted: #5b6070;
+  --line: #e2ded4;
+  --band: #101828;
+  --band-ink: #f3f1ea;
+  --band-muted: #a9b0c0;
+  --brass: #8a6a33;
+  --brass-light: #d8b878;
+  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #0c0f15; --surface: #131722; --ink: #eceae4; --muted: #a2a8b6; --line: #252b38; --band: #060910; --brass: #d8b878; }
+}
+@media (prefers-contrast: more) { :root { --muted: var(--ink); --band-muted: var(--band-ink); } }
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 400 1.0625rem/1.7 var(--sans); }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 3px; }
+img { display: block; max-width: 100%; height: auto; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: -999px; }
+.skip:focus { left: 1rem; top: 1rem; background: var(--band-ink); color: var(--band); padding: .4rem .8rem; z-index: 99; }
+.wrap { width: min(1180px, 90%); margin: 0 auto; }
+.label { font: 600 .78rem var(--sans); letter-spacing: .14em; text-transform: uppercase; color: var(--brass); margin: 0 0 1rem; }
+
+/* Header sits on the dark band */
+header { position: sticky; top: 0; z-index: 20; background: var(--band); color: var(--band-ink); border-bottom: 1px solid rgba(255,255,255,.08); }
+.bar { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+.home { font: 400 1.6rem var(--serif); text-decoration: none; white-space: nowrap; }
+.nav-desktop ul, .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
+.nav-desktop ul { display: flex; gap: 2.25rem; align-items: center; }
+.nav-desktop a { text-decoration: none; font-size: .95rem; color: var(--band-muted); transition: color .2s; }
+.nav-desktop a:hover { color: var(--band-ink); }
+.nav-desktop li:last-child a { color: var(--band); background: var(--band-ink); padding: .55rem 1.1rem; border-radius: 2px; }
+.nav-desktop li:last-child a:hover { background: var(--brass-light); }
+.nav-mobile { display: none; position: relative; }
+.nav-mobile summary { list-style: none; cursor: pointer; font-weight: 600; font-size: .95rem; }
+.nav-mobile summary::-webkit-details-marker { display: none; }
+.nav-mobile ul { position: absolute; right: 0; top: calc(100% + 20px); background: var(--band); border: 1px solid rgba(255,255,255,.12); min-width: 13rem; padding: .4rem 0; }
+.nav-mobile a { display: block; padding: .65rem 1.1rem; text-decoration: none; }
+.nav-mobile a:hover { background: rgba(255,255,255,.06); }
+
+/* Hero */
+.hero { background: var(--band); color: var(--band-ink); }
+.hero .wrap { display: grid; grid-template-columns: 1.35fr 1fr; gap: 4rem; align-items: center; padding: clamp(3.5rem, 8vw, 6.5rem) 0 clamp(4rem, 9vw, 7rem); }
+.hero .label { color: var(--brass-light); }
+h1 { font: 400 clamp(2.8rem, 6.4vw, 5.2rem)/1 var(--serif); letter-spacing: -.01em; margin: 0 0 1.5rem; }
+h1 em { color: var(--brass-light); }
+.hero p { color: var(--band-muted); font-size: 1.15rem; max-width: 46ch; margin: 0 0 2.25rem; }
+.cta { display: flex; flex-wrap: wrap; gap: 1rem; }
+.btn { display: inline-block; text-decoration: none; font-weight: 600; padding: .9rem 1.5rem; border-radius: 2px; transition: background .2s, color .2s; }
+.btn-solid { background: var(--brass-light); color: var(--band); }
+.btn-solid:hover { background: var(--band-ink); }
+.btn-line { border: 1px solid rgba(255,255,255,.35); color: var(--band-ink); }
+.btn-line:hover { border-color: var(--band-ink); }
+.portrait { margin: 0; position: relative; }
+.portrait img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 60% center; }
+.portrait figcaption { display: flex; justify-content: space-between; gap: 1rem; padding-top: .8rem; font-size: .88rem; color: var(--band-muted); border-top: 1px solid rgba(255,255,255,.15); margin-top: 1rem; }
+
+/* Clients strip */
+.clients { border-bottom: 1px solid var(--line); background: var(--surface); }
+.clients .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 2.5rem; padding: 1.5rem 0; }
+.clients p { margin: 0; font-size: .85rem; color: var(--muted); }
+.clients ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem 2.25rem; }
+.clients li { font: 400 1.35rem var(--serif); color: var(--ink); white-space: nowrap; }
+
+/* Sections */
+section.block { padding: clamp(4rem, 9vw, 7rem) 0 0; }
+h2 { font: 400 clamp(2.1rem, 4.4vw, 3.3rem)/1.05 var(--serif); margin: 0 0 1rem; max-width: 20ch; }
+.sec-intro { color: var(--muted); max-width: 56ch; margin: 0 0 3rem; }
+
+.services { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); }
+.service { padding: 1.75rem 1.5rem 0 0; }
+.service + .service { padding-left: 1.5rem; border-left: 1px solid var(--line); }
+.service h3 { font: 600 1.1rem var(--sans); margin: 0 0 .6rem; }
+.service p { color: var(--muted); font-size: .97rem; margin: 0 0 1rem; }
+.service .proof { font-size: .85rem; color: var(--ink); border-top: 1px solid var(--line); padding-top: .75rem; }
+.service .proof b { color: var(--brass); font-weight: 600; display: block; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: .15rem; }
+
+.roles { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
+.roles li { position: relative; display: grid; grid-template-columns: 9rem 1fr auto; gap: 2rem; align-items: baseline; padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+.roles .yr { font-size: .9rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.roles h3 { font: 400 1.9rem/1.1 var(--serif); margin: 0; }
+.roles h3 a { text-decoration: none; }
+.roles h3 a::after { content: ""; position: absolute; inset: 0; }
+.roles p { margin: .35rem 0 0; color: var(--muted); max-width: 60ch; font-size: .97rem; }
+.roles .go { color: var(--brass); font-size: 1.4rem; transition: transform .25s; }
+.roles li:hover .go, .roles li:focus-within .go { transform: translateX(6px); }
+.roles li:hover h3 { color: var(--brass); }
+
+.about { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.about .big { font: 400 clamp(1.6rem, 3vw, 2.2rem)/1.25 var(--serif); margin: 0 0 1rem; }
+.about p { color: var(--muted); margin: 0 0 1rem; }
+.pier { display: grid; grid-template-columns: 160px 1fr; gap: 1.25rem; align-items: center; text-decoration: none; border: 1px solid var(--line); background: var(--surface); padding: .75rem; }
+.pier img { width: 160px; height: 110px; object-fit: cover; }
+.pier b { display: block; font: 400 1.5rem var(--serif); }
+.pier span { color: var(--muted); font-size: .92rem; }
+.pier:hover b { color: var(--brass); }
+
+/* Contact band */
+.contact { background: var(--band); color: var(--band-ink); margin-top: clamp(4rem, 9vw, 7rem); }
+.contact .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; padding: clamp(3.5rem, 8vw, 6rem) 0; }
+.contact h2 { color: var(--band-ink); }
+.contact .label { color: var(--brass-light); }
+.contact p { color: var(--band-muted); max-width: 40ch; }
+.contact label { display: block; font-size: .85rem; color: var(--band-muted); margin-bottom: .35rem; }
+.contact input, .contact textarea { width: 100%; font: inherit; color: var(--band-ink); background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.18); border-radius: 2px; padding: .75rem .9rem; margin-bottom: 1.25rem; }
+.contact input:focus-visible, .contact textarea:focus-visible { outline: 2px solid var(--brass-light); outline-offset: 0; border-color: transparent; }
+.contact textarea { min-height: 8rem; resize: vertical; }
+.turnstile-stub { font-size: .8rem; color: var(--band-muted); border: 1px dashed rgba(255,255,255,.25); padding: .6rem; margin-bottom: 1.25rem; text-align: center; }
+.contact button { font: 600 1rem var(--sans); color: var(--band); background: var(--brass-light); border: 0; border-radius: 2px; padding: .9rem 1.6rem; cursor: pointer; }
+.contact button:hover { background: var(--band-ink); }
+#contact-status { color: var(--band-muted); margin: 1rem 0 0; }
+
+footer { background: var(--band); color: var(--band-muted); border-top: 1px solid rgba(255,255,255,.08); font-size: .88rem; }
+footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding: 1.5rem 0 2rem; }
+
+@media (max-width: 960px) {
+  .services { grid-template-columns: 1fr 1fr; }
+  .service:nth-child(3) { padding-left: 0; border-left: 0; }
+  .service { padding-bottom: 1.5rem; }
+}
+@media (max-width: 760px) {
+  .hero .wrap, .about, .contact .wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+  .portrait { max-width: 320px; }
+  .roles li { grid-template-columns: 1fr auto; gap: .25rem 1rem; }
+  .roles .yr { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .nav-desktop { display: none; }
+  .nav-mobile { display: block; }
+  .services { grid-template-columns: 1fr; }
+  .service, .service + .service { padding-left: 0; border-left: 0; border-bottom: 1px solid var(--line); }
+  .pier { grid-template-columns: 1fr; }
+  .pier img { width: 100%; height: auto; aspect-ratio: 16 / 9; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap bar">
+    <a class="home" href="#">Andrew MacLeod</a>
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <ul>
+        <li><a href="#services">What I do</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Get in touch</a></li>
+      </ul>
+    </nav>
+    <details class="nav-mobile">
+      <summary>Menu</summary>
+      <ul>
+        <li><a href="#services">What I do</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Get in touch</a></li>
+      </ul>
+    </details>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="label">Principal Engineer · Consultant</p>
+        <h1>Engineering leadership for software that <em>has to work.</em><span class="sr-only"> Andrew MacLeod of the Clan MacLeod, Software Engineer.</span></h1>
+        <p>I'm Andrew MacLeod. I've led software teams in healthcare, clinical research and government, and I'm currently Principal Engineer at a property-tech company in London.</p>
+        <div class="cta">
+          <a class="btn btn-solid" href="#contact">Start a conversation</a>
+          <a class="btn btn-line" href="#experience">See experience</a>
+        </div>
+      </div>
+      <figure class="portrait">
+        <img src="../../StaticSite/images/andrew-macleod-profile-512.jpg" srcset="../../StaticSite../../StaticSite/images/andrew-macleod-profile-360.jpg 360w, ../../StaticSite/images/andrew-macleod-profile-512.jpg 512w" sizes="(max-width:760px) 320px, 400px" width="400" height="500" alt="Andrew MacLeod">
+        <figcaption><span>Andrew MacLeod</span><span>London</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="clients">
+    <div class="wrap">
+      <p>Clients and projects include</p>
+      <ul>
+        <li>Optum</li><li>British Airways</li><li>UK Government</li><li>Gates Foundation</li><li>NHS</li><li>Raleigh</li>
+      </ul>
+    </div>
+  </div>
+
+  <section class="block wrap" aria-labelledby="services">
+    <p class="label">What I do</p>
+    <h2 id="services">Four things I'm usually brought in for.</h2>
+    <p class="sec-intro">Each one comes from real projects. The full write-ups are in the experience section below.</p>
+    <div class="services">
+      <div class="service">
+        <h3>Technical leadership</h3>
+        <p>Leading engineering teams, and planning work across many of them.</p>
+        <p class="proof"><b>For example</b>Planned months of work across ten teams for a clinical platform at Parexel.</p>
+      </div>
+      <div class="service">
+        <h3>Legacy modernisation</h3>
+        <p>Replacing or rebuilding systems that have outgrown their original design.</p>
+        <p class="proof"><b>For example</b>Modernised a legacy product for United Health Group (Optum).</p>
+      </div>
+      <div class="service">
+        <h3>Simplifying platforms</h3>
+        <p>Analysing and troubleshooting complex systems, and making them simpler to run.</p>
+        <p class="proof"><b>For example</b>Simplified an overly complex system for the Veterinary Medicines Directorate.</p>
+      </div>
+      <div class="service">
+        <h3>Delivery under pressure</h3>
+        <p>Joining teams close to a deadline, or shipping something new quickly.</p>
+        <p class="proof"><b>For example</b>A COVID-19 app for the Gates Foundation, for use in sub-Saharan Africa.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap" aria-labelledby="experience">
+    <p class="label">Experience</p>
+    <h2 id="experience">Where I've worked.</h2>
+    <p class="sec-intro">Most recent first. More on <a href="https://www.linkedin.com/in/andrewmacleodnottingham" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+    <ul class="roles">
+      <li><span class="yr">2021 – 2026</span><div><h3><a href="#">CGI / BJSS</a></h3><p>Senior consultant for the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK.</p></div><span class="go" aria-hidden="true">→</span></li>
+      <li><span class="yr">2016 – 2021</span><div><h3><a href="#">Parexel / Calyx</a></h3><p>Principal engineer, leading multiple software teams in clinical research, a highly-regulated industry.</p></div><span class="go" aria-hidden="true">→</span></li>
+      <li><span class="yr">2014 – 2016</span><div><h3><a href="#">Ideagen</a></h3><p>Senior engineer and team lead, delivering an NHS clinical portal iteratively.</p></div><span class="go" aria-hidden="true">→</span></li>
+      <li><span class="yr">2013 – 2014</span><div><h3><a href="#">FACE</a></h3><p>Senior engineer, mentoring junior developers on an NHS patient-records application.</p></div><span class="go" aria-hidden="true">→</span></li>
+      <li><span class="yr">Earlier</span><div><h3><a href="#">Earlier roles</a></h3><p>From graphic design for a financial company in London, to web design, to web application development.</p></div><span class="go" aria-hidden="true">→</span></li>
+    </ul>
+  </section>
+
+  <section class="block wrap" aria-labelledby="about">
+    <div class="about">
+      <div>
+        <p class="label">About</p>
+        <h2 id="about">Away from work.</h2>
+        <p class="big">I like to cook, read, and play retro computer games.</p>
+      </div>
+      <a class="pier" href="#">
+        <img src="../../StaticSite/interests/innellan-pier/images/005-Saint-Columba-Innellan-Pier-Thumbnail.jpg" width="600" height="386" alt="" loading="lazy">
+        <div><b>Innellan Pier</b><span>A gallery and history of a Clyde steamer pier, and one of my interests.</span></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="contact" aria-labelledby="contact">
+    <div class="wrap">
+      <div>
+        <p class="label">Contact</p>
+        <h2 id="contact">Let's talk.</h2>
+        <p>Feel free to get in touch, whether it's about a role, a project or a system that needs some attention.</p>
+      </div>
+      <form id="contact-form">
+        <label for="email">Your email</label>
+        <input id="email" name="email" type="email" maxlength="256" required autocomplete="email">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" maxlength="1000" required></textarea>
+        <div class="turnstile-stub">Turnstile</div>
+        <button type="submit">Send message</button>
+        <p id="contact-status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap"><span>© <span id="year"></span> Andrew MacLeod. All rights reserved.</span><span>London, UK</span></div>
+</footer>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('.nav-mobile ul a').forEach(a => a.addEventListener('click', () => a.closest('details').removeAttribute('open')));
+document.getElementById('contact-form').addEventListener('submit', e => { e.preventDefault(); document.getElementById('contact-status').textContent = 'This is a design concept; nothing was sent.'; });
+</script>
+<!-- concept-bar -->
+<div class="cbar-spacer" aria-hidden="true"></div>
+<nav class="cbar" aria-label="Design concepts">
+  <a class="cb-arrow" href="08-changelog.html" aria-label="Previous design">&lsaquo;</a>
+  <a class="cb-all" href="index.html">All designs</a>
+  <span class="cb-n">Design 9 of 10</span>
+  <a class="cb-fb" href="index.html#feedback">Vote</a>
+  <a class="cb-arrow" href="10-spec-sheet.html" aria-label="Next design">&rsaquo;</a>
+</nav>
+<style>
+.cbar-spacer{height:72px}
+nav.cbar{all:initial;position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:2px;padding:4px;background:#111;color:#fff;border:1px solid #555;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3);white-space:nowrap;max-width:calc(100vw - 16px);box-sizing:border-box}
+nav.cbar a,nav.cbar span{all:initial;display:inline-block;box-sizing:border-box;padding:9px 10px;border-radius:7px;color:#fff;font:500 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+nav.cbar .cb-arrow{font-size:20px;padding:5px 12px 7px}
+nav.cbar span.cb-n{color:#bbb;cursor:default;font-variant-numeric:tabular-nums}
+nav.cbar a:hover{background:#333}
+nav.cbar a:focus-visible{outline:2px solid #ffd54a;outline-offset:1px}
+nav.cbar a.cb-fb{background:#ffd54a;color:#111;font-weight:700}
+nav.cbar a.cb-fb:hover{background:#ffe27a}
+@media (max-width:480px){nav.cbar a.cb-all{display:none}}
+@media (forced-colors:active){nav.cbar{border:1px solid CanvasText}}
+@media print{nav.cbar,.cbar-spacer{display:none}}
+</style>
+<!-- /concept-bar -->
+</body>
+</html>
