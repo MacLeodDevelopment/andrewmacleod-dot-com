@@ -129,7 +129,7 @@ Current order:
 4. FACE (2013–2014), Rev B
 5. Earlier roles, Rev A
 
-The current role (Principal Engineer, property-tech, London) appears as Rev F in the home page revision table and in the title block's spec table and badge. It has no detail page.
+The current role (Principal Engineer at a London-based property-tech company, working remotely from Nottingham) appears as Rev F in the home page revision table and in the title block's spec table and badge. It has no detail page.
 
 ### Galleries (`interests/<name>/index.njk`)
 - Use `layout: gallery-layout.njk`, and set `label` (e.g. "Interests · Gallery").
@@ -164,6 +164,7 @@ The current role (Principal Engineer, property-tech, London) appears as Rev F in
 - Performance and CLS matter. Images need explicit `width`/`height` and `srcset`, gallery thumbnails need `loading="lazy"`, fonts are self-hosted and preloaded, and the one stylesheet loads render-blocking so there's no flash of unstyled content.
 - No front-end framework or bundler. Keep JS inline and minimal; CDN libraries only when needed (GLightbox, Turnstile).
 - British English in content.
+- **Where Andrew is (keep copy consistent):** he's from Nottingham and lives there. His first job (graphic design for a financial company) was in London. His current role is with a London-based property-tech company, working remotely from Nottingham. Don't describe him as London-based or living in London. This applies to the mock-ups in `Design/design-concepts/` too.
 - Line endings: `core.autocrlf=true`, so files are LF in the repo and CRLF in the working tree. When editing files with scripts, keep CRLF consistent. A stray lone `\r` makes git treat the file as binary.
 - Commit messages are short and imperative ("Update text", "Add CNAME").
 
