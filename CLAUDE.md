@@ -65,7 +65,7 @@ The site is styled as an industrial product **datasheet**: a ruled panel (`.shee
   - `metaTitle` is the full title, ending in " - Andrew MacLeod".
   - These are separate from `title` because `title` can contain HTML and is used as the page heading.
   - Nunjucks autoescape is on, so `&` and `"` in these values are escaped correctly.
-- Both fonts are preloaded. The stylesheet is loaded non-blocking (`preload` + `onload` swap, `<noscript>` fallback). Inline `<style>` holds only critical rules: page colours (light/dark), the header height, the title-block photo sizes and `#year`. If those sizes change in `main.css`, update the inline rules to match.
+- Both fonts are preloaded. `main.css` is an ordinary, render-blocking `<link rel="stylesheet">` on purpose: the browser waits for it before the first paint, so the page never shows unstyled. (It used to load non-blocking with a `preload` + `onload` swap, which caused a visible flash of unstyled content on every load.) Don't add inline critical CSS or make it async again. `<meta name="color-scheme" content="light dark">` makes the browser start with a dark canvas in dark mode, before the CSS arrives.
 - A skip link (`.skip-link`) jumps to `#main`.
 - Header is sticky (`--header-height`, 52px) and has two navs with the same links (Experience, About, Interests, Contact):
   - `nav.nav-desktop` uses the `url` filter.
@@ -161,7 +161,7 @@ The current role (Principal Engineer, property-tech, London) appears as Rev F in
 - Accessibility matters:
   - Screen-reader text uses `.sr-only`, e.g. "(opens in a new tab)" on external links. External links use `target="_blank" rel="noopener"`.
   - Use semantic sections with `id`s as nav anchors (`#experience`, `#about`, `#contact`).
-- Performance and CLS matter. Images need explicit `width`/`height` and `srcset`, gallery thumbnails need `loading="lazy"`, fonts are self-hosted and preloaded, and the CSS loads non-blocking.
+- Performance and CLS matter. Images need explicit `width`/`height` and `srcset`, gallery thumbnails need `loading="lazy"`, fonts are self-hosted and preloaded, and the one stylesheet loads render-blocking so there's no flash of unstyled content.
 - No front-end framework or bundler. Keep JS inline and minimal; CDN libraries only when needed (GLightbox, Turnstile).
 - British English in content.
 - Line endings: `core.autocrlf=true`, so files are LF in the repo and CRLF in the working tree. When editing files with scripts, keep CRLF consistent. A stray lone `\r` makes git treat the file as binary.

@@ -905,6 +905,12 @@ table.rev td.ds {
 /* -----------------------------------------
    FOOTER
 ----------------------------------------- */
+/* Reserve width for the year, which inline JS fills in */
+#year {
+  display: inline-block;
+  min-width: 4ch;
+}
+
 .site-footer {
   display: flex;
   justify-content: space-between;
