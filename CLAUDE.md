@@ -71,9 +71,10 @@ The site is styled as an industrial product **datasheet**: a ruled panel (`.shee
   - `nav.nav-desktop` uses the `url` filter.
   - `details.nav-mobile` is a JS-free "Menu" button (shown ≤640px) with hard-coded hrefs, wrapping its own `<nav>`.
   - **Update both when changing navigation.**
+- **Profile photo** (home and inner pages): black and white, turning to colour on mouse-over (`.frame:hover img`, only under `@media (hover: hover)`, so a tap on a phone doesn't leave it in colour) and when the inner-page link has keyboard focus.
 - **Home page** (`homePage: true` in front matter): the layout outputs `content` only. `index.njk` builds its own sheet, including the large title block (Fig. 1 photo, spec table).
 - **Inner pages**: the layout wraps `content` in `.sheet` and adds a compact title block (`.page-head`) first, using front matter:
-  - Small profile photo with crop marks.
+  - Small profile photo with crop marks, linking to the home page (alt text "Andrew MacLeod, home page").
   - Label line: `Experience · Rev {{ rev }}` when the page has `rev`, otherwise `label`, otherwise "Datasheet".
   - `title`: output with `| safe`, so HTML is allowed.
   - `subtitle`: shown under the title.

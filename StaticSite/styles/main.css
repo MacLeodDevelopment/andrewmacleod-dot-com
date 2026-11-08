@@ -428,6 +428,7 @@ h2 {
 }
 
 .frame {
+  display: block;
   position: relative;
   aspect-ratio: 1;
   background: var(--bg);
@@ -444,6 +445,23 @@ h2 {
   .frame img {
     filter: grayscale(1) brightness(0.92);
   }
+}
+
+/* The photo turns to colour on mouse-over, and when it's a link with keyboard focus
+   (inner pages, where it links home). Hover only applies on devices that can hover,
+   so a tap on a phone doesn't leave the photo stuck in colour. */
+.frame img {
+  transition: filter 0.3s ease;
+}
+
+@media (hover: hover) {
+  .frame:hover img {
+    filter: none;
+  }
+}
+
+a.frame:focus-visible img {
+  filter: none;
 }
 
 /* Orange crop marks on opposite corners */
