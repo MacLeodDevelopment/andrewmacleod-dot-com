@@ -1,54 +1,76 @@
 /* -----------------------------------------
-   VARIABLES, COLOR MODES, AND RESETS
+   FONTS (self-hosted, Latin subset, see /fonts/README.txt)
 ----------------------------------------- */
-:root {
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: #444444;
-  --link: #1a73e8;
-  --header-bg: #f0f4ff;
-  --card-bg: #ffffff;
-  --border: #d0d0d0;
-  --footer-bg: #e6f0ff;
-  --focus: #1a73e8;
-  --shadow: rgba(0, 0, 0, 0.05);
-  --max-width: min(900px, 90%);
-  --radius: 0.5rem;
-  --header-height: 64px;
+@font-face {
+  font-family: "Schibsted Grotesk";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("/fonts/schibsted-grotesk-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* Dark mode overrides */
+@font-face {
+  font-family: "Martian Mono";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("/fonts/martian-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* -----------------------------------------
+   TOKENS, COLOUR MODES
+   One accent (--orange), used as a fill only, never as text on the page
+   background, so it never has to meet text contrast on its own.
+----------------------------------------- */
+:root {
+  --bg: #e8e8e4;
+  --panel: #f5f5f2;
+  --ink: #111111;
+  --muted: #55565a;
+  --line: #111111;
+  --hair: #c9c9c3;
+  --orange: #ff5a1f;
+  --on-orange: #111111;
+  --focus: #ff5a1f;
+  --max-width: min(1200px, 94%);
+  --header-height: 52px;
+  --gap: 1.25rem;
+  --sans: "Schibsted Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "Martian Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color-scheme: light dark;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0b0b10;
-    --text: #e6eef8;
-    --muted: #cfd8e3;
-    --link: #7ab4ff;
-    --header-bg: #0f1220;
-    --card-bg: #111219;
-    --border: #22242a;
-    --footer-bg: #07070a;
-    --focus: #7ab4ff;
-    --shadow: rgba(0, 0, 0, 0.6);
+    --bg: #0e0e0e;
+    --panel: #171717;
+    --ink: #ececea;
+    --muted: #a2a29d;
+    --line: #3a3a38;
+    --hair: #2a2a28;
   }
 }
 
 @media (prefers-contrast: more) {
   :root {
-    --border: #9aa0a6;
-    --shadow: rgba(0, 0, 0, 0.12);
+    --muted: var(--ink);
+    --hair: var(--ink);
+    --line: var(--ink);
   }
 }
 
 @media (forced-colors: active) {
   :root {
     --bg: Canvas;
-    --text: CanvasText;
-    --link: Highlight;
-    --header-bg: Canvas;
-    --card-bg: Canvas;
-    --border: Highlight;
-    --footer-bg: Canvas;
+    --panel: Canvas;
+    --ink: CanvasText;
+    --muted: CanvasText;
+    --line: CanvasText;
+    --hair: CanvasText;
+    --orange: Highlight;
+    --on-orange: HighlightText;
     --focus: Highlight;
   }
 
@@ -57,7 +79,9 @@
   }
 }
 
-/* --------- RESET / BASE --------- */
+/* -----------------------------------------
+   RESET / BASE
+----------------------------------------- */
 *,
 *::before,
 *::after {
@@ -66,392 +90,62 @@
   padding: 0;
 }
 
-html,
-body {
-  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  line-height: 1.7;
-  color: var(--text);
-  background-color: var(--bg);
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color-scheme: light dark;
+html {
   -webkit-text-size-adjust: 100%;
-  height: 100%;
+  scroll-behavior: smooth;
+  /* Keep anchor targets clear of the sticky header */
+  scroll-padding-top: calc(var(--header-height) + 12px);
 }
 
 body {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  font: 400 1rem/1.55 var(--sans);
+  color: var(--ink);
+  background-color: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* --------- HEADER (FIXED) --------- */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: var(--header-bg);
-  border-bottom: 2px solid var(--border);
-  height: var(--header-height);
-  width: 100%;
-}
-
-header a,
-header strong {
-  color: var(--text);
-}
-
-/* --------- MAIN CONTENT --------- */
-main {
-  flex: 1;
-  padding-top: var(--header-height);
-  /* avoid content under fixed header */
-}
-
-.container {
-  width: var(--max-width);
-  margin: 0 auto;
-  padding: 2rem 0;
-}
-
-/* --------- LINKS & FOCUS --------- */
 a {
-  color: var(--link);
-  text-decoration: none;
+  color: inherit;
+  text-underline-offset: 0.2em;
 }
 
-a:hover,
-a:focus {
-  text-decoration: underline;
+a:hover {
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
 }
 
 :focus-visible {
   outline: 3px solid var(--focus);
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
-/* --------- IMAGES --------- */
-/* Exclude GLightbox images so global aspect-ratio doesn't distort them */
+/* GLightbox sizes its own images, so leave them alone */
 img:not(.gslide-image img) {
   display: block;
   max-width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9;
-  border-radius: var(--radius);
 }
 
-/* --------- NAVIGATION --------- */
-nav.nav-desktop {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-nav.nav-desktop ul {
-  display: flex;
-  gap: 1.2rem;
+ul,
+ol {
   list-style: none;
-  margin: 0;
-  padding: 0;
-  align-items: center;
 }
 
-nav.nav-desktop a {
-  display: inline-block;
-  padding: 0.35rem 0.5rem;
-  color: inherit;
-  font-weight: 600;
-  background-color: transparent;
-  border-radius: 0.4rem;
-  transition: background 0.15s, color 0.15s;
+.wrap {
+  width: var(--max-width);
+  margin: 0 auto;
 }
 
-nav.nav-desktop a:hover {
-  background-color: rgba(26, 115, 232, 0.08);
-}
-
-/* --------- MOBILE HAMBURGER --------- */
-.nav-mobile {
-  display: none;
-}
-
-.nav-mobile summary {
-  list-style: none;
-  cursor: pointer;
-  border: 0;
-  background: transparent;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
-  position: relative;
-  z-index: 101;
-}
-
-.nav-mobile summary::-webkit-details-marker {
-  display: none;
-}
-
-.nav-mobile summary::marker {
-  content: none;
-}
-
-.nav-mobile summary svg {
-  width: 28px;
-  height: 28px;
-  display: block;
-}
-
-.nav-mobile summary svg .line {
-  stroke: var(--text);
-  stroke-width: 2;
-  stroke-linecap: round;
-  transition: transform 0.22s cubic-bezier(.2, .9, .3, 1), opacity 0.18s ease;
-  transform-origin: 7px 14px;
-}
-
-.nav-mobile ul {
-  display: none;
-  position: fixed;
-  top: var(--header-height);
-  /* below fixed header */
-  left: 0;
-  width: 100vw;
-  /* full viewport width */
-  background-color: var(--header-bg);
-  border-top: 1px solid var(--border);
-  padding: 0.5rem 0;
-  margin: 0;
-  list-style: none;
-  z-index: 100;
-  flex-direction: column;
-  height: auto;
-}
-
-.nav-mobile[open] ul {
-  display: flex;
-}
-
-.nav-mobile[open] ul a {
-  display: block;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-weight: 600;
-}
-
-/* Hamburger animation */
-.nav-mobile[open] summary svg .line1 {
-  transform: rotate(45deg);
-}
-
-.nav-mobile[open] summary svg .line2 {
-  transform: scaleX(0);
-  opacity: 0;
-}
-
-.nav-mobile[open] summary svg .line3 {
-  transform: rotate(-45deg);
-}
-
-/* --------- HERO --------- */
-.hero {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  flex-wrap: nowrap;
-  padding: 4rem 0;
-}
-
-.hero .hero-text {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.hero .profile {
-  flex: 0 0 auto;
-  width: clamp(96px, 18vw, 180px);
-  aspect-ratio: 1 / 1;
-  height: auto;
-  border-radius: 50%;
-  object-fit: cover;
-  display: block;
-  min-width: 56px;
-  align-self: flex-start;
-}
-
-.hero h1 {
-  font-size: clamp(2.5rem, 7vw, 3.8rem);
-  font-weight: 800;
-  margin-bottom: 1rem;
-  color: var(--text);
-}
-
-.hero p {
-  max-width: 60ch;
-  font-size: 1.25rem;
+/* Small monospaced label text */
+.m {
+  font: 400 0.72rem/1.5 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   color: var(--muted);
-}
-
-/* --------- SECTION HEADINGS --------- */
-h2 {
-  font-size: 2rem;
-  margin: 3rem 0 1.2rem;
-  color: var(--text);
-  border-left: 4px solid var(--link);
-  padding-left: 0.6rem;
-
-  /* Fixed header scroll offset so that headings are not hidden behind the fixed header */
-  scroll-margin-top: calc(var(--header-height) + 1.5rem);
-}
-
-/* --------- EXPERIENCE GRID --------- */
-.experience {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-}
-
-.experience-card {
-  background-color: var(--card-bg);
-  padding: 1.5rem;
-  border-radius: 1rem;
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 20px var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  min-height: 9rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.experience-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-.experience-card h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.4rem;
-  color: var(--text);
-}
-
-.experience-card p {
-  color: var(--muted);
-  font-size: 1rem;
-}
-
-/* --------- ABOUT / CONTACT --------- */
-.about p,
-.contact p {
-  max-width: 60ch;
-  margin-bottom: 1rem;
-  color: var(--muted);
-  line-height: 1.8;
-}
-
-.contact a {
-  color: var(--link);
-  font-weight: 600;
-}
-
-/* --------- CONTACT FORM --------- */
-
-#contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-
-  width: 100%;
-  margin-top: 1.5rem;
-
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 1rem;
-  box-shadow: 0 4px 20px var(--shadow);
-  padding: 1.5rem;
-}
-
-#contact-form label {
-  font-weight: 600;
-}
-
-#contact-form input,
-#contact-form textarea {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font: inherit;
-  color: var(--text);
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-#contact-form input:focus,
-#contact-form textarea:focus {
-  border-color: var(--focus);
-}
-
-#contact-form textarea {
-  min-height: 10rem;
-  resize: vertical;
-}
-
-#contact-form button {
-  align-self: flex-start;
-  padding: 0.75rem 1.5rem;
-  font: inherit;
-  font-weight: 600;
-  color: #fff;
-  background: var(--link);
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-}
-
-#contact-form button:hover {
-  filter: brightness(0.95);
-}
-
-#contact-form button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-#contact-status {
-  min-height: 1.5rem;
-  color: var(--muted);
-}
-
-.turnstile-container {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-/* --------- FOOTER --------- */
-footer {
-  text-align: center;
-  padding: 2rem 0;
-  color: var(--text);
-  font-size: 0.95rem;
-  border-top: 2px solid var(--border);
-  background-color: var(--footer-bg);
 }
 
 /* Screen reader only */
@@ -467,176 +161,903 @@ footer {
   border: 0;
 }
 
-/* -----------------------------------------
-   External link indicator (refined)
------------------------------------------ */
-
-/* Only apply to external HTTP links that open in a new tab */
-a[target="_blank"][href^="http"] {
-  position: relative;
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0.5rem;
+  z-index: 200;
+  background: var(--orange);
+  color: var(--on-orange);
+  padding: 0.5rem 0.9rem;
+  font-weight: 700;
 }
 
-/* SVG icon */
+.skip-link:focus {
+  left: 0.5rem;
+}
+
+/* -----------------------------------------
+   HEADER AND NAVIGATION
+----------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header .bar {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  height: var(--header-height);
+}
+
+.home-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.home-link i {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: var(--orange);
+}
+
+nav.nav-desktop ul {
+  display: flex;
+  height: 100%;
+}
+
+nav.nav-desktop a {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1.1rem;
+  border-left: 1px solid var(--line);
+  font: 500 0.72rem var(--mono);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+nav.nav-desktop a:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+nav.nav-desktop li:last-child a {
+  background: var(--orange);
+  color: var(--on-orange);
+}
+
+nav.nav-desktop li:last-child a:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* JS-free hamburger: shown at 640px and below */
+.nav-mobile {
+  display: none;
+  position: relative;
+  align-self: center;
+}
+
+.nav-mobile summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid var(--line);
+  padding: 0.45rem 0.7rem;
+  font: 500 0.72rem var(--mono);
+  text-transform: uppercase;
+}
+
+.nav-mobile summary::-webkit-details-marker {
+  display: none;
+}
+
+.nav-mobile summary::marker {
+  content: none;
+}
+
+.nav-mobile summary svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.nav-mobile summary svg .line {
+  stroke: currentColor;
+  stroke-width: 2.5;
+  transition: transform 0.2s ease, opacity 0.15s ease;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.nav-mobile[open] summary {
+  background: var(--orange);
+  border-color: var(--orange);
+  color: var(--on-orange);
+}
+
+.nav-mobile[open] summary svg .line1 {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.nav-mobile[open] summary svg .line2 {
+  opacity: 0;
+}
+
+.nav-mobile[open] summary svg .line3 {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+.nav-mobile ul {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 13rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+.nav-mobile li + li {
+  border-top: 1px solid var(--hair);
+}
+
+.nav-mobile a {
+  display: block;
+  padding: 0.85rem 1rem;
+  font: 500 0.75rem var(--mono);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.nav-mobile a:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* -----------------------------------------
+   THE SHEET: a ruled panel made of rows and cells
+----------------------------------------- */
+main {
+  flex: 1;
+  padding: 1.5rem 0 0;
+}
+
+.sheet {
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.row {
+  display: grid;
+  border-bottom: 1px solid var(--line);
+}
+
+.row:last-child {
+  border-bottom: 0;
+}
+
+.cell {
+  padding: var(--gap);
+  min-width: 0;
+}
+
+.cell + .cell {
+  border-left: 1px solid var(--line);
+}
+
+/* Two equal cells side by side */
+.row.split {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Mono label line at the top of a cell: left and right parts */
+.cell-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+/* A section row: a label column on the left, content on the right */
+.row.sec {
+  grid-template-columns: 240px 1fr;
+}
+
+.sec-label {
+  padding: var(--gap);
+  border-right: 1px solid var(--line);
+}
+
+.sec-label p {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.sec-label p.m {
+  margin: 0 0 0.25rem;
+  font-size: 0.72rem;
+}
+
+.sec-body {
+  min-width: 0;
+}
+
+.sec-label table.specs {
+  margin: 1rem 0 1.25rem;
+}
+
+.sec-label .back-link {
+  margin-top: 0.25rem;
+}
+
+/* -----------------------------------------
+   HOME: TITLE BLOCK
+----------------------------------------- */
+.row.r-title {
+  grid-template-columns: 1fr 1.1fr;
+}
+
+.figure {
+  margin: 0;
+}
+
+.frame {
+  position: relative;
+  aspect-ratio: 1;
+  background: var(--bg);
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  .frame img {
+    filter: grayscale(1) brightness(0.92);
+  }
+}
+
+/* Orange crop marks on opposite corners */
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--orange);
+}
+
+.frame::before {
+  top: -6px;
+  left: -6px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.frame::after {
+  bottom: -6px;
+  right: -6px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.figure figcaption {
+  margin-top: 0.75rem;
+}
+
+.title-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-cell h1 {
+  font-size: clamp(2.6rem, 6.4vw, 5.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  margin-bottom: 0.9rem;
+}
+
+.title-cell .sub {
+  font-size: 1.25rem;
+  font-weight: 500;
+  max-width: 30ch;
+  margin-bottom: 1.5rem;
+}
+
+.badge {
+  align-self: flex-start;
+  background: var(--orange);
+  color: var(--on-orange);
+  font: 500 0.72rem var(--mono);
+  text-transform: uppercase;
+  padding: 0.35rem 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Key/value table */
+table.specs {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: auto;
+}
+
+table.specs th,
+table.specs td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--hair);
+  font-weight: 400;
+}
+
+table.specs th {
+  width: 38%;
+  padding-right: 1rem;
+  font: 400 0.72rem/1.9 var(--mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* -----------------------------------------
+   INNER PAGES: COMPACT TITLE BLOCK
+----------------------------------------- */
+.page-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: var(--gap);
+}
+
+.page-head .frame {
+  width: clamp(72px, 12vw, 112px);
+}
+
+.page-head .frame::before,
+.page-head .frame::after {
+  width: 14px;
+  height: 14px;
+}
+
+.page-head .frame::before {
+  top: -5px;
+  left: -5px;
+}
+
+.page-head .frame::after {
+  bottom: -5px;
+  right: -5px;
+}
+
+.page-head h1 {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  margin: 0.35rem 0 0.5rem;
+}
+
+.page-head .sub {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+/* -----------------------------------------
+   COMPATIBILITY GRID (tech stack)
+----------------------------------------- */
+.compat {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.compat > div {
+  padding: 1.1rem var(--gap);
+  border-bottom: 1px solid var(--hair);
+}
+
+.compat > div:not(:nth-child(3n + 1)) {
+  border-left: 1px solid var(--hair);
+}
+
+.compat > div:nth-last-child(-n + 3) {
+  border-bottom: 0;
+}
+
+.compat h3 {
+  font: 500 0.72rem var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.compat li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  padding: 0.1rem 0;
+}
+
+.compat li::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--ink);
+  transform: translateY(-1px);
+}
+
+/* -----------------------------------------
+   REVISION HISTORY (experience table)
+----------------------------------------- */
+table.rev {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.rev th,
+table.rev td {
+  text-align: left;
+  vertical-align: top;
+  padding: 1rem var(--gap);
+  border-bottom: 1px solid var(--hair);
+}
+
+table.rev thead th {
+  font: 400 0.72rem var(--mono);
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  padding-top: 1.1rem;
+  padding-bottom: 0.6rem;
+}
+
+table.rev tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+table.rev td.rv {
+  width: 4.5rem;
+}
+
+.rev-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--line);
+  font: 500 0.8rem var(--mono);
+}
+
+tr.current .rev-mark {
+  background: var(--orange);
+  color: var(--on-orange);
+  border-color: var(--orange);
+}
+
+table.rev td.dt {
+  width: 9rem;
+  white-space: nowrap;
+  font: 0.78rem/1.9 var(--mono);
+}
+
+table.rev th[scope="row"] {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+table.rev th[scope="row"] a {
+  text-decoration: none;
+}
+
+table.rev th[scope="row"] a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
+}
+
+table.rev th[scope="row"] small {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+table.rev td.ds {
+  color: var(--muted);
+  max-width: 52ch;
+}
+
+/* -----------------------------------------
+   NOTES AND RELATED LINKS
+----------------------------------------- */
+.notes {
+  list-style: decimal;
+  padding-left: 1.2rem;
+  margin-top: 0.9rem;
+}
+
+.notes li {
+  margin-bottom: 0.4rem;
+}
+
+.notes li::marker {
+  font: 0.72rem var(--mono);
+  color: var(--muted);
+}
+
+.related {
+  margin-top: 0.9rem;
+}
+
+.related a {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid var(--hair);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.related li:last-child a {
+  border-bottom: 1px solid var(--hair);
+}
+
+.related a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
+}
+
+.related a span {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Back link at the foot of inner pages */
+.back-link {
+  display: inline-flex;
+  gap: 0.5rem;
+  font: 500 0.75rem var(--mono);
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* -----------------------------------------
+   PROSE (Markdown experience pages, page intros)
+----------------------------------------- */
+.prose {
+  max-width: 72ch;
+}
+
+.prose > * + * {
+  margin-top: 1rem;
+}
+
+.prose h2 {
+  font-size: 1.45rem;
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--hair);
+}
+
+.prose > h2:first-child,
+.prose > h3:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose h3 {
+  font: 500 0.72rem var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0;
+  color: var(--muted);
+  margin-top: 1.5rem;
+}
+
+.prose h3 + p {
+  margin-top: 0.4rem;
+}
+
+.prose ul {
+  list-style: square;
+  padding-left: 1.2rem;
+}
+
+/* -----------------------------------------
+   CONTACT FORM
+----------------------------------------- */
+.row.order {
+  grid-template-columns: 1fr 1.6fr;
+}
+
+.order .intro p {
+  margin-top: 0.5rem;
+  color: var(--muted);
+}
+
+#contact-form {
+  display: grid;
+  gap: 0;
+}
+
+#contact-form label {
+  display: block;
+  margin-bottom: 0.3rem;
+  font: 400 0.72rem var(--mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+#contact-form input,
+#contact-form textarea {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+
+#contact-form input:focus-visible,
+#contact-form textarea:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 0;
+}
+
+#contact-form textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+/* Reserve the widget's height so the button doesn't jump when it loads */
+.turnstile-container {
+  width: 100%;
+  min-height: 65px;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+}
+
+#contact-form button {
+  justify-self: start;
+  padding: 0.75rem 1.4rem;
+  font: 700 1rem var(--sans);
+  color: var(--on-orange);
+  background: var(--orange);
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+}
+
+#contact-form button:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+#contact-form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#contact-status {
+  min-height: 1.5rem;
+  margin-top: 0.75rem;
+  color: var(--muted);
+}
+
+/* -----------------------------------------
+   FOOTER
+----------------------------------------- */
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  padding: 0.9rem 0 2rem;
+}
+
+/* -----------------------------------------
+   EXTERNAL LINK ICON
+   Only on external links that open in a new tab
+----------------------------------------- */
 a[target="_blank"][href^="http"]::after {
   content: "";
   display: inline-block;
-  width: 0.9em;
-  height: 0.9em;
-  margin-left: 0.35rem;
-  vertical-align: text-top;
-
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.3rem;
+  vertical-align: -0.05em;
   background-color: currentColor;
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='black' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M7 17L17 7M17 7H8M17 7v9'/%3E%3C/svg%3E");
   mask-repeat: no-repeat;
   mask-size: contain;
   mask-position: center;
-
   opacity: 0.75;
   transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-/* Subtle hover/focus effect */
 a[target="_blank"][href^="http"]:hover::after,
 a[target="_blank"][href^="http"]:focus-visible::after {
   transform: translate(2px, -2px);
   opacity: 1;
 }
 
+/* -----------------------------------------
+   GALLERY GRID
+----------------------------------------- */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+  gap: var(--gap);
 }
 
 .gallery-card {
   display: flex;
   flex-direction: column;
-  background-color: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: 0 4px 12px var(--shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--bg);
+  border: 1px solid var(--line);
   text-decoration: none;
+  transition: border-color 0.15s ease;
 }
 
 .gallery-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  border-color: var(--orange);
   text-decoration: none;
+}
+
+.gallery-card:hover .gallery-card-title {
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
 }
 
 .gallery-card img {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  border-radius: 0;
-  /* flat top edge inside card */
+  border-bottom: 1px solid var(--line);
 }
 
 .gallery-card-content {
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  padding: 0.8rem 0.9rem 0.9rem;
 }
 
 .gallery-card-title {
-  font-size: 1.05rem;
+  font-size: 1.02rem;
   font-weight: 700;
-  color: var(--text);
-  margin: 0;
+  letter-spacing: -0.01em;
 }
 
 .gallery-card-desc {
-  font-size: 0.875rem;
+  font: 400 0.68rem/1.5 var(--mono);
+  text-transform: uppercase;
   color: var(--muted);
-  margin: 0;
-  line-height: 1.4;
-}
-
-/* Custom Lightbox Typography */
-.gslide-title {
-  font-family: var(--font-heading, inherit) !important;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.gslide-desc {
-  font-family: var(--font-body, inherit) !important;
-  font-size: 0.95rem;
-  opacity: 0.9;
 }
 
 /* -----------------------------------------
-   GLIGHTBOX THEME OVERRIDES
+   GLIGHTBOX THEME OVERRIDES (glightbox@3.3.1)
 ----------------------------------------- */
-/* Dark/Light mode adaptation for caption panel */
+.goverlay {
+  background: #0a0a0a !important;
+}
+
+/* Caption panel follows the site's light/dark tokens */
 .gslide-description {
-  background-color: var(--card-bg) !important;
-  color: var(--text) !important;
+  background: var(--panel) !important;
+  color: var(--ink) !important;
   max-height: 140px;
   overflow-y: auto !important;
   overscroll-behavior: contain;
+  border-top: 2px solid var(--orange);
+  transition: opacity 0.2s ease;
 
-  /* Fades bottom edge of text to signal scrollable content */
+  /* Fades the bottom edge to signal that the text scrolls */
   -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
 }
 
-/* Custom scrollbar inside description box */
 .gslide-description::-webkit-scrollbar {
   width: 6px;
 }
 
 .gslide-description::-webkit-scrollbar-thumb {
-  background-color: var(--border);
-  border-radius: 3px;
+  background-color: var(--hair);
 }
 
 .gslide-title {
-  font-family: var(--font-heading, inherit) !important;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text) !important;
+  font-family: var(--sans) !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em;
+  color: var(--ink) !important;
+  margin-bottom: 0.4rem !important;
 }
 
 .gslide-desc {
-  font-family: var(--font-body, inherit) !important;
-  font-size: 0.95rem;
+  font-family: var(--sans) !important;
+  font-size: 0.95rem !important;
+  line-height: 1.55 !important;
   color: var(--muted) !important;
   opacity: 1 !important;
-  white-space: pre-line; /* Preserves \n line breaks */
+  white-space: pre-line; /* keeps the \n line breaks in full_desc */
 }
 
-/* Background overlay & controls */
-.goverlay {
-  background: rgba(0, 0, 0, 0.85) !important;
+/* Square orange controls, visible on the dark overlay in both colour modes */
+.gbtn.gnext,
+.gbtn.gprev,
+.gbtn.gclose {
+  background-color: var(--orange) !important;
+  border-radius: 0 !important;
+  opacity: 1;
 }
 
-.gnext, .gprev, .gclose {
-  background-color: transparent !important;
+.gbtn.gnext:hover,
+.gbtn.gprev:hover,
+.gbtn.gclose:hover {
+  background-color: #ffffff !important;
 }
 
-.gnext path, .gprev path, .gclose path {
-  fill: var(--text) !important;
+.gbtn.gnext path,
+.gbtn.gprev path,
+.gbtn.gclose path {
+  fill: var(--on-orange) !important;
 }
 
-/* GLightbox sets overflow: hidden on html and body while open. Combined with
-   our height: 100% that clips the page to one screen, which resets the scroll
-   position. GLightbox only applies height: auto from 769px, so apply it at all
-   widths to keep the scroll position on small screens. */
+.gbtn.disabled {
+  opacity: 0.35 !important;
+}
+
+/* GLightbox sets overflow: hidden on html and body while open, and only
+   applies height: auto from 769px. Apply it at all widths so the page keeps
+   its scroll position on small screens when the lightbox closes. */
 .glightbox-open {
   height: auto;
 }
 
 /* While an image is pinch-zoomed (GLightbox writes scale3d into its inline
    style), hide the caption and undim the image so the text doesn't cover it. */
-.gslide-description {
-  transition: opacity 0.2s ease;
-}
-
 .gslide:has(.gslide-image img[style*="scale3d"]) .gslide-description {
   opacity: 0;
   visibility: hidden;
@@ -646,88 +1067,189 @@ a[target="_blank"][href^="http"]:focus-visible::after {
   opacity: 1;
 }
 
-/* --------- RESPONSIVE: TABLETS (<=520px) --------- */
-@media (max-width: 520px) {
-  .hero {
-    padding: 3rem 0;
-    gap: 0.75rem;
+/* Small-screen layout. At 768px wide and below, on any device (including
+   iPads and narrow desktop windows), GLightbox adds .glightbox-mobile to the
+   body and positions the caption over the bottom of the image, letting it
+   grow to 78vh. Cap the caption at 38vh and reserve that space below the
+   image, so the image sits above the caption instead of under it.
+   GLightbox's stylesheet loads after ours, so these selectors start with
+   body to outrank its rules of the same shape. */
+body.glightbox-mobile .glightbox-container .ginner-container {
+  padding-bottom: 38vh;
+}
+
+body.glightbox-mobile .glightbox-container .gslide-image img {
+  max-height: calc(62vh - 16px);
+}
+
+body.glightbox-mobile .glightbox-container .gslide-description {
+  max-height: 38vh;
+  padding: 0 0 env(safe-area-inset-bottom, 0) !important;
+  /* The caption fills the bottom of the screen, so a fade would show the
+     page through it. It scrolls instead. */
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+body.glightbox-mobile .glightbox-container .gdesc-inner {
+  padding: 16px 18px !important;
+}
+
+/* Phones get a shortened caption with a "See more" toggle, which GLightbox
+   colours white. Make it readable on the caption panel. */
+body.glightbox-mobile .glightbox-container .gslide-desc .desc-more {
+  color: var(--ink) !important;
+  opacity: 1 !important;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--orange);
+  text-decoration-thickness: 2px;
+}
+
+/* After "See more", let the caption take most of the screen, as GLightbox
+   intends. It dims the image behind it while open. */
+body.gdesc-open.glightbox-mobile .glightbox-container .gslide-description {
+  max-height: 78vh;
+}
+
+/* -----------------------------------------
+   RESPONSIVE
+----------------------------------------- */
+@media (max-width: 900px) {
+  .row.r-title,
+  .row.split,
+  .row.order,
+  .row.sec {
+    grid-template-columns: 1fr;
   }
 
-  .hero .profile {
-    width: clamp(80px, 28vw, 140px);
+  .cell + .cell {
+    border-left: 0;
+    border-top: 1px solid var(--line);
   }
 
-  .hero h1 {
-    font-size: 2.5rem;
+  .sec-label {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
   }
 
-  h2 {
-    font-size: 1.6rem;
+  .r-title .frame {
+    max-width: 320px;
   }
 
-  .experience-card h3 {
-    font-size: 1.25rem;
+  .compat {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .compat > div:not(:nth-child(3n + 1)) {
+    border-left: 0;
+  }
+
+  .compat > div:nth-child(2n) {
+    border-left: 1px solid var(--hair);
+  }
+
+  .compat > div:nth-last-child(-n + 3) {
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .compat > div:nth-last-child(-n + 2) {
+    border-bottom: 0;
   }
 }
 
-/* --------- RESPONSIVE: MOBILE (<=420px) --------- */
-@media (max-width: 420px) {
-  .hero {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.75rem;
-    padding: 2.5rem 0;
-  }
-
-  .hero .profile {
-    width: clamp(96px, 28vw, 140px);
-    order: -1;
-    align-self: center;
-    margin-bottom: 0.5rem;
-  }
-
-  .hero .hero-text {
-    width: 100%;
-  }
-
-  .hero h1 {
-    margin-top: 0;
-  }
-
-  /* Show mobile nav */
-  .nav-mobile {
-    display: inline-block;
-  }
-
+@media (max-width: 640px) {
   nav.nav-desktop {
     display: none;
   }
 
-  main>section {
-    scroll-margin-top: var(--header-height);
+  .nav-mobile {
+    display: block;
+  }
+
+  .compat {
+    grid-template-columns: 1fr;
+  }
+
+  .compat > div:nth-child(2n) {
+    border-left: 0;
+  }
+
+  .compat > div:nth-last-child(2) {
+    border-bottom: 1px solid var(--hair);
+  }
+
+  /* Revision history: one block per row instead of a wide table */
+  table.rev thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  table.rev tr {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    padding: 1rem var(--gap);
+    border-bottom: 1px solid var(--hair);
+  }
+
+  table.rev tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  table.rev th,
+  table.rev td {
+    display: block;
+    padding: 0;
+    border: 0;
+  }
+
+  table.rev td.rv {
+    grid-row: span 3;
+    width: auto;
+  }
+
+  table.rev td.dt,
+  table.rev td.ds {
+    width: auto;
+  }
+
+  table.rev td.ds {
+    margin-top: 0.3rem;
+  }
+
+  table.specs th {
+    width: 42%;
   }
 }
 
-/* --------- DARK MODE FINE-TUNING --------- */
-@media (prefers-color-scheme: dark) {
-  nav.nav-desktop a:hover {
-    background-color: rgba(122, 180, 255, 0.08);
+@media (max-width: 420px) {
+  :root {
+    --gap: 1rem;
   }
 
-  h2 {
-    border-left-color: #4dabf5;
+  .page-head {
+    gap: 1rem;
+  }
+
+  .cell-label {
+    flex-wrap: wrap;
   }
 }
 
-/* --------- REDUCED MOTION --------- */
+/* -----------------------------------------
+   REDUCED MOTION
+----------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  html,
-  body {
+  html {
     scroll-behavior: auto;
   }
 
-  * {
+  *,
+  *::before,
+  *::after {
     transition: none !important;
     animation: none !important;
   }

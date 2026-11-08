@@ -5,6 +5,9 @@ metaTitle: "Senior/Lead Software Engineer at Ideagen - Andrew MacLeod"
 metaDescription: "I worked as a senior engineer and team lead, running an agile process delivering software to the customer in an iterative way."
 linkFriendlyTitle: "Senior/Lead Software Engineer at Ideagen"
 order: 3
+rev: "C"
+years: "2014 – 2016"
+role: "Senior / lead engineer"
 intro: "I worked as a senior engineer and team lead, running an agile process delivering software to the customer in an iterative way." 
 ---
 

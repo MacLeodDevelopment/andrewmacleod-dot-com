@@ -5,6 +5,10 @@ metaTitle: "Senior Software Engineer at FACE Recording & Measurement Systems - A
 metaDescription: "I worked as a senior engineer in a team, mentoring junior developers to help them improve and build software with a professional approach."
 linkFriendlyTitle: "Senior Software Engineer at FACE Recording & Measurement Systems"
 order: 4
+rev: "B"
+years: "2013 – 2014"
+role: "Senior engineer"
+shortTitle: "FACE"
 intro: "I worked as a senior engineer in a team, mentoring junior developers to help them improve and build software with a professional approach." 
 ---
 

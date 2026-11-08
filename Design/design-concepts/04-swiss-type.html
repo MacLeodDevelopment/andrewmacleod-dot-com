@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Concept 4: Swiss Type - Andrew MacLeod</title>
+<meta name="description" content="Design concept: a bold, typographic, Swiss-grid look for andrewmacleod.com.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400;62..125,600;62..125,800;62..125,900&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* =========================================================
+   CONCEPT 4 — SWISS TYPE
+   Huge condensed type, strict grid, hairline rules,
+   one signal colour. Confident and editorial, almost no
+   decoration: the typography *is* the design.
+   ========================================================= */
+:root {
+  --bg: #f2f0eb;
+  --text: #0e0e0e;
+  --muted: #555350;
+  --signal: #d4311a;       /* AA for normal text on --bg */
+  --on-signal: #ffffff;
+  --rule: #0e0e0e;
+  --max: min(1280px, 92%);
+  --display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0d0d;
+    --text: #f2f0eb;
+    --muted: #a8a59f;
+    --signal: #ff5a3c;
+    --on-signal: #0d0d0d;
+    --rule: #f2f0eb;
+  }
+}
+@media (prefers-contrast: more) { :root { --muted: var(--text); } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 1.05rem/1.55 var(--display); font-stretch: 100%; }
+h1, h2, h3 { margin: 0; line-height: .9; font-weight: 900; letter-spacing: -.03em; text-transform: uppercase; }
+h2 { scroll-margin-top: 80px; }
+a { color: inherit; text-decoration-thickness: 2px; text-underline-offset: .15em; }
+a:hover { color: var(--signal); }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+img { max-width: 100%; height: auto; display: block; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 1rem; top: -100px; background: var(--signal); color: var(--on-signal); padding: .5rem 1rem; z-index: 100; }
+.skip:focus { top: 1rem; }
+.wrap { width: var(--max); margin-inline: auto; }
+.mono { font-family: var(--mono); font-size: .8rem; letter-spacing: .02em; text-transform: uppercase; }
+
+/* ---------- Header ---------- */
+header { position: sticky; top: 0; z-index: 50; background: var(--bg); border-bottom: 2px solid var(--rule); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; min-height: 60px; }
+.brand { white-space: nowrap; font: 800 1.1rem var(--display); font-stretch: 75%; text-transform: uppercase; letter-spacing: .02em; text-decoration: none; display: flex; align-items: center; gap: .6rem; }
+.brand::before { content: ""; width: 14px; height: 14px; background: var(--signal); }
+.nav-desktop ul, .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
+.nav-desktop ul { display: flex; }
+.nav-desktop a { display: block; padding: 0 1.1rem; line-height: 60px; text-decoration: none; font-family: var(--mono); font-size: .85rem; text-transform: uppercase; border-left: 2px solid var(--rule); }
+.nav-desktop li:last-child a { background: var(--text); color: var(--bg); }
+.nav-desktop a:hover { background: var(--signal); color: var(--on-signal); }
+.nav-mobile { display: none; }
+.nav-mobile summary { list-style: none; cursor: pointer; font-family: var(--mono); text-transform: uppercase; font-size: .85rem; padding: .5rem .75rem; border: 2px solid var(--rule); }
+.nav-mobile summary::-webkit-details-marker { display: none; }
+.nav-mobile[open] summary { background: var(--signal); color: var(--on-signal); border-color: var(--signal); }
+.nav-mobile ul { position: absolute; left: 0; right: 0; top: 100%; background: var(--bg); border-bottom: 2px solid var(--rule); }
+.nav-mobile li a { display: block; padding: 1rem 4%; font: 900 2rem/1 var(--display); text-transform: uppercase; text-decoration: none; border-top: 1px solid var(--rule); }
+
+/* ---------- Hero ---------- */
+.hero { padding: clamp(2rem, 5vw, 4rem) 0 0; }
+.hero-meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; border-bottom: 1px solid var(--rule); padding-bottom: 1rem; margin-bottom: clamp(1rem, 3vw, 2rem); color: var(--muted); }
+.hero h1 { font-size: clamp(3.5rem, 15.5vw, 13.5rem); font-stretch: 70%; line-height: .82; }
+.hero h1 .line { display: block; }
+.hero h1 .signal { color: var(--signal); }
+.hero-bottom { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; align-items: end; margin-top: clamp(1.5rem, 4vw, 3rem); padding-bottom: clamp(2rem, 5vw, 4rem); border-bottom: 2px solid var(--rule); }
+.hero-bottom p.big { font-size: clamp(1.4rem, 3vw, 2.1rem); font-weight: 600; line-height: 1.15; margin: 0; letter-spacing: -.01em; }
+.hero-photo { aspect-ratio: 1; overflow: hidden; }
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15); transition: filter .4s; }
+.hero-photo:hover img { filter: none; }
+.hero-cta { display: flex; flex-direction: column; gap: .5rem; }
+.hero-cta a { display: flex; justify-content: space-between; align-items: center; padding: .8rem 0; border-top: 1px solid var(--rule); text-decoration: none; font-weight: 600; }
+.hero-cta a::after { content: "↘"; font-size: 1.4rem; transition: transform .2s; }
+.hero-cta a:hover::after { transform: translate(3px, 3px); }
+
+/* ---------- Section frame ---------- */
+section.block { display: grid; grid-template-columns: 1fr 3fr; gap: 2rem; padding: clamp(2.5rem, 6vw, 5rem) 0; border-bottom: 2px solid var(--rule); }
+.side { position: sticky; top: 90px; align-self: start; }
+.side .num { font: 900 clamp(4rem, 9vw, 7rem)/0.8 var(--display); font-stretch: 62%; color: var(--signal); display: block; margin-bottom: .75rem; }
+.side h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-stretch: 75%; }
+.side p { color: var(--muted); margin: 1rem 0 0; font-size: .95rem; max-width: 28ch; }
+
+/* Experience index */
+.index { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--rule); counter-reset: job; }
+.index li { position: relative; border-bottom: 1px solid var(--rule); }
+.index a.row { display: grid; grid-template-columns: 7rem 1fr 2.5rem; gap: 1.5rem; padding: 1.5rem .75rem; text-decoration: none; align-items: start; transition: background .2s, color .2s, padding .25s; }
+.index a.row:hover, .index a.row:focus-visible { background: var(--text); color: var(--bg); padding-left: 1.5rem; outline-offset: -3px; }
+.index .yr { font-family: var(--mono); font-size: .85rem; padding-top: .35rem; }
+.index h3 { font-size: clamp(1.5rem, 3.4vw, 2.6rem); font-stretch: 75%; line-height: .95; margin-bottom: .6rem; }
+.index p { margin: 0; max-width: 60ch; opacity: .85; }
+.index .go { font-size: 2rem; line-height: 1; justify-self: end; transition: transform .25s, color .2s; }
+.index a.row:hover .go { transform: rotate(-45deg); color: var(--signal); }
+
+/* About */
+.about-text { font-size: clamp(1.8rem, 4.2vw, 3.4rem); font-weight: 800; font-stretch: 80%; line-height: 1.02; letter-spacing: -.02em; margin: 0 0 2rem; text-transform: uppercase; }
+.about-text .signal { color: var(--signal); }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--rule); }
+.facts div { padding: 1rem 1rem 1rem 0; border-right: 1px solid var(--rule); }
+.facts div + div { padding-left: 1rem; }
+.facts div:last-child { border-right: 0; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: .25rem 0 0; font-weight: 600; font-size: 1.15rem; }
+
+/* Contact */
+form { display: grid; gap: 0; border-top: 2px solid var(--rule); }
+.field { display: grid; grid-template-columns: 9rem 1fr; border-bottom: 1px solid var(--rule); }
+.field label { font-family: var(--mono); font-size: .8rem; text-transform: uppercase; padding: 1.1rem 0; }
+input, textarea { font: 600 1.25rem var(--display); color: var(--text); background: transparent; border: 0; padding: 1rem 0; width: 100%; }
+input:focus-visible, textarea:focus-visible { outline: none; box-shadow: inset 0 -4px 0 var(--signal); }
+textarea { min-height: 9rem; resize: vertical; }
+.form-foot { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; padding-top: 1.25rem; }
+.turnstile-stub { border: 1px dashed var(--rule); padding: .7rem 1rem; font-family: var(--mono); font-size: .75rem; color: var(--muted); }
+button { font: 900 1.5rem var(--display); font-stretch: 75%; text-transform: uppercase; background: var(--signal); color: var(--on-signal); border: 0; padding: 1rem 2.5rem; cursor: pointer; transition: background .2s, color .2s; }
+button:hover { background: var(--text); color: var(--bg); }
+#contact-status { font-family: var(--mono); font-size: .85rem; margin: 1rem 0 0; }
+
+footer { padding: 1.5rem 0 2.5rem; }
+.foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; color: var(--muted); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  section.block { grid-template-columns: 1fr; }
+  .side { position: static; display: flex; align-items: end; gap: 1rem; }
+  .side .num { margin: 0; }
+  .side p { display: none; }
+  .hero-bottom { grid-template-columns: 1fr 1fr; }
+  .hero-bottom p.big { grid-column: 1 / -1; }
+  .hero-meta { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .index a.row { grid-template-columns: 1fr 2rem; }
+  .index .yr { grid-column: 1 / -1; padding: 0; }
+  .facts { grid-template-columns: 1fr; }
+  .facts div, .facts div + div { border-right: 0; border-bottom: 1px solid var(--rule); padding-left: 0; }
+  .field { grid-template-columns: 1fr; }
+  .field label { padding-bottom: 0; }
+  .hero-bottom { grid-template-columns: 1fr; }
+  .hero-photo { max-width: 240px; }
+}
+@media (max-width: 420px) {
+  .nav-desktop { display: none; }
+  .nav-mobile { display: block; }
+  .hero-meta span:nth-child(n+3) { display: none; }
+}
+/* Display fonts make the nav wider than the live site, so the hamburger takes over at 640px, not 420px */
+@media (max-width: 640px) { .nav-desktop { display: none; } .nav-mobile { display: block; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#" aria-label="Go to home">Andrew MacLeod</a>
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Interests</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <details class="nav-mobile">
+      <summary>Menu</summary>
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Interests</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </details>
+  </div>
+</header>
+
+<main id="main" class="wrap">
+  <section class="hero" id="home">
+    <div class="hero-meta mono">
+      <span>Software Engineer</span><span>Principal Engineer, London</span><span>Portfolio</span><span>Based in the UK</span>
+    </div>
+    <h1><span class="line">Andrew</span><span class="line">MacLeod<span class="signal">.</span></span><span class="sr-only"> of the Clan MacLeod. Hello! I am a Software Engineer.</span></h1>
+    <div class="hero-bottom">
+      <p class="big">Hello! I build software and lead the teams that build it, for healthcare, clinical research and government.</p>
+      <div class="hero-photo"><img src="../../StaticSite/images/andrew-macleod-profile-360.jpg" srcset="../../StaticSite../../StaticSite/images/andrew-macleod-profile-512.jpg 512w, ../../StaticSite/images/andrew-macleod-profile-360.jpg 360w, ../../StaticSite/images/andrew-macleod-profile-256.jpg 256w" sizes="(max-width:560px) 240px, 300px" width="300" height="300" alt="Andrew MacLeod"></div>
+      <div class="hero-cta">
+        <a href="#experience">Experience</a>
+        <a href="#contact">Get in touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="experience">
+    <div class="side">
+      <span class="num" aria-hidden="true">01</span>
+      <div>
+        <h2 id="experience">Experience</h2>
+        <p>Some of the things I've done in previous roles. More on <a href="https://www.linkedin.com/in/andrewmacleodnottingham" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+      </div>
+    </div>
+    <ol class="index">
+      <li><a class="row" href="#"><span class="yr">2021–2026</span><div><h3>Senior Consultant, CGI / BJSS</h3><p>I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK.</p></div><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a class="row" href="#"><span class="yr">2016–2021</span><div><h3>Principal Engineer, Parexel / Calyx</h3><p>I led multiple software teams architecting and building solutions for clinical research in a highly-regulated industry.</p></div><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a class="row" href="#"><span class="yr">2014–2016</span><div><h3>Senior/Lead Engineer, Ideagen</h3><p>I worked as a senior engineer and team lead, running an agile process delivering software to the customer in an iterative way.</p></div><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a class="row" href="#"><span class="yr">2013–2014</span><div><h3>Senior Engineer, FACE</h3><p>I worked as a senior engineer in a team, mentoring junior developers to help them improve and build software with a professional approach.</p></div><span class="go" aria-hidden="true">→</span></a></li>
+      <li><a class="row" href="#"><span class="yr">Earlier</span><div><h3>Graphic Designer to Programmer</h3><p>My first job was doing graphic design for a financial company in London. I gradually moved into web design and subsequently web application development.</p></div><span class="go" aria-hidden="true">→</span></a></li>
+    </ol>
+  </section>
+
+  <section class="block" aria-labelledby="about">
+    <div class="side">
+      <span class="num" aria-hidden="true">02</span>
+      <div><h2 id="about">About Me</h2></div>
+    </div>
+    <div>
+      <p class="about-text">I like to cook, read, and play <span class="signal">retro computer games.</span></p>
+      <dl class="facts">
+        <div><dt class="mono">Kitchen</dt><dd>Cooking</dd></div>
+        <div><dt class="mono">Library</dt><dd>Reading</dd></div>
+        <div><dt class="mono">Interests</dt><dd><a href="#">Innellan Pier gallery</a></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="block" aria-labelledby="contact">
+    <div class="side">
+      <span class="num" aria-hidden="true">03</span>
+      <div><h2 id="contact">Contact</h2><p>Feel free to get in touch.</p></div>
+    </div>
+    <form id="contact-form">
+      <div class="field"><label for="email">Your email</label><input id="email" name="email" type="email" maxlength="256" required autocomplete="email"></div>
+      <div class="field"><label for="message">Message</label><textarea id="message" name="message" maxlength="1000" required></textarea></div>
+      <div class="form-foot">
+        <div class="turnstile-stub">Turnstile widget</div>
+        <button type="submit">Send →</button>
+      </div>
+      <p id="contact-status" aria-live="polite"></p>
+    </form>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot mono"><span>© <span id="year"></span> Andrew MacLeod. All rights reserved.</span><a href="index.html">← All concepts</a></div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('.nav-mobile ul a').forEach(a => a.addEventListener('click', () => a.closest('details').removeAttribute('open')));
+document.getElementById('contact-form').addEventListener('submit', e => { e.preventDefault(); document.getElementById('contact-status').textContent = 'Demo only: message not sent.'; });
+</script>
+<!-- concept-bar -->
+<div class="cbar-spacer" aria-hidden="true"></div>
+<nav class="cbar" aria-label="Design concepts">
+  <a class="cb-arrow" href="03-bento-grid.html" aria-label="Previous design">&lsaquo;</a>
+  <a class="cb-all" href="index.html">All designs</a>
+  <span class="cb-n">Design 4 of 10</span>
+  <a class="cb-fb" href="index.html#feedback">Vote</a>
+  <a class="cb-arrow" href="05-clyde-coast.html" aria-label="Next design">&rsaquo;</a>
+</nav>
+<style>
+.cbar-spacer{height:72px}
+nav.cbar{all:initial;position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:2px;padding:4px;background:#111;color:#fff;border:1px solid #555;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3);white-space:nowrap;max-width:calc(100vw - 16px);box-sizing:border-box}
+nav.cbar a,nav.cbar span{all:initial;display:inline-block;box-sizing:border-box;padding:9px 10px;border-radius:7px;color:#fff;font:500 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+nav.cbar .cb-arrow{font-size:20px;padding:5px 12px 7px}
+nav.cbar span.cb-n{color:#bbb;cursor:default;font-variant-numeric:tabular-nums}
+nav.cbar a:hover{background:#333}
+nav.cbar a:focus-visible{outline:2px solid #ffd54a;outline-offset:1px}
+nav.cbar a.cb-fb{background:#ffd54a;color:#111;font-weight:700}
+nav.cbar a.cb-fb:hover{background:#ffe27a}
+@media (max-width:480px){nav.cbar a.cb-all{display:none}}
+@media (forced-colors:active){nav.cbar{border:1px solid CanvasText}}
+@media print{nav.cbar,.cbar-spacer{display:none}}
+</style>
+<!-- /concept-bar -->
+</body>
+</html>

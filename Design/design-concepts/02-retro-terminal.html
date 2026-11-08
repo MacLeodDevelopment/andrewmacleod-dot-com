@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Concept 2: Retro Terminal - Andrew MacLeod</title>
+<meta name="description" content="Design concept: a retro-computing, terminal-inspired look for andrewmacleod.com.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=VT323&display=swap">
+<style>
+/* =========================================================
+   CONCEPT 2 — RETRO TERMINAL
+   Phosphor-green CRT in dark mode, "green-bar printout" in
+   light mode. Terminal windows as cards. A nod to the retro
+   computer games in "About me".
+   ========================================================= */
+:root {
+  /* Light = classic beige micro + printer paper */
+  --bg: #ece6d6;
+  --screen: #fbf8ef;
+  --text: #1e2318;
+  --muted: #4a5240;
+  --accent: #116b2e;   /* dark phosphor, AA on paper */
+  --accent-2: #9a4a00; /* amber, AA on paper */
+  --chrome: #d5ccb5;
+  --line: #b9ae93;
+  --glow: none;
+  --scan: transparent;
+  --max: min(1000px, 92%);
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+  --pixel: "VT323", var(--mono);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #050806;
+    --screen: #0a120c;
+    --text: #c8f7d2;
+    --muted: #8fc39b;
+    --accent: #39ff7a;
+    --accent-2: #ffb000;
+    --chrome: #121a14;
+    --line: #1f3a27;
+    --glow: 0 0 6px rgba(57,255,122,.55), 0 0 18px rgba(57,255,122,.25);
+    --scan: rgba(0,0,0,.22);
+  }
+}
+@media (prefers-contrast: more) {
+  :root { --glow: none; --scan: transparent; --muted: var(--text); --line: var(--text); }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 1rem/1.7 var(--mono);
+}
+/* CRT scanlines: decorative, never intercepts input, off in high contrast */
+body::after {
+  content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999;
+  background: repeating-linear-gradient(to bottom, transparent 0 2px, var(--scan) 2px 3px);
+}
+h1, h2, h3 { font-family: var(--pixel); font-weight: 400; line-height: 1; margin: 0 0 .4em; color: var(--accent); text-shadow: var(--glow); letter-spacing: .02em; }
+h2 { font-size: clamp(2.4rem, 6vw, 3.4rem); scroll-margin-top: 80px; }
+h2::before { content: "## "; color: var(--muted); text-shadow: none; }
+a { color: var(--accent); }
+a:hover { background: var(--accent); color: var(--screen); text-decoration: none; text-shadow: none; }
+:focus-visible { outline: 3px dashed var(--accent-2); outline-offset: 3px; }
+img { max-width: 100%; height: auto; display: block; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 1rem; top: -100px; background: var(--accent); color: var(--screen); padding: .5rem 1rem; z-index: 1000; }
+.skip:focus { top: 1rem; }
+.wrap { width: var(--max); margin-inline: auto; }
+
+/* ---------- Header: a status bar ---------- */
+header { position: sticky; top: 0; z-index: 50; background: var(--chrome); border-bottom: 2px solid var(--line); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; min-height: 60px; gap: 1rem; }
+.brand { white-space: nowrap; font-family: var(--pixel); font-size: 1.8rem; color: var(--accent); text-decoration: none; text-shadow: var(--glow); }
+.brand::before { content: "C:\\> "; color: var(--muted); text-shadow: none; }
+.nav-desktop ul, .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
+.nav-desktop ul { display: flex; gap: .25rem; }
+.nav-desktop a, .nav-mobile a { color: var(--text); text-decoration: none; padding: .3rem .6rem; display: block; }
+.nav-desktop a::before { content: "["; color: var(--muted); }
+.nav-desktop a::after { content: "]"; color: var(--muted); }
+.nav-desktop a:hover, .nav-mobile a:hover { background: var(--accent); color: var(--screen); }
+.nav-desktop a:hover::before, .nav-desktop a:hover::after { color: inherit; }
+.nav-mobile { display: none; position: relative; }
+.nav-mobile summary { list-style: none; cursor: pointer; font-family: var(--pixel); font-size: 1.5rem; padding: .2rem .5rem; border: 2px solid var(--accent); color: var(--accent); }
+.nav-mobile summary::-webkit-details-marker { display: none; }
+.nav-mobile[open] summary { background: var(--accent); color: var(--screen); }
+.nav-mobile ul { position: absolute; right: 0; top: calc(100% + 6px); background: var(--screen); border: 2px solid var(--accent); min-width: 12rem; padding: .25rem; }
+.nav-mobile li a::before { content: "> "; color: var(--accent); }
+
+/* ---------- Window chrome (shared) ---------- */
+.window { background: var(--screen); border: 2px solid var(--line); box-shadow: 6px 6px 0 var(--line); }
+.titlebar { display: flex; align-items: center; gap: .5rem; padding: .35rem .75rem; background: var(--chrome); border-bottom: 2px solid var(--line); font-size: .8rem; color: var(--muted); }
+.titlebar .dots { display: flex; gap: 6px; }
+.titlebar .dots i { width: 11px; height: 11px; border: 2px solid var(--muted); display: block; }
+.titlebar .dots i:first-child { background: var(--accent-2); border-color: var(--accent-2); }
+.titlebar .name { margin-left: auto; margin-right: auto; }
+.window-body { padding: clamp(1rem, 3vw, 1.75rem); }
+
+/* ---------- Hero ---------- */
+.hero { padding: clamp(2rem, 6vw, 4.5rem) 0; }
+.hero .window-body { display: grid; grid-template-columns: auto 1fr; gap: 2rem; align-items: center; }
+.avatar { width: clamp(120px, 20vw, 200px); aspect-ratio: 1; image-rendering: pixelated; border: 2px solid var(--accent); padding: 4px; background: var(--bg); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.1); }
+@media (prefers-color-scheme: dark) { .avatar img { filter: grayscale(1) sepia(1) hue-rotate(70deg) saturate(2.5) brightness(.9); } }
+.prompt { color: var(--muted); margin: 0 0 .5rem; }
+.prompt b { color: var(--accent-2); font-weight: 500; }
+.hero h1 { font-size: clamp(3rem, 9vw, 5.5rem); }
+.cursor { display: inline-block; width: .55em; height: .85em; background: var(--accent); vertical-align: -.05em; margin-left: .1em; box-shadow: var(--glow); animation: blink 1.1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.hero .sub { font-size: 1.1rem; margin: 0 0 1.25rem; }
+.stats { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; margin: 0; padding: 0; list-style: none; font-size: .9rem; }
+.stats li::before { content: "■ "; color: var(--accent-2); }
+
+/* ---------- Experience as save slots ---------- */
+section.block { padding: clamp(2rem, 6vw, 4rem) 0; }
+.intro { max-width: 70ch; color: var(--muted); }
+.slots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 2rem; }
+.slot { position: relative; transition: transform .15s steps(2), box-shadow .15s steps(2); }
+.slot:first-child { grid-column: 1 / -1; }
+.slot:hover, .slot:focus-within { transform: translate(-3px, -3px); box-shadow: 9px 9px 0 var(--accent); }
+.slot h3 { font-size: 1.9rem; margin-bottom: .3rem; }
+.slot h3 a { color: inherit; text-decoration: none; }
+.slot h3 a:hover { background: none; color: inherit; }
+.slot h3 a::after { content: ""; position: absolute; inset: 0; }
+.slot p { margin: 0 0 .75rem; color: var(--text); }
+.slot .meta { display: flex; justify-content: space-between; gap: 1rem; font-size: .8rem; color: var(--muted); border-top: 1px dashed var(--line); padding-top: .6rem; }
+.slot .meta span:last-child { color: var(--accent); }
+.hp { height: 8px; border: 1px solid var(--line); margin-bottom: .9rem; }
+.hp i { display: block; height: 100%; background: var(--accent); box-shadow: var(--glow); }
+
+/* ---------- About ---------- */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.achievements { list-style: none; padding: 0; margin: 0; display: grid; gap: .75rem; }
+.achievements li { display: grid; grid-template-columns: 44px 1fr; gap: .75rem; align-items: center; }
+.achievements .badge { width: 44px; height: 44px; display: grid; place-items: center; border: 2px solid var(--accent-2); color: var(--accent-2); font-family: var(--pixel); font-size: 1.6rem; }
+.achievements strong { display: block; color: var(--accent); }
+.achievements small { color: var(--muted); }
+
+/* ---------- Contact ---------- */
+form { display: grid; gap: 1rem; }
+label { display: block; color: var(--accent-2); margin-bottom: .25rem; }
+label::before { content: "$ "; color: var(--muted); }
+input, textarea { width: 100%; font: inherit; color: var(--text); background: var(--bg); border: 2px solid var(--line); padding: .7rem .9rem; caret-color: var(--accent); }
+input:focus-visible, textarea:focus-visible { border-color: var(--accent); outline: 2px solid var(--accent); outline-offset: 0; }
+textarea { min-height: 8rem; resize: vertical; }
+.turnstile-stub { border: 2px dashed var(--line); padding: .75rem; font-size: .85rem; color: var(--muted); text-align: center; }
+button { justify-self: start; font: 400 1.6rem var(--pixel); color: var(--screen); background: var(--accent); border: 0; padding: .4rem 1.4rem; cursor: pointer; box-shadow: 4px 4px 0 var(--line); }
+button:hover { background: var(--accent-2); }
+button:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--line); }
+#contact-status { color: var(--accent-2); min-height: 1.7em; margin: 0; }
+
+footer { padding: 2rem 0 3rem; font-size: .85rem; color: var(--muted); text-align: center; }
+footer a { color: inherit; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 720px) {
+  .slots, .about-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .hero .window-body { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .stats { justify-content: center; }
+  .brand::before { content: "> "; }
+}
+@media (max-width: 420px) {
+  .nav-desktop { display: none; }
+  .nav-mobile { display: block; }
+}
+@media (forced-colors: active) {
+  body::after { display: none; }
+  .window, .slot { border: 2px solid CanvasText; box-shadow: none; }
+}
+/* Display fonts make the nav wider than the live site, so the hamburger takes over at 640px, not 420px */
+@media (max-width: 640px) { .nav-desktop { display: none; } .nav-mobile { display: block; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header>
+  <div class="wrap header-inner">
+    <a class="brand" href="#" aria-label="Go to home">MACLEOD</a>
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Interests</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <details class="nav-mobile">
+      <summary>MENU<span class="sr-only"> (navigation)</span></summary>
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Interests</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </details>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero wrap" id="home">
+    <div class="window">
+      <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">whoami.exe</span></div>
+      <div class="window-body">
+        <div class="avatar"><img src="../../StaticSite/images/andrew-macleod-profile-360.jpg" srcset="../../StaticSite../../StaticSite/images/andrew-macleod-profile-360.jpg 360w, ../../StaticSite/images/andrew-macleod-profile-256.jpg 256w" sizes="200px" width="200" height="200" alt="Andrew MacLeod"></div>
+        <div>
+          <p class="prompt" aria-hidden="true"><b>guest@macleod</b>:~$ whoami</p>
+          <h1>Hello! I'm Andrew MacLeod<span class="sr-only"> of the Clan MacLeod</span><span class="cursor" aria-hidden="true"></span></h1>
+          <p class="sub">…and I am a Software Engineer. Currently Principal Engineer at a property-tech company in London.</p>
+          <ul class="stats">
+            <li>Healthcare</li><li>Clinical research</li><li>Government</li><li>Aviation</li><li>Retail</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <h2 id="experience">Experience</h2>
+    <p class="intro">Below are some of the things I've done in my previous roles. Choose a save slot to load the full story, or see my <a href="https://www.linkedin.com/in/andrewmacleodnottingham" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+
+    <div class="slots">
+      <article class="window slot">
+        <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">SLOT_01.SAV</span></div>
+        <div class="window-body">
+          <h3><a href="#">Senior Consultant at CGI / BJSS</a></h3>
+          <div class="hp" aria-hidden="true"><i style="width:100%"></i></div>
+          <p>I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK.</p>
+          <div class="meta"><span>2021 → 2026</span><span aria-hidden="true">LOAD ▶</span></div>
+        </div>
+      </article>
+      <article class="window slot">
+        <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">SLOT_02.SAV</span></div>
+        <div class="window-body">
+          <h3><a href="#">Principal Engineer at Parexel / Calyx</a></h3>
+          <div class="hp" aria-hidden="true"><i style="width:85%"></i></div>
+          <p>I led multiple software teams architecting and building solutions for clinical research in a highly-regulated industry.</p>
+          <div class="meta"><span>2016 → 2021</span><span aria-hidden="true">LOAD ▶</span></div>
+        </div>
+      </article>
+      <article class="window slot">
+        <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">SLOT_03.SAV</span></div>
+        <div class="window-body">
+          <h3><a href="#">Senior/Lead Engineer at Ideagen</a></h3>
+          <div class="hp" aria-hidden="true"><i style="width:70%"></i></div>
+          <p>I worked as a senior engineer and team lead, running an agile process delivering software to the customer in an iterative way.</p>
+          <div class="meta"><span>2014 → 2016</span><span aria-hidden="true">LOAD ▶</span></div>
+        </div>
+      </article>
+      <article class="window slot">
+        <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">SLOT_04.SAV</span></div>
+        <div class="window-body">
+          <h3><a href="#">Senior Engineer at FACE</a></h3>
+          <div class="hp" aria-hidden="true"><i style="width:55%"></i></div>
+          <p>I worked as a senior engineer in a team, mentoring junior developers to help them improve and build software with a professional approach.</p>
+          <div class="meta"><span>2013 → 2014</span><span aria-hidden="true">LOAD ▶</span></div>
+        </div>
+      </article>
+      <article class="window slot">
+        <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">SLOT_05.SAV</span></div>
+        <div class="window-body">
+          <h3><a href="#">Earlier Roles: Designer to Programmer</a></h3>
+          <div class="hp" aria-hidden="true"><i style="width:40%"></i></div>
+          <p>My first job was doing graphic design for a financial company in London. I gradually moved into web design and subsequently web application development.</p>
+          <div class="meta"><span>The early days</span><span aria-hidden="true">LOAD ▶</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <h2 id="about">About Me</h2>
+    <div class="about-grid">
+      <div class="window">
+        <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">README.TXT</span></div>
+        <div class="window-body">
+          <p>I like to cook, read, and play retro computer games.</p>
+          <p>I started out in graphic design, moved into the web, and have spent most of my career since building, and leading teams that build, software for healthcare, clinical research and government.</p>
+        </div>
+      </div>
+      <div class="window">
+        <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">ACHIEVEMENTS</span></div>
+        <div class="window-body">
+          <ul class="achievements">
+            <li><span class="badge" aria-hidden="true">*</span><div><strong>Head Chef</strong><small>Cooks more than toast</small></div></li>
+            <li><span class="badge" aria-hidden="true">B</span><div><strong>Bookworm</strong><small>Always mid-chapter</small></div></li>
+            <li><span class="badge" aria-hidden="true">8</span><div><strong>8-bit Veteran</strong><small>Retro games collector</small></div></li>
+            <li><span class="badge" aria-hidden="true">⚓</span><div><strong>Pier Historian</strong><small><a href="#">Innellan Pier gallery</a></small></div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block wrap">
+    <h2 id="contact">Contact</h2>
+    <div class="window">
+      <div class="titlebar" aria-hidden="true"><span class="dots"><i></i><i></i><i></i></span><span class="name">SENDMAIL</span></div>
+      <div class="window-body">
+        <p class="intro">Feel free to get in touch.</p>
+        <form id="contact-form">
+          <div><label for="email">your_email</label><input id="email" name="email" type="email" maxlength="256" required autocomplete="email"></div>
+          <div><label for="message">message</label><textarea id="message" name="message" maxlength="1000" required></textarea></div>
+          <div class="turnstile-stub">[ Cloudflare Turnstile widget goes here ]</div>
+          <button type="submit">SEND ▶</button>
+          <p id="contact-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> Andrew MacLeod. All rights reserved. · <a href="index.html">← All concepts</a></div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('.nav-mobile ul a').forEach(a => a.addEventListener('click', () => a.closest('details').removeAttribute('open')));
+document.getElementById('contact-form').addEventListener('submit', e => { e.preventDefault(); document.getElementById('contact-status').textContent = '> DEMO MODE: message not sent.'; });
+</script>
+<!-- concept-bar -->
+<div class="cbar-spacer" aria-hidden="true"></div>
+<nav class="cbar" aria-label="Design concepts">
+  <a class="cb-arrow" href="01-highland-editorial.html" aria-label="Previous design">&lsaquo;</a>
+  <a class="cb-all" href="index.html">All designs</a>
+  <span class="cb-n">Design 2 of 10</span>
+  <a class="cb-fb" href="index.html#feedback">Vote</a>
+  <a class="cb-arrow" href="03-bento-grid.html" aria-label="Next design">&rsaquo;</a>
+</nav>
+<style>
+.cbar-spacer{height:72px}
+nav.cbar{all:initial;position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:2px;padding:4px;background:#111;color:#fff;border:1px solid #555;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3);white-space:nowrap;max-width:calc(100vw - 16px);box-sizing:border-box}
+nav.cbar a,nav.cbar span{all:initial;display:inline-block;box-sizing:border-box;padding:9px 10px;border-radius:7px;color:#fff;font:500 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+nav.cbar .cb-arrow{font-size:20px;padding:5px 12px 7px}
+nav.cbar span.cb-n{color:#bbb;cursor:default;font-variant-numeric:tabular-nums}
+nav.cbar a:hover{background:#333}
+nav.cbar a:focus-visible{outline:2px solid #ffd54a;outline-offset:1px}
+nav.cbar a.cb-fb{background:#ffd54a;color:#111;font-weight:700}
+nav.cbar a.cb-fb:hover{background:#ffe27a}
+@media (max-width:480px){nav.cbar a.cb-all{display:none}}
+@media (forced-colors:active){nav.cbar{border:1px solid CanvasText}}
+@media print{nav.cbar,.cbar-spacer{display:none}}
+</style>
+<!-- /concept-bar -->
+</body>
+</html>

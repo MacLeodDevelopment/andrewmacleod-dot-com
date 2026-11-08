@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Ten designs for this site - Andrew MacLeod</title>
+<meta name="description" content="Ten possible redesigns of andrewmacleod.com. Pick a favourite and tell me why.">
+<style>
+:root { --bg: #fafaf7; --card: #fff; --text: #1b1b19; --muted: #5b5a55; --line: #dddcd5; --link: #1f4fbf; --accent: #ffd54a; }
+@media (prefers-color-scheme: dark) { :root { --bg: #121211; --card: #1c1c1a; --text: #efeee9; --muted: #aeada6; --line: #33332f; --link: #9db8ff; } }
+@media (prefers-contrast: more) { :root { --muted: var(--text); --line: var(--text); } }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--text); font: 1.0625rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { width: min(1060px, 92%); margin: 0 auto; padding: 2.5rem 0 4rem; }
+a { color: var(--link); }
+:focus-visible { outline: 3px solid var(--link); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.back { font-size: .95rem; }
+h1 { font-size: clamp(1.9rem, 4.5vw, 2.6rem); line-height: 1.15; margin: 1rem 0 .75rem; }
+.intro { max-width: 64ch; }
+.intro p { margin: 0 0 .8rem; }
+h2 { font-size: 1.5rem; margin: 3rem 0 1rem; }
+
+ol.designs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; counter-reset: d; }
+.designs li { background: var(--card); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+.designs li:hover { border-color: var(--text); }
+.designs li:focus-within { outline: 3px solid var(--link); outline-offset: 2px; }
+.thumb { height: 96px; display: flex; align-items: flex-end; padding: .7rem .9rem; font-size: 1.4rem; line-height: 1; overflow: hidden; border-bottom: 1px solid var(--line); }
+.designs .txt { padding: .9rem 1rem 1rem; }
+.designs h3 { margin: 0 0 .3rem; font-size: 1.1rem; }
+.designs h3 a { color: var(--text); text-decoration: none; }
+.designs h3 a::after { content: ""; position: absolute; inset: 0; }
+.designs h3 a:focus-visible { outline: none; }
+.designs p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+/* thumbnails: a hint of each design, built in CSS */
+.t1 { background: repeating-linear-gradient(90deg, transparent 0 28px, rgba(255,255,255,.12) 28px 56px), linear-gradient(120deg, #1f5c4a, #7a3b69); color: #f7f3ea; font-family: Georgia, serif; }
+.t2 { background: repeating-linear-gradient(0deg, #0a120c 0 2px, #050806 2px 3px); color: #39ff7a; font-family: Consolas, monospace; }
+.t3 { background: radial-gradient(circle at 20% 20%, #6d4aff, transparent 60%), radial-gradient(circle at 80% 30%, #00a3a3, transparent 55%), #13152a; color: #fff; font-weight: 700; }
+.t4 { background: #f2f0eb; color: #0e0e0e; font: 900 2.1rem/1 "Arial Narrow", Arial, sans-serif; text-transform: uppercase; letter-spacing: -.03em; box-shadow: inset 0 -6px #d4311a; }
+.t5 { background: linear-gradient(180deg, rgba(11,42,60,.35), rgba(4,16,24,.85)), url("../../StaticSite/interests/innellan-pier/images/004-Caledonia-Innellan-Pier-Thumbnail.jpg") center 60% / cover; color: #fff; font-family: Georgia, serif; }
+.t6 { background: #fafaf9; color: #0c0c0d; font: 600 1.35rem system-ui, sans-serif; letter-spacing: -.02em; justify-content: space-between; box-shadow: inset 0 -1px #0c0c0d; }
+.t6 span { color: #0f7b5f; }
+.t7 { background: linear-gradient(90deg, #f7f7f8 0 34%, #fff 34%); color: #16181d; font: 600 1.2rem "IBM Plex Sans", system-ui, sans-serif; gap: .7rem; }
+.t7 .k { font: 500 .7rem Consolas, monospace; border: 1px solid #d8d9dd; border-bottom-width: 2px; border-radius: 4px; padding: .15rem .35rem; color: #5d6270; background: #fff; }
+.t8 { background: #0d0d0e; gap: .4rem; align-items: center; }
+.t8 b { font: 500 .78rem Consolas, monospace; padding: .2rem .5rem; border-radius: 5px; }
+.t8 b:nth-child(1) { color: #4ade80; background: #10261a; } .t8 b:nth-child(2) { color: #d8a8ff; background: #23142f; } .t8 b:nth-child(3) { color: #ff8a8a; background: #2c1212; }
+.t9 { background: #101828; color: #f3f1ea; font: italic 1.9rem Georgia, "Instrument Serif", serif; box-shadow: inset 0 -3px #d8b878; }
+.t10 { background: #e8e8e4; color: #111; font: 800 1.3rem system-ui, sans-serif; letter-spacing: -.02em; gap: .6rem; align-items: center; box-shadow: inset 0 0 0 1px #111; }
+.t10 i { width: 14px; height: 14px; background: #ff5a1f; display: block; }
+
+/* feedback */
+.feedback { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: clamp(1rem, 3vw, 1.75rem); max-width: 720px; }
+fieldset { border: 0; margin: 0 0 1.25rem; padding: 0; }
+legend { font-weight: 700; margin-bottom: .5rem; padding: 0; }
+.choices { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: .4rem; }
+.choices label { display: flex; gap: .5rem; align-items: center; border: 1px solid var(--line); border-radius: 5px; padding: .45rem .6rem; cursor: pointer; }
+.choices label:has(input:checked) { border-color: var(--text); background: color-mix(in srgb, var(--accent) 35%, transparent); }
+.choices input { accent-color: var(--text); width: 1.1rem; height: 1.1rem; margin: 0; }
+.field { margin-bottom: 1rem; }
+.field > label { display: block; font-weight: 700; margin-bottom: .3rem; }
+.hint { display: block; font-weight: 400; color: var(--muted); font-size: .9rem; }
+.field input, .field textarea, .field select { width: 100%; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--muted); border-radius: 5px; padding: .6rem .7rem; }
+.field textarea { min-height: 7rem; resize: vertical; }
+.turnstile-container { margin: 1rem 0; min-height: 65px; }
+button { font: 700 1rem system-ui, sans-serif; color: #111; background: var(--accent); border: 1px solid #111; border-radius: 5px; padding: .7rem 1.5rem; cursor: pointer; }
+button:hover { background: #ffe27a; }
+#feedback-status { margin: .75rem 0 0; font-weight: 600; }
+.small { color: var(--muted); font-size: .9rem; }
+footer { margin-top: 3rem; color: var(--muted); font-size: .9rem; }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="/">← Back to andrewmacleod.com</a>
+  <h1>Ten designs for this site</h1>
+  <div class="intro">
+    <p>Someone told me my site looks like a default Microsoft template. They had a point. So I've mocked up ten different directions, and I'd like your opinion on which one I should go with.</p>
+    <p>Each design is a working home page with my real content. Try a few on your phone as well as a computer, and in dark mode if you use it. The bar at the bottom of each design takes you to the next one.</p>
+    <p>The forms in the designs don't send anything. Use <a href="#feedback">the form at the bottom of this page</a> to tell me what you think.</p>
+  </div>
+
+  <h2 id="designs">The designs</h2>
+  <ol class="designs">
+    <li><div class="thumb t1" aria-hidden="true">Highland</div><div class="txt"><h3><a href="01-highland-editorial.html">1. Highland Editorial</a></h3><p>Magazine-style serif headings, a faint tartan, and a career timeline.</p></div></li>
+    <li><div class="thumb t2" aria-hidden="true">C:\&gt; whoami_</div><div class="txt"><h3><a href="02-retro-terminal.html">2. Retro Terminal</a></h3><p>Green-screen terminal windows, with each job as a "save slot".</p></div></li>
+    <li><div class="thumb t3" aria-hidden="true">Bento</div><div class="txt"><h3><a href="03-bento-grid.html">3. Bento Grid</a></h3><p>A grid of tiles with a modern, product-website feel.</p></div></li>
+    <li><div class="thumb t4" aria-hidden="true">MacLeod.</div><div class="txt"><h3><a href="04-swiss-type.html">4. Swiss Type</a></h3><p>Very large lettering, one red accent, and very little else.</p></div></li>
+    <li><div class="thumb t5" aria-hidden="true">Clyde Coast</div><div class="txt"><h3><a href="05-clyde-coast.html">5. Clyde Coast</a></h3><p>Built around a big photo of Innellan Pier, with a sea and sand palette.</p></div></li>
+    <li><div class="thumb t6" aria-hidden="true">Selected work<span>→</span></div><div class="txt"><h3><a href="06-case-studies.html">6. Case Studies</a></h3><p>A consultancy-style site where real projects come first.</p></div></li>
+    <li><div class="thumb t7" aria-hidden="true"><span class="k">Ctrl K</span>Docs</div><div class="txt"><h3><a href="07-docs.html">7. Docs</a></h3><p>Laid out like developer documentation, with a Ctrl+K / ⌘K command palette.</p></div></li>
+    <li><div class="thumb t8" aria-hidden="true"><b>Added</b><b>Fixed</b><b>Security</b></div><div class="txt"><h3><a href="08-changelog.html">8. Changelog</a></h3><p>My career written as release notes, one version per job.</p></div></li>
+    <li><div class="thumb t9" aria-hidden="true">Let's talk.</div><div class="txt"><h3><a href="09-principal.html">9. Principal</a></h3><p>A calm, premium consultant one-pager: what I do, with evidence.</p></div></li>
+    <li><div class="thumb t10" aria-hidden="true"><i></i>DATASHEET</div><div class="txt"><h3><a href="10-spec-sheet.html">10. Spec Sheet</a></h3><p>An industrial product datasheet, with specs and a revision history.</p></div></li>
+  </ol>
+
+  <h2 id="feedback">Which one should I use?</h2>
+  <form id="feedback-form" class="feedback">
+    <fieldset>
+      <legend>Your favourite</legend>
+      <div class="choices">
+        <label><input type="radio" name="favourite" value="1. Highland Editorial" required> 1. Highland Editorial</label>
+        <label><input type="radio" name="favourite" value="2. Retro Terminal"> 2. Retro Terminal</label>
+        <label><input type="radio" name="favourite" value="3. Bento Grid"> 3. Bento Grid</label>
+        <label><input type="radio" name="favourite" value="4. Swiss Type"> 4. Swiss Type</label>
+        <label><input type="radio" name="favourite" value="5. Clyde Coast"> 5. Clyde Coast</label>
+        <label><input type="radio" name="favourite" value="6. Case Studies"> 6. Case Studies</label>
+        <label><input type="radio" name="favourite" value="7. Docs"> 7. Docs</label>
+        <label><input type="radio" name="favourite" value="8. Changelog"> 8. Changelog</label>
+        <label><input type="radio" name="favourite" value="9. Principal"> 9. Principal</label>
+        <label><input type="radio" name="favourite" value="10. Spec Sheet"> 10. Spec Sheet</label>
+      </div>
+    </fieldset>
+
+    <div class="field">
+      <label for="least">Least favourite <span class="hint">Optional</span></label>
+      <select id="least" name="least">
+        <option value="">No strong feelings</option>
+        <option>1. Highland Editorial</option><option>2. Retro Terminal</option><option>3. Bento Grid</option><option>4. Swiss Type</option><option>5. Clyde Coast</option>
+        <option>6. Case Studies</option><option>7. Docs</option><option>8. Changelog</option><option>9. Principal</option><option>10. Spec Sheet</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="comments">Anything else? <span class="hint">Optional. What works, what doesn't, what you'd change.</span></label>
+      <textarea id="comments" name="comments" maxlength="700"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="email">Your email <span class="hint">So I can reply. I won't share it or add it to anything.</span></label>
+      <input id="email" name="email" type="email" maxlength="256" required autocomplete="email">
+    </div>
+
+    <div class="turnstile-container">
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADmqC7wRlvnimFim" data-size="flexible"></div>
+    </div>
+
+    <button type="submit">Send my vote</button>
+    <p id="feedback-status" aria-live="polite"></p>
+  </form>
+
+  <footer>
+    <p>© <span id="year"></span> Andrew MacLeod. These pages are design mock-ups. Links inside them don't go anywhere yet.</p>
+  </footer>
+</main>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Sends the vote through the same Worker as the home page contact form.
+document.getElementById('feedback-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const status = document.getElementById('feedback-status');
+  const token = document.querySelector('input[name="cf-turnstile-response"]')?.value;
+
+  if (!token) {
+    status.textContent = 'Please complete the verification.';
+    return;
+  }
+
+  const message = [
+    'Design concepts feedback',
+    'Favourite: ' + form.favourite.value,
+    'Least favourite: ' + (form.least.value || '(none given)'),
+    '',
+    form.comments.value.trim() || '(no comments)'
+  ].join('\n');
+
+  status.textContent = 'Sending...';
+
+  try {
+    const response = await fetch('https://api-email-worker.andrewmacleod-com.workers.dev', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: form.email.value, message: message, token: token })
+    });
+    const text = await response.text();
+    if (response.ok) {
+      status.textContent = 'Thank you, your vote has been sent.';
+      form.reset();
+      if (window.turnstile) turnstile.reset();
+    } else {
+      status.textContent = text;
+    }
+  } catch (err) {
+    console.error(err);
+    status.textContent = 'Network error. Please try again.';
+  }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Concept 5: Clyde Coast - Andrew MacLeod</title>
+<meta name="description" content="Design concept: a photo-led, coastal look for andrewmacleod.com inspired by the Innellan Pier gallery.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+<style>
+/* =========================================================
+   CONCEPT 5 — CLYDE COAST
+   Photo-led and warm. A full-bleed, duotoned Innellan Pier
+   photograph in the hero, wave dividers, sea-and-sand palette,
+   frosted cards, and a film-strip of the gallery.
+   ========================================================= */
+:root {
+  --bg: #f6f1e7;          /* sand */
+  --surface: #fffaf1;
+  --text: #0d2433;        /* deep sea */
+  --muted: #3f5866;
+  --accent: #0f6e78;      /* firth teal, AA on sand */
+  --warm: #b0471f;        /* funnel red, AA on sand */
+  --sea: #0b2a3c;
+  --sea-2: #134a5e;
+  --line: #e1d6c2;
+  --shadow: 0 2px 4px rgba(13,36,51,.06), 0 18px 40px -18px rgba(13,36,51,.25);
+  --radius: 18px;
+  --max: min(1100px, 90%);
+  --serif: "DM Serif Display", Georgia, serif;
+  --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #07161f;
+    --surface: #0d2230;
+    --text: #e9f1f3;
+    --muted: #a9bec6;
+    --accent: #5fd0d6;
+    --warm: #ff9a6e;
+    --sea: #041018;
+    --sea-2: #0a2533;
+    --line: #183747;
+    --shadow: 0 2px 4px rgba(0,0,0,.4), 0 18px 40px -18px rgba(0,0,0,.7);
+  }
+}
+@media (prefers-contrast: more) { :root { --muted: var(--text); --line: var(--text); } }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 1.0625rem/1.65 var(--sans); -webkit-font-smoothing: antialiased; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.05; margin: 0 0 .5rem; }
+h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); scroll-margin-top: 90px; }
+a { color: var(--accent); text-underline-offset: .2em; }
+:focus-visible { outline: 3px solid var(--warm); outline-offset: 3px; border-radius: 6px; }
+img { max-width: 100%; height: auto; display: block; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.skip { position: absolute; left: 1rem; top: -100px; background: var(--warm); color: #fff; padding: .5rem 1rem; z-index: 100; border-radius: 8px; }
+.skip:focus { top: 1rem; }
+.wrap { width: var(--max); margin-inline: auto; }
+.kicker { font: 700 .78rem/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--warm); margin: 0 0 1rem; }
+
+/* ---------- Header: transparent over hero, solid on scroll ---------- */
+header { position: fixed; inset: 0 0 auto 0; z-index: 50; color: #fff; transition: background .3s, color .3s, box-shadow .3s; }
+header.solid { background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px); color: var(--text); box-shadow: 0 1px 0 var(--line); }
+.header-inner { display: flex; align-items: center; justify-content: space-between; min-height: 72px; }
+.brand { white-space: nowrap; font: 400 1.5rem var(--serif); color: inherit; text-decoration: none; }
+.nav-desktop ul, .nav-mobile ul { list-style: none; margin: 0; padding: 0; }
+.nav-desktop ul { display: flex; gap: .4rem; }
+.nav-desktop a { color: inherit; text-decoration: none; font-weight: 500; padding: .5rem 1rem; border-radius: 999px; transition: background .2s; }
+.nav-desktop a:hover { background: rgba(255,255,255,.18); }
+header.solid .nav-desktop a:hover { background: var(--line); }
+.nav-desktop li:last-child a { border: 1.5px solid currentColor; }
+.nav-mobile { display: none; position: relative; }
+.nav-mobile summary { list-style: none; cursor: pointer; padding: .5rem; }
+.nav-mobile summary::-webkit-details-marker { display: none; }
+.nav-mobile svg { width: 28px; height: 28px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; fill: none; }
+.nav-mobile ul { position: absolute; right: 0; top: 110%; background: var(--surface); color: var(--text); border-radius: var(--radius); box-shadow: var(--shadow); padding: .5rem; min-width: 12rem; }
+.nav-mobile a { display: block; padding: .7rem 1rem; color: inherit; text-decoration: none; border-radius: 10px; }
+.nav-mobile a:hover { background: var(--bg); }
+
+/* ---------- Hero ---------- */
+.hero { position: relative; min-height: min(92vh, 820px); display: grid; align-items: end; color: #fff; isolation: isolate; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; z-index: -2; }
+.hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; filter: grayscale(1) contrast(1.05); }
+@media (prefers-reduced-motion: no-preference) { .hero-bg img { animation: kenburns 30s ease-out both; } }
+@keyframes kenburns { from { transform: scale(1.12); } }
+/* Duotone + legibility gradient */
+.hero::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(11,42,60,.55) 0%, rgba(11,42,60,.2) 35%, rgba(4,16,24,.88) 100%),
+    linear-gradient(120deg, rgba(15,110,120,.55), rgba(176,71,31,.35));
+  mix-blend-mode: normal; }
+.hero-content { padding: 0 0 clamp(6rem, 14vw, 9rem); display: grid; grid-template-columns: auto 1fr; gap: clamp(1.25rem, 4vw, 2.5rem); align-items: end; }
+.hero .profile { width: clamp(110px, 16vw, 170px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; border: 4px solid rgba(255,255,255,.9); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.hero .kicker { color: #ffd3bf; }
+.hero h1 { font-size: clamp(2.2rem, 8vw, 6rem); text-shadow: 0 2px 20px rgba(0,0,0,.3); }
+.hero h1 em { color: #9ff0f3; }
+.hero p.sub { font-size: clamp(1.1rem, 2.2vw, 1.35rem); max-width: 40ch; margin: 0; color: #e8f2f4; }
+.photo-credit { position: absolute; right: 1rem; bottom: 5.5rem; font-size: .75rem; color: rgba(255,255,255,.8); }
+.wave { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: clamp(50px, 8vw, 90px); color: var(--bg); }
+@media (prefers-reduced-motion: no-preference) { .wave path.back { animation: swell 9s ease-in-out infinite alternate; } }
+@keyframes swell { to { transform: translateX(-40px); } }
+
+/* ---------- Sections ---------- */
+section.block { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+.head { display: flex; justify-content: space-between; align-items: end; gap: 2rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+.head p { color: var(--muted); max-width: 46ch; margin: 0; }
+
+.cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.25rem; counter-reset: c; }
+.card { grid-column: span 2; background: var(--surface); border-radius: var(--radius); padding: 1.6rem; box-shadow: var(--shadow); position: relative; display: flex; flex-direction: column; border-top: 5px solid var(--accent); transition: transform .3s cubic-bezier(.2,.7,.2,1); counter-increment: c; }
+.card:nth-child(-n+2) { grid-column: span 3; }
+.card:nth-child(2) { border-top-color: var(--warm); }
+.card:nth-child(4) { border-top-color: var(--warm); }
+.card::before { content: counter(c, decimal-leading-zero); position: absolute; right: 1.25rem; top: .75rem; font: 400 3rem/1 var(--serif); color: var(--line); }
+.card:hover, .card:focus-within { transform: translateY(-6px) rotate(-.4deg); }
+.card .years { font-weight: 700; font-size: .85rem; color: var(--accent); }
+.card h3 { font-size: 1.55rem; margin: .5rem 0 .6rem; padding-right: 3rem; }
+.card h3 a { color: var(--text); text-decoration: none; }
+.card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.card p { color: var(--muted); margin: 0 0 1rem; flex: 1; }
+.card .more { font-weight: 700; color: var(--accent); font-size: .92rem; }
+
+/* About band: dark sea */
+.band { background: var(--sea); color: #e9f1f3; position: relative; }
+.band .wave-top, .band .wave-bot { display: block; width: 100%; height: clamp(40px, 6vw, 70px); }
+.band .wave-top { color: var(--bg); background: var(--sea); }
+.band .wave-bot { color: var(--bg); background: var(--sea); transform: scaleY(-1); }
+.band a { color: #9ff0f3; }
+.band .kicker { color: #ffb08e; }
+.about-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: center; padding: 2rem 0; }
+.about-grid .big { font: 400 clamp(1.7rem, 3.6vw, 2.6rem)/1.2 var(--serif); margin: 0; }
+.about-grid .big em { color: #9ff0f3; }
+.strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; list-style: none; margin: 0; padding: 0; }
+.strip li { border-radius: 12px; overflow: hidden; aspect-ratio: 1; box-shadow: 0 10px 30px rgba(0,0,0,.4); }
+.strip li:nth-child(2) { transform: translateY(1.5rem); }
+.strip img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.strip li:hover img { transform: scale(1.06); }
+.strip-link { display: inline-block; margin-top: 2.5rem; font-weight: 700; }
+.interest-list { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; margin: 1.5rem 0 0; }
+.interest-list li { padding: .4rem .9rem; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.18); }
+
+/* Contact */
+.contact { display: grid; grid-template-columns: 1fr 1.3fr; gap: 3rem; }
+.contact .lead { color: var(--muted); font-size: 1.15rem; }
+form { background: var(--surface); padding: clamp(1.25rem, 4vw, 2rem); border-radius: var(--radius); box-shadow: var(--shadow); display: grid; gap: 1.1rem; }
+label { display: block; font-weight: 700; font-size: .9rem; margin-bottom: .35rem; }
+input, textarea { width: 100%; font: inherit; color: var(--text); background: var(--bg); border: 1.5px solid var(--line); border-radius: 12px; padding: .85rem 1rem; }
+input:focus-visible, textarea:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+textarea { min-height: 8.5rem; resize: vertical; }
+.turnstile-stub { border: 1.5px dashed var(--line); border-radius: 12px; padding: .8rem; text-align: center; font-size: .85rem; color: var(--muted); }
+button { justify-self: start; font: 700 1rem var(--sans); color: #fff; background: var(--warm); border: 0; border-radius: 999px; padding: .95rem 1.8rem; cursor: pointer; transition: transform .2s, filter .2s; }
+@media (prefers-color-scheme: dark) { button { color: #07161f; } }
+button:hover { transform: translateY(-2px); filter: brightness(1.08); }
+#contact-status { margin: 0; color: var(--muted); }
+
+footer { background: var(--sea); color: #a9bec6; padding: 2rem 0; font-size: .9rem; text-align: center; }
+footer a { color: inherit; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .cards { grid-template-columns: 1fr 1fr; }
+  .card, .card:nth-child(-n+2) { grid-column: span 1; }
+  .card:first-child { grid-column: 1 / -1; }
+  .about-grid, .contact { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .cards { grid-template-columns: 1fr; }
+  .hero-content { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .nav-desktop { display: none; }
+  .nav-mobile { display: block; }
+  .hero-content { justify-items: center; text-align: center; }
+  .hero p.sub { margin-inline: auto; }
+  .photo-credit { display: none; }
+}
+@media (forced-colors: active) {
+  .hero::before { display: none; }
+  .card, form { border: 1px solid CanvasText; }
+}
+/* Display fonts make the nav wider than the live site, so the hamburger takes over at 640px, not 420px */
+@media (max-width: 640px) { .nav-desktop { display: none; } .nav-mobile { display: block; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header id="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#" aria-label="Go to home">Andrew MacLeod</a>
+    <nav class="nav-desktop" aria-label="Main navigation">
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Interests</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <details class="nav-mobile">
+      <summary><span class="sr-only">Menu</span>
+        <svg viewBox="0 0 28 28" aria-hidden="true" focusable="false"><path d="M4 8c3-2 5 2 8 0s5 2 8 0 3 0 4 0"/><path d="M4 14c3-2 5 2 8 0s5 2 8 0 3 0 4 0"/><path d="M4 20c3-2 5 2 8 0s5 2 8 0 3 0 4 0"/></svg>
+      </summary>
+      <ul>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#about">Interests</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </details>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="home">
+    <div class="hero-bg"><img src="../../StaticSite/interests/innellan-pier/images/004-Caledonia-Innellan-Pier.jpg" alt="" width="2400" height="1724" fetchpriority="high"></div>
+    <div class="wrap hero-content">
+      <img class="profile" src="../../StaticSite/images/andrew-macleod-profile-360.jpg" srcset="../../StaticSite../../StaticSite/images/andrew-macleod-profile-360.jpg 360w, ../../StaticSite/images/andrew-macleod-profile-256.jpg 256w" sizes="170px" width="170" height="170" alt="Andrew MacLeod">
+      <div>
+        <p class="kicker">Software Engineer</p>
+        <h1>Hello! I am Andrew&nbsp;MacLeod<span class="sr-only"> of the Clan MacLeod</span>, <em>and I build software.</em></h1>
+        <p class="sub">Currently Principal Engineer at a property-tech company in London.</p>
+      </div>
+    </div>
+    <span class="photo-credit">Photo: PS Caledonia at Innellan Pier</span>
+    <svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path class="back" fill="currentColor" opacity=".45" d="M0 40 C 240 90 480 0 720 40 S 1200 90 1440 40 L1520 90 L0 90 Z"/>
+      <path fill="currentColor" d="M0 60 C 240 20 480 90 720 55 S 1200 20 1440 60 L1440 90 L0 90 Z"/>
+    </svg>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="head">
+        <div><p class="kicker">Career</p><h2 id="experience">Experience</h2></div>
+        <p>Below are some of the things I've done in my previous roles. You can also read more on <a href="https://www.linkedin.com/in/andrewmacleodnottingham" target="_blank" rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+      </div>
+      <div class="cards">
+        <article class="card"><span class="years">2021 – 2026</span><h3><a href="#">Senior Consultant at CGI / BJSS</a></h3><p>I worked as a consultant for a number of clients including: the largest healthcare provider in the world, a national airline, the UK Government and the biggest retailer in the UK.</p><span class="more" aria-hidden="true">Read more →</span></article>
+        <article class="card"><span class="years">2016 – 2021</span><h3><a href="#">Principal Software Engineer at Parexel / Calyx</a></h3><p>I led multiple software teams architecting and building solutions for clinical research in a highly-regulated industry.</p><span class="more" aria-hidden="true">Read more →</span></article>
+        <article class="card"><span class="years">2014 – 2016</span><h3><a href="#">Senior/Lead Engineer at Ideagen</a></h3><p>I worked as a senior engineer and team lead, running an agile process delivering software to the customer in an iterative way.</p><span class="more" aria-hidden="true">Read more →</span></article>
+        <article class="card"><span class="years">2013 – 2014</span><h3><a href="#">Senior Engineer at FACE</a></h3><p>I worked as a senior engineer in a team, mentoring junior developers to help them improve and build software with a professional approach.</p><span class="more" aria-hidden="true">Read more →</span></article>
+        <article class="card"><span class="years">Earlier</span><h3><a href="#">Graphic Designer to Programmer</a></h3><p>My first job was doing graphic design for a financial company in London. I gradually moved into web design and subsequently web application development.</p><span class="more" aria-hidden="true">Read more →</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <svg class="wave-top" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0 H1440 V30 C 1200 70 960 0 720 30 S 240 70 0 30 Z"/></svg>
+    <div class="wrap about-grid">
+      <div>
+        <p class="kicker">Away from the keyboard</p>
+        <h2 id="about">About Me</h2>
+        <p class="big">I like to cook, read, and play <em>retro computer games</em>.</p>
+        <ul class="interest-list"><li>🍳 Cooking</li><li>📚 Reading</li><li>🕹️ Retro games</li><li>⚓ Clyde steamers</li></ul>
+        <a class="strip-link" href="#">Explore the Innellan Pier gallery →</a>
+      </div>
+      <ul class="strip" aria-label="Photos from the Innellan Pier gallery">
+        <li><img src="../../StaticSite/interests/innellan-pier/images/001-Duchess-of-Fife-at-Innellan-Pier-02-JAN-1952-Thumbnail.jpg" alt="Duchess of Fife at Innellan Pier, January 1952" width="600" height="475" loading="lazy"></li>
+        <li><img src="../../StaticSite/interests/innellan-pier/images/003-Jeanie-Deans-Innellan-Pier-Thumbnail.jpg" alt="Jeanie Deans at Innellan Pier" width="600" height="391" loading="lazy"></li>
+        <li><img src="../../StaticSite/interests/innellan-pier/images/005-Saint-Columba-Innellan-Pier-Thumbnail.jpg" alt="Saint Columba at Innellan Pier" width="600" height="386" loading="lazy"></li>
+      </ul>
+    </div>
+    <svg class="wave-bot" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path fill="currentColor" d="M0 0 H1440 V30 C 1200 70 960 0 720 30 S 240 70 0 30 Z"/></svg>
+  </section>
+
+  <section class="block">
+    <div class="wrap contact">
+      <div>
+        <p class="kicker">Say hello</p>
+        <h2 id="contact">Contact</h2>
+        <p class="lead">Feel free to get in touch.</p>
+      </div>
+      <form id="contact-form">
+        <div><label for="email">Your email</label><input id="email" name="email" type="email" maxlength="256" required autocomplete="email"></div>
+        <div><label for="message">Message</label><textarea id="message" name="message" maxlength="1000" required></textarea></div>
+        <div class="turnstile-stub">Cloudflare Turnstile widget goes here</div>
+        <button type="submit">Send message</button>
+        <p id="contact-status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> Andrew MacLeod. All rights reserved. · <a href="index.html">← All concepts</a></div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+document.querySelectorAll('.nav-mobile ul a').forEach(a => a.addEventListener('click', () => a.closest('details').removeAttribute('open')));
+document.getElementById('contact-form').addEventListener('submit', e => { e.preventDefault(); document.getElementById('contact-status').textContent = 'Demo only: the message was not sent.'; });
+// Header turns solid once the hero has scrolled away (IntersectionObserver, no scroll handler)
+const header = document.getElementById('site-header');
+new IntersectionObserver(([e]) => header.classList.toggle('solid', !e.isIntersecting), { rootMargin: '-80px 0px 0px 0px' })
+  .observe(document.querySelector('.hero h1'));
+</script>
+<!-- concept-bar -->
+<div class="cbar-spacer" aria-hidden="true"></div>
+<nav class="cbar" aria-label="Design concepts">
+  <a class="cb-arrow" href="04-swiss-type.html" aria-label="Previous design">&lsaquo;</a>
+  <a class="cb-all" href="index.html">All designs</a>
+  <span class="cb-n">Design 5 of 10</span>
+  <a class="cb-fb" href="index.html#feedback">Vote</a>
+  <a class="cb-arrow" href="06-case-studies.html" aria-label="Next design">&rsaquo;</a>
+</nav>
+<style>
+.cbar-spacer{height:72px}
+nav.cbar{all:initial;position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:2147483000;display:flex;align-items:center;gap:2px;padding:4px;background:#111;color:#fff;border:1px solid #555;border-radius:10px;box-shadow:0 4px 16px rgba(0,0,0,.3);white-space:nowrap;max-width:calc(100vw - 16px);box-sizing:border-box}
+nav.cbar a,nav.cbar span{all:initial;display:inline-block;box-sizing:border-box;padding:9px 10px;border-radius:7px;color:#fff;font:500 13px/1 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap}
+nav.cbar .cb-arrow{font-size:20px;padding:5px 12px 7px}
+nav.cbar span.cb-n{color:#bbb;cursor:default;font-variant-numeric:tabular-nums}
+nav.cbar a:hover{background:#333}
+nav.cbar a:focus-visible{outline:2px solid #ffd54a;outline-offset:1px}
+nav.cbar a.cb-fb{background:#ffd54a;color:#111;font-weight:700}
+nav.cbar a.cb-fb:hover{background:#ffe27a}
+@media (max-width:480px){nav.cbar a.cb-all{display:none}}
+@media (forced-colors:active){nav.cbar{border:1px solid CanvasText}}
+@media print{nav.cbar,.cbar-spacer{display:none}}
+</style>
+<!-- /concept-bar -->
+</body>
+</html>

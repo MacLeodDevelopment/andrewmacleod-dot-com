@@ -1,150 +1,215 @@
 ---
-title: 'Hello! <br /> I am Andrew MacLeod <span class="sr-only">of the Clan MacLeod.</span>'
-subtitle: and I am a Software Engineer.
 metaTitle: "Andrew MacLeod - Consultant Software Engineer"
 metaDescription: "Portfolio of Andrew MacLeod, a software engineer with experience leading teams in healthcare, clinical research and government."
 layout: layout.njk
+homePage: true
 ---
 
-<section>
-    <h2 id="experience">Experience</h2>
+<div class="sheet">
 
-    <p>
-        I currently work as Principal Engineer for a property-tech company in London.<br />
-        Below are some of the things I've done in my previous roles. <br />
-        You can also read more about me on 
-        <a href="https://www.linkedin.com/in/andrewmacleodnottingham"
-            target="_blank"
-            rel="noopener"
-            title="Andrew MacLeod LinkedIn Profile"
-            >LinkedIn <span class="sr-only">(opens in a new tab)</span>
-        </a>.
-    </p>
+    <div class="row r-title">
+        <figure class="cell figure">
+            <p class="m cell-label"><span>Fig. 1</span><span>Front view</span></p>
+            <div class="frame">
+                <img src="/images/andrew-macleod-profile-512.jpg"
+                    srcset="/images/andrew-macleod-profile-512.jpg 512w, /images/andrew-macleod-profile-360.jpg 360w, /images/andrew-macleod-profile-256.jpg 256w"
+                    sizes="(max-width: 900px) min(320px, 88vw), 540px"
+                    alt="Andrew MacLeod" width="540" height="540">
+            </div>
+            <figcaption class="m">Andrew MacLeod, shown by the sea for scale.</figcaption>
+        </figure>
 
-    <div class="experience">
-        {% for experience in collections.experience | sort(attribute="data.order") %}
+        <div class="cell title-cell">
+            <p class="m cell-label"><span>Datasheet</span><span>Rev F · <span class="js-year"></span></span></p>
+            <h1>Andrew MacLeod <span class="sr-only">of the Clan MacLeod</span></h1>
+            <p class="sub">Software engineer. Built for healthcare, clinical research and government.</p>
+            <span class="badge">Now: Principal Engineer</span>
+            <table class="specs">
+                <caption class="sr-only">Key specifications</caption>
+                <tbody>
+                    <tr><th scope="row">Current role</th><td>Principal Engineer, property-tech</td></tr>
+                    <tr><th scope="row">Location</th><td>London, UK</td></tr>
+                    <tr><th scope="row">Sectors</th><td>Healthcare, clinical research, government, aviation, retail, utilities</td></tr>
+                    <tr><th scope="row">Modes</th><td>Tech lead, principal engineer, consultant</td></tr>
+                    <tr><th scope="row">Origin</th><td>Graphic design, London</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-        <div class="experience-card">
-            <h3><a href="{{ experience.url }}">{{ experience.data.linkFriendlyTitle }}</a></h3>
-            <p>
-                {{ experience.data.intro }}
+    <div class="row sec" id="compatibility">
+        <div class="sec-label">
+            <p class="m">Section 1</p>
+            <h2>Compatibility</h2>
+            <p>Technologies used in recent roles.</p>
+        </div>
+        <div class="compat sec-body">
+            <div><h3>Cloud</h3><ul><li>Azure</li><li>AWS</li></ul></div>
+            <div><h3>Front end</h3><ul><li>React</li><li>Angular</li><li>Blazor</li><li>Next.js</li></ul></div>
+            <div><h3>Back end</h3><ul><li>C#.NET</li><li>ASP.NET MVC</li><li>Node.js</li></ul></div>
+            <div><h3>Data</h3><ul><li>SQL Server</li><li>Cosmos DB</li><li>MongoDB</li></ul></div>
+            <div><h3>Delivery</h3><ul><li>Docker</li><li>Kubernetes</li><li>GitHub Actions</li><li>Azure DevOps</li></ul></div>
+            <div><h3>Testing</h3><ul><li>Playwright</li><li>Jest</li><li>NUnit</li><li>SpecFlow</li></ul></div>
+        </div>
+    </div>
+
+    <div class="row sec" id="experience">
+        <div class="sec-label">
+            <p class="m">Section 2</p>
+            <h2>Revision history</h2>
+            <p>Experience, most recent first. More on
+                <a href="https://www.linkedin.com/in/andrewmacleodnottingham"
+                    target="_blank"
+                    rel="noopener">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a>.
             </p>
         </div>
-
-        {% endfor %}
+        <div class="sec-body">
+            <table class="rev">
+                <thead>
+                    <tr><th scope="col">Rev</th><th scope="col">Dates</th><th scope="col">Company</th><th scope="col">Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr class="current">
+                        <td class="rv"><span class="rev-mark">F</span></td>
+                        <td class="dt">2026 –</td>
+                        <th scope="row">Property-tech company<small>Principal engineer</small></th>
+                        <td class="ds">Principal Engineer at a property-tech company in London.</td>
+                    </tr>
+                    {% for experience in collections.experience | sort(attribute="data.order") %}
+                    <tr>
+                        <td class="rv"><span class="rev-mark">{{ experience.data.rev }}</span></td>
+                        <td class="dt">{{ experience.data.years }}</td>
+                        <th scope="row"><a href="{{ experience.url }}">{{ experience.data.shortTitle or experience.data.title }}</a><small>{{ experience.data.role }}</small></th>
+                        <td class="ds">{{ experience.data.intro }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</section>
 
-<section class="about">
-    <h2 id="about">About Me</h2>
-    <p>I like to cook, read, and play retro computer games.</p>
-</section>
-
-<section class="contact">
-    <h2 id="contact">Contact</h2>
-
-    <p>Feel free to get in touch.</p>
-
-    <form id="contact-form">
-
-        <div class="form-field">
-            <label for="email">Your email</label>
-            <input id="email" name="email" type="email"  maxlength="256" required>
+    <div class="row split">
+        <div class="cell" id="about">
+            <p class="m">Section 3</p>
+            <h2>Notes</h2>
+            <ol class="notes">
+                <li>Likes to cook.</li>
+                <li>Reads.</li>
+                <li>Plays retro computer games.</li>
+            </ol>
         </div>
-
-        <div class="form-field">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" maxlength="1000" required></textarea>
+        <div class="cell" id="interests">
+            <p class="m">Section 4</p>
+            <h2>Related documents</h2>
+            <ul class="related">
+                <li><a href="/interests/innellan-pier/">Innellan Pier: gallery and history <span aria-hidden="true">→</span></a></li>
+                <li><a href="/interests/">All interests <span aria-hidden="true">→</span></a></li>
+            </ul>
         </div>
+    </div>
 
-        <div class="turnstile-container">
-            <div
-                class="cf-turnstile"
-                data-sitekey="0x4AAAAAADmqC7wRlvnimFim"
-                data-size="flexible">
-            </div>
+    <div class="row order" id="contact">
+        <div class="cell intro">
+            <p class="m">Section 5</p>
+            <h2>Enquiries</h2>
+            <p>Feel free to get in touch.</p>
         </div>
+        <div class="cell">
+            <form id="contact-form">
 
-        <button type="submit">
-            Send
-        </button>
+                <label for="email">Your email</label>
+                <input id="email" name="email" type="email" maxlength="256" autocomplete="email" required>
 
-    </form>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" maxlength="1000" required></textarea>
 
-    <p id="contact-status" aria-live="polite"></p>
+                <div class="turnstile-container">
+                    <div
+                        class="cf-turnstile"
+                        data-sitekey="0x4AAAAAADmqC7wRlvnimFim"
+                        data-size="flexible">
+                    </div>
+                </div>
 
-    <script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer>
-    </script>
+                <button type="submit">Send enquiry</button>
 
-    <script>
+            </form>
 
-    document
-        .getElementById("contact-form")
-        .addEventListener("submit", async (e) => {
+            <p id="contact-status" aria-live="polite"></p>
+        </div>
+    </div>
 
-            e.preventDefault();
+</div>
 
-            const form = e.target;
-            const status = document.getElementById("contact-status");
+<script
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer>
+</script>
 
-            const token = document.querySelector(
-                'input[name="cf-turnstile-response"]'
-            )?.value;
+<script>
 
-            if (!token) {
-                status.textContent = "Please complete the verification.";
-                return;
-            }
+document
+    .getElementById("contact-form")
+    .addEventListener("submit", async (e) => {
 
-            status.textContent = "Sending...";
+        e.preventDefault();
 
-            try {
+        const form = e.target;
+        const status = document.getElementById("contact-status");
 
-                const response = await fetch(
-                    "https://api-email-worker.andrewmacleod-com.workers.dev",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            email: form.email.value,
-                            message: form.message.value,
-                            token: token
-                        })
-                    });
+        const token = document.querySelector(
+            'input[name="cf-turnstile-response"]'
+        )?.value;
 
-                const text = await response.text();
+        if (!token) {
+            status.textContent = "Please complete the verification.";
+            return;
+        }
 
-                if (response.ok) {
+        status.textContent = "Sending...";
 
-                    status.textContent = "Message sent.";
+        try {
 
-                    form.reset();
+            const response = await fetch(
+                "https://api-email-worker.andrewmacleod-com.workers.dev",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: form.email.value,
+                        message: form.message.value,
+                        token: token
+                    })
+                });
 
-                    if (window.turnstile) {
-                        turnstile.reset();
-                    }
+            const text = await response.text();
 
-                } else {
+            if (response.ok) {
 
-                    status.textContent = text;
+                status.textContent = "Message sent.";
 
+                form.reset();
+
+                if (window.turnstile) {
+                    turnstile.reset();
                 }
 
-            } catch (err) {
+            } else {
 
-                console.error(err);
-                status.textContent = "Network error.";
+                status.textContent = text;
 
             }
 
-        });
+        } catch (err) {
 
-    </script>
+            console.error(err);
+            status.textContent = "Network error.";
 
-</section>
+        }
 
+    });
+
+</script>
