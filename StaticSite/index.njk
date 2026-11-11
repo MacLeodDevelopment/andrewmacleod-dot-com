@@ -8,16 +8,23 @@ homePage: true
 <div class="sheet">
 
     <div class="row r-title">
-        <figure class="cell figure">
+        <div class="cell figure">
             <p class="m cell-label"><span>Fig. 1</span><span>Front view</span></p>
-            <div class="frame">
-                <img src="/images/andrew-macleod-profile-512.jpg"
-                    srcset="/images/andrew-macleod-profile-512.jpg 512w, /images/andrew-macleod-profile-360.jpg 360w, /images/andrew-macleod-profile-256.jpg 256w"
-                    sizes="(max-width: 900px) min(320px, 88vw), 540px"
-                    alt="Andrew MacLeod" width="540" height="540">
+            <div class="drawing">
+                <figure class="dwg">
+                    <span class="dim dim-h" aria-hidden="true"><span>1.0 unit</span></span>
+                    <span class="dim dim-v" aria-hidden="true"><span>1.0 unit</span></span>
+                    <div class="frame">
+                        <img src="/images/andrew-macleod-profile-512.jpg"
+                            srcset="/images/andrew-macleod-profile-512.jpg 512w, /images/andrew-macleod-profile-360.jpg 360w, /images/andrew-macleod-profile-256.jpg 256w"
+                            sizes="(max-width: 900px) min(320px, 88vw), 420px"
+                            alt="Andrew MacLeod" width="540" height="540">
+                    </div>
+                    <figcaption class="m">Andrew MacLeod, shown by the sea for scale.</figcaption>
+                </figure>
+                <p class="m dwg-note" aria-hidden="true"><span>Scale 1:10 ·</span> <span>Do not scale from drawing</span></p>
             </div>
-            <figcaption class="m">Andrew MacLeod, shown by the sea for scale.</figcaption>
-        </figure>
+        </div>
 
         <div class="cell title-cell">
             <p class="m cell-label"><span>Datasheet</span><span>Rev F · <span class="js-year"></span></span></p>

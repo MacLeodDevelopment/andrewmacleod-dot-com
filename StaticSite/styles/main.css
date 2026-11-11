@@ -427,6 +427,111 @@ h2 {
   margin: 0;
 }
 
+/* Fig. 1 is a drawing: a faint grid fills the whole cell, edge to edge, behind
+   the label, photo and caption, with dimension lines along the left and bottom of
+   the photo. This keeps the 50/50 split without the photo filling its half.
+   The drawing area (.drawing) starts level with the h1 and the photo is pinned
+   to its top, so the top of the photo lines up with the name. It stretches to
+   the height of the title cell, so the two halves end level. */
+.r-title .figure {
+  --grid: color-mix(in srgb, var(--hair) 55%, transparent);
+  display: flex;
+  flex-direction: column;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+}
+
+.drawing {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  row-gap: 1rem;
+  place-items: start center;
+  padding: 0 1.5rem 0.5rem;
+}
+
+.dwg {
+  --dim: 18px;
+  display: grid;
+  grid-template-columns: var(--dim) 1fr;
+  grid-template-rows: auto var(--dim) auto;
+  gap: 10px;
+  width: min(100%, calc(420px + var(--dim) + 10px));
+  margin: 0;
+}
+
+.dwg .frame {
+  grid-area: 1 / 2;
+}
+
+/* Dimension lines: end ticks from the borders, the line itself from ::before,
+   and the measurement on a panel-coloured background so it breaks the line. */
+.dim {
+  position: relative;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+
+.dim::before {
+  content: "";
+  position: absolute;
+  background: currentColor;
+}
+
+.dim span {
+  position: relative;
+  padding: 0 0.4rem;
+  background: var(--panel);
+  font: 400 0.62rem/1 var(--mono);
+  text-transform: uppercase;
+}
+
+.dim-h {
+  grid-area: 2 / 2;
+  border-inline: 1px solid currentColor;
+}
+
+.dim-h::before {
+  inset: 50% 0 auto;
+  height: 1px;
+}
+
+.dim-v {
+  grid-area: 1 / 1;
+  border-block: 1px solid currentColor;
+}
+
+.dim-v::before {
+  inset: 0 auto 0 50%;
+  width: 1px;
+}
+
+.dim-v span {
+  padding: 0.4rem 0;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Scale note: bottom right of the drawing, in normal flow so it always sits
+   below the caption and wraps on very narrow screens. The negative margin takes
+   it out to the cell's content edge, past the drawing's side padding. */
+.dwg-note {
+  justify-self: end;
+  margin-right: -1.5rem;
+  text-align: right;
+  font-size: 0.62rem;
+  color: var(--muted);
+}
+
+/* If it wraps, break between the two phrases, not inside one */
+.dwg-note span {
+  white-space: nowrap;
+}
+
 .frame {
   display: block;
   position: relative;
@@ -489,8 +594,11 @@ a.frame:focus-visible img {
   border-top: 0;
 }
 
-.figure figcaption {
-  margin-top: 0.75rem;
+/* Caption under the dimension line, in the photo's column so it lines up with
+   the photo's left edge */
+.dwg figcaption {
+  grid-area: 3 / 2;
+  margin-top: 0.25rem;
 }
 
 .title-cell {
@@ -1157,8 +1265,8 @@ body.gdesc-open.glightbox-mobile .glightbox-container .gslide-description {
     border-bottom: 1px solid var(--line);
   }
 
-  .r-title .frame {
-    max-width: 320px;
+  .r-title .dwg {
+    width: min(100%, calc(320px + var(--dim) + 10px));
   }
 
   .compat {
