@@ -553,9 +553,12 @@ h2 {
   cursor: pointer;
 }
 
-.view-toggle:hover {
-  color: var(--ink);
-  text-decoration-style: solid;
+/* Hover only where it's real, so a tap on a phone doesn't leave it stuck */
+@media (hover: hover) {
+  .view-toggle:hover {
+    color: var(--ink);
+    text-decoration-style: solid;
+  }
 }
 
 /* The rear photo sits over the front one and fades in. Both keep the frame's
@@ -569,6 +572,17 @@ h2 {
 
 #fig-view[data-view="rear"] .img-rear {
   opacity: 1;
+}
+
+/* Touch screens: a tap on the photo toggles colour (script in index.njk). The
+   class is on the figure, so it applies to both photos and survives the
+   Fig. 1 / Fig. 2 switch. No grey tap highlight on iOS. */
+#fig-view .frame {
+  -webkit-tap-highlight-color: transparent;
+}
+
+#fig-view.is-colour .frame img {
+  filter: none;
 }
 
 .frame {

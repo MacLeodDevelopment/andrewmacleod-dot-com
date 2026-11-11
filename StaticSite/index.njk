@@ -187,6 +187,19 @@ homePage: true
         front.setAttribute("aria-hidden", String(showRear));
         rear.setAttribute("aria-hidden", String(!showRear));
     });
+
+    // On touch, tapping the photo toggles colour (a mouse uses the CSS hover
+    // instead, so mouse clicks are ignored). The class is on the figure, not the
+    // photo, so the colour stays on when switching between Fig. 1 and Fig. 2.
+    // A scroll that starts on the photo cancels the pointer, so no click fires.
+    const frame = fig.querySelector(".frame");
+    let pointerType = "mouse";
+    frame.addEventListener("pointerdown", (e) => { pointerType = e.pointerType; });
+    frame.addEventListener("click", () => {
+        if (pointerType !== "mouse") {
+            fig.classList.toggle("is-colour");
+        }
+    });
 })();
 
 document
