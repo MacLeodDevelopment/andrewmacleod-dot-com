@@ -528,8 +528,47 @@ h2 {
 }
 
 /* If it wraps, break between the two phrases, not inside one */
-.dwg-note span {
+.dwg-note .nw {
   white-space: nowrap;
+}
+
+/* Front / rear view switch. #fig-view's data-view ("front" or "rear") picks the
+   label text, caption, scale note and photo; the inline script in index.njk
+   flips it when "Fig. 1" / "Fig. 2" is clicked. */
+#fig-view[data-view="front"] .v-rear,
+#fig-view[data-view="rear"] .v-front {
+  display: none;
+}
+
+.view-toggle {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.view-toggle:hover {
+  color: var(--ink);
+  text-decoration-style: solid;
+}
+
+/* The rear photo sits over the front one and fades in. Both keep the frame's
+   black and white filter and turn to colour on hover. */
+.frame .img-rear {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease, filter 0.3s ease;
+}
+
+#fig-view[data-view="rear"] .img-rear {
+  opacity: 1;
 }
 
 .frame {
