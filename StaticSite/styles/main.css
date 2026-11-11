@@ -420,7 +420,7 @@ h2 {
    HOME: TITLE BLOCK
 ----------------------------------------- */
 .row.r-title {
-  grid-template-columns: 1fr 1.1fr;
+  grid-template-columns: 1fr 1.6fr;
 }
 
 .figure {
