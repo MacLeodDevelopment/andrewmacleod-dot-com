@@ -8,21 +8,38 @@ homePage: true
 <div class="sheet">
 
     <div class="row r-title">
-        <div class="cell figure">
-            <p class="m cell-label"><span>Fig. 1</span><span>Front view</span></p>
+        <div class="cell figure" id="fig-view" data-view="front">
+            <p class="m cell-label">
+                <button type="button" class="view-toggle">
+                    <span class="v-front">Fig. 1<span class="sr-only">, show Fig. 2, rear view</span></span>
+                    <span class="v-rear">Fig. 2<span class="sr-only">, show Fig. 1, front view</span></span>
+                </button>
+                <span><span class="v-front">Front view</span><span class="v-rear">Rear view</span></span>
+            </p>
             <div class="drawing">
                 <figure class="dwg">
                     <span class="dim dim-h" aria-hidden="true"><span>1.0 unit</span></span>
                     <span class="dim dim-v" aria-hidden="true"><span>1.0 unit</span></span>
                     <div class="frame">
-                        <img src="/images/andrew-macleod-profile-512.jpg"
+                        <img class="img-front" src="/images/andrew-macleod-profile-512.jpg"
                             srcset="/images/andrew-macleod-profile-512.jpg 512w, /images/andrew-macleod-profile-360.jpg 360w, /images/andrew-macleod-profile-256.jpg 256w"
                             sizes="(max-width: 900px) min(320px, 88vw), 420px"
                             alt="Andrew MacLeod" width="540" height="540">
+                        <img class="img-rear" src="/images/andrew-macleod-rear-512.jpg"
+                            srcset="/images/andrew-macleod-rear-512.jpg 512w, /images/andrew-macleod-rear-360.jpg 360w, /images/andrew-macleod-rear-256.jpg 256w"
+                            sizes="(max-width: 900px) min(320px, 88vw), 420px"
+                            alt="Andrew MacLeod, seen from behind, walking along a beach" width="540" height="540"
+                            fetchpriority="low" aria-hidden="true">
                     </div>
-                    <figcaption class="m">Andrew MacLeod, shown by the sea for scale.</figcaption>
+                    <figcaption class="m">
+                        <span class="v-front">Andrew MacLeod, shown by the sea for scale.</span>
+                        <span class="v-rear">Andrew MacLeod, shown out of office.</span>
+                    </figcaption>
                 </figure>
-                <p class="m dwg-note" aria-hidden="true"><span>Scale 1:10 ·</span> <span>Do not scale from drawing</span></p>
+                <p class="m dwg-note" aria-hidden="true">
+                    <span class="v-front"><span class="nw">Scale 1:10 ·</span> <span class="nw">Do not scale from drawing</span></span>
+                    <span class="v-rear"><span class="nw">Scale 1:1000 ·</span> <span class="nw">Do not scale from drawing</span></span>
+                </p>
             </div>
         </div>
 
@@ -155,6 +172,35 @@ homePage: true
 </script>
 
 <script>
+
+// Fig. 1 / Fig. 2: the "Fig. 1" button swaps between the front and rear photos.
+// CSS shows the text and image for the current data-view; this keeps the hidden
+// photo out of the accessibility tree.
+(function () {
+    const fig = document.getElementById("fig-view");
+    const front = fig.querySelector(".img-front");
+    const rear = fig.querySelector(".img-rear");
+
+    fig.querySelector(".view-toggle").addEventListener("click", () => {
+        const showRear = fig.dataset.view !== "rear";
+        fig.dataset.view = showRear ? "rear" : "front";
+        front.setAttribute("aria-hidden", String(showRear));
+        rear.setAttribute("aria-hidden", String(!showRear));
+    });
+
+    // On touch, tapping the photo toggles colour (a mouse uses the CSS hover
+    // instead, so mouse clicks are ignored). The class is on the figure, not the
+    // photo, so the colour stays on when switching between Fig. 1 and Fig. 2.
+    // A scroll that starts on the photo cancels the pointer, so no click fires.
+    const frame = fig.querySelector(".frame");
+    let pointerType = "mouse";
+    frame.addEventListener("pointerdown", (e) => { pointerType = e.pointerType; });
+    frame.addEventListener("click", () => {
+        if (pointerType !== "mouse") {
+            fig.classList.toggle("is-colour");
+        }
+    });
+})();
 
 document
     .getElementById("contact-form")
