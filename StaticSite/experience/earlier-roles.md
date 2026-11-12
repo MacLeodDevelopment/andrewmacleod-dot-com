@@ -29,7 +29,7 @@ ASP.NET · SQL Server · HTML · CSS · JavaScript · Macromedia Flash · Java �
 
 ### Role 
 
-He designed and implemented several websites for Raleigh, including a shopping site, a B2B site and a number of micro-sites and intranet applications. He also assisted the graphic designers with the printed brochures when deadlines were tight. 
+Andrew designed and implemented several websites for Raleigh, including a shopping site, a B2B site and a number of micro-sites and intranet applications. He also assisted the graphic designers with the printed brochures when deadlines were tight. 
 
 ## Pershing / Credit Suisse First Boston 
 
@@ -39,4 +39,4 @@ ASP.NET · VBScript · HTML · CSS · JavaScript · Macromedia Flash · Photosho
 
 ### Role 
 
-He designed the corporate website and implemented a number of intranet sites. He also built online training applications and performed a variety of graphic design duties.
+Andrew designed the corporate website and implemented a number of intranet sites. He also built online training applications and performed a variety of graphic design duties.

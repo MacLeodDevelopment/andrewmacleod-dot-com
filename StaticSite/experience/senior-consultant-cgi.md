@@ -24,24 +24,24 @@ He also implemented a modern security solution in response to a hostile state-sp
 
 ## Senior Front-end Engineer for British Airways
 
-As a tight deadline approached, he was sent in to help a team build user interfaces as part of a large project to modernise the passenger experience.
+As a tight deadline approached, Andrew was sent in to help a team build user interfaces as part of a large project to modernise the passenger experience.
 
 ## Tech Lead for Everflow 
 
-He worked for a utility billing solutions company, building a new B2B and B2C solution. 
+Andrew worked for a utility billing solutions company, building a new B2B and B2C solution. 
 
 ## UK Government - Veterinary Medicines Directorate
 
-He worked as a tech lead and platform engineer, analysing, troubleshooting and simplifying a problematic, overly-complex system. 
+Andrew worked as a tech lead and platform engineer, analysing, troubleshooting and simplifying a problematic, overly-complex system. 
 
 ## Potter Clarkson
 
-He worked as a consultant engineer, fixing and modernising a broken application. 
+Andrew worked as a consultant engineer, fixing and modernising a broken application. 
 
 ## Kingspan
 
-He worked as tech lead, test lead and platform engineer, extending functionality of a customer-facing website and back office tools for designing complex insulation for the construction industry. 
+Andrew worked as tech lead, test lead and platform engineer, extending functionality of a customer-facing website and back office tools for designing complex insulation for the construction industry. 
 
 ## Frasers Group 
 
-He worked as a full stack software engineer, integrating an existing complex e-commerce platform with a third-party payment provider.
+Andrew worked as a full stack software engineer, integrating an existing complex e-commerce platform with a third-party payment provider.
