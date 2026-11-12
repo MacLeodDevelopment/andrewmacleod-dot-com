@@ -1435,6 +1435,71 @@ body.gdesc-open.glightbox-mobile .glightbox-container .gslide-description {
 }
 
 /* -----------------------------------------
+   EASTER EGG: click or tap the home page photo five times quickly
+   Two brief flickers (the page inverts and the ruled lines flash), then a stamp
+   over the photo. Two flashes stays under the three-flashes-a-second accessibility
+   limit. Under prefers-reduced-motion the script skips the flicker.
+----------------------------------------- */
+/* Fast taps on a phone could otherwise zoom the page */
+#fig-view .frame {
+  touch-action: manipulation;
+}
+
+/* The script adds .is-zapped twice, for a few frames each. The sheet's rules are drawn
+   with --line and --hair, so overriding those flashes every rule at once. */
+html.is-zapped {
+  --line: #ffffff;
+  --hair: var(--orange);
+}
+
+/* A white layer in "difference" mode inverts the page for the flash, in either colour
+   mode. It only exists while zapped, so normal page rendering is untouched. */
+html.is-zapped body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* Centred over the photo (inside .frame), wrapping to two lines on small photos */
+.quickening-stamp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: max-content;
+  max-width: 88%;
+  padding: 1rem 1.3rem;
+  background: var(--orange);
+  color: var(--on-orange);
+  outline: 2px solid var(--on-orange);
+  outline-offset: -7px;
+  font: 500 clamp(0.85rem, 2.6vw, 1.2rem)/1.3 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: center;
+  /* On a small photo it wraps; balance splits it evenly ("There can be / only one.") */
+  text-wrap: balance;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(-4deg) scale(1.25);
+  transition: opacity 0.15s ease, visibility 0.15s, transform 0.25s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+.quickening-stamp.is-shown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) rotate(-4deg) scale(1);
+}
+
+/* -----------------------------------------
    REDUCED MOTION
 ----------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
