@@ -930,6 +930,11 @@ table.rev td.ds {
   font-weight: 400;
 }
 
+/* A datasheet-style footnote at the end of a cell (used on the 404 page) */
+.page-note {
+  margin-top: 1.5rem;
+}
+
 /* Back link at the foot of inner pages */
 .back-link {
   display: inline-flex;
