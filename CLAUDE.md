@@ -18,6 +18,7 @@ StaticSite/                              The Eleventy project (all real work hap
   package.json                           Only dep: @11ty/eleventy ^3.1.6 (devDependency). No npm scripts.
   CNAME                                  "andrewmacleod.com" — passthrough-copied so the Pages repo keeps the custom domain
   index.njk                              Home page: datasheet title block, Compatibility, Revision history, Notes, Related documents, Enquiries (contact form)
+  404.njk                                Not-found page, output as /404.html (GitHub Pages serves it for any missing address). Highlander easter egg: "There can be only one page at this address, and this isn't it."
   _includes/layout.njk                   Base layout (head, header/nav, compact title block for inner pages, footer)
   _includes/experience-layout.njk        Extends layout.njk; detail panel (Rev, dates, role) beside the Markdown body
   _includes/gallery-layout.njk           Extends layout.njk; adds GLightbox (CDN) for photo galleries
@@ -88,6 +89,12 @@ The site is styled as an industrial product **datasheet**: a ruled panel (`.shee
 
 ### `experience-layout.njk`
 Chains to `layout.njk`. Outputs a `.row.sec`: a side panel with "Rev X", a Dates/Role table and a "← Revision history" link, and the Markdown body in `.cell.prose`.
+
+### `404.njk`
+Uses `layout.njk` like any inner page, with `permalink: 404.html` and `eleventyExcludeFromCollections: true`.
+- **Links must be absolute** (starting with `/`). GitHub Pages serves this file at whatever address was asked for, so a relative link would resolve against the wrong folder. The layout's own links and assets are already absolute.
+- A small inline script shows the requested address in the fault table, using `textContent` (never `innerHTML`, as it comes from the URL). `decodeURI` is wrapped in `try`, because a malformed address such as a stray `%` makes it throw.
+- `npx eleventy --serve` also serves it for missing pages, with a 404 status, so it can be tested locally. The dev server hangs on a malformed address (for example one containing `%E0`), which GitHub Pages doesn't.
 
 ### `gallery-layout.njk`
 Chains to `layout.njk` and sets `lightbox: true` in its front matter.

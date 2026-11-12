@@ -1,0 +1,49 @@
+---
+title: "Part not found"
+subtitle: "There can be only one page at this address, and this isn't it."
+label: "Datasheet · Error 404"
+metaTitle: "Page not found - Andrew MacLeod"
+metaDescription: "The page you asked for isn't on andrewmacleod.com."
+layout: layout.njk
+permalink: 404.html
+eleventyExcludeFromCollections: true
+---
+
+{#- GitHub Pages serves this file for any address that doesn't exist, at that address.
+    So every link here must be absolute (starting with /), never relative. -#}
+
+<div class="row sec">
+    <div class="sec-label">
+        <p class="m">Fault report</p>
+        <h2>Error 404</h2>
+        <p>The address may be mistyped, or the page may have moved.</p>
+        <p><a class="back-link" href="/"><span aria-hidden="true">←</span> Home</a></p>
+    </div>
+    <div class="cell">
+        <table class="specs">
+            <caption class="sr-only">Fault details</caption>
+            <tbody>
+                <tr><th scope="row">Fault code</th><td>404</td></tr>
+                <tr><th scope="row">Requested</th><td id="requested-path">This address</td></tr>
+                <tr><th scope="row">Status</th><td>Not found</td></tr>
+                <tr><th scope="row">Units at this address</th><td>0 · there can be only one</td></tr>
+                <tr><th scope="row">Suggested action</th><td>Try one of the pages below</td></tr>
+            </tbody>
+        </table>
+
+        <ul class="related">
+            <li><a href="/">Home <span aria-hidden="true">→</span></a></li>
+            <li><a href="/#experience">Revision history <span aria-hidden="true">→</span></a></li>
+            <li><a href="/interests/">Interests <span aria-hidden="true">→</span></a></li>
+            <li><a href="/#contact">Contact <span aria-hidden="true">→</span></a></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Show which address was asked for. textContent, never innerHTML: the path comes from the URL.
+    // decodeURI throws on a malformed address (such as a stray %), so fall back to it as typed.
+    let requested = location.pathname;
+    try { requested = decodeURI(requested); } catch { }
+    document.getElementById('requested-path').textContent = requested;
+</script>
