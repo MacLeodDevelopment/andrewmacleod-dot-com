@@ -21,9 +21,9 @@ Andrew led a team tasked with designing and releasing a mobile app for use in su
 
 ## Clinical Platform
 
-He designed and built solutions for a modern clinical platform which replaced existing legacy systems. This included a pluggable UI framework for other teams to develop against, and planning months of work across ten software teams. 
+Andrew designed and built solutions for a modern clinical platform which replaced existing legacy systems. This included a pluggable UI framework for other teams to develop against, and planning months of work across ten software teams. 
 
 
 ## Sensors
 
-He was recruited to Parexel to lead a team tasked with designing and building a system to capture data from portable and wearable clinical devices at scale. 
+Andrew was recruited to Parexel to lead a team tasked with designing and building a system to capture data from portable and wearable clinical devices at scale. 
