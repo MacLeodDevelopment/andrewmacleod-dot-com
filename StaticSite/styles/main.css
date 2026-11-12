@@ -707,6 +707,11 @@ table.specs th {
   color: var(--muted);
 }
 
+/* Long values (such as an address on the 404 page) wrap instead of widening the table */
+table.specs td {
+  overflow-wrap: anywhere;
+}
+
 /* -----------------------------------------
    INNER PAGES: COMPACT TITLE BLOCK
 ----------------------------------------- */
