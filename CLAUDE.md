@@ -170,6 +170,8 @@ The current role (Principal Engineer at a London-based property-tech company, wo
 - British English in content.
 - **Where Andrew is (keep copy consistent):** he's from Nottingham and lives there. His first job (graphic design for a financial company) was in London. His current role is with a London-based property-tech company, working remotely from Nottingham. Don't describe him as London-based or living in London. This applies to the mock-ups in `Design/design-concepts/` too.
 - Line endings: `core.autocrlf=true`, so files are LF in the repo and CRLF in the working tree. When editing files with scripts, keep CRLF consistent. A stray lone `\r` makes git treat the file as binary.
+  - In Git Bash, `sed -i` strips the `\r`s (the whole file ends up LF), and `grep -c $'\r'` always reports 0 because grep drops CRs. Count them with `tr -cd '\r' < file | wc -c`, and fix a file with `unix2dos file`.
+  - If a file shows as modified but `git diff` is empty, only its line endings changed. `git checkout -- file` rewrites it as CRLF.
 - Commit messages are short and imperative ("Update text", "Add CNAME").
 
 ## Known quirks / possible improvements (not yet fixed)

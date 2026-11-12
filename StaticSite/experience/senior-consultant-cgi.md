@@ -18,7 +18,7 @@ Azure · Blazor · C#.NET · React.js · Angular · Amazon Web Services (AWS) ·
 
 ## Tech Lead for United Health Group (Optum) 
 
-Andrew worked as a tech and team lead for a software team, modernising a legacy product.
+Andrew was tech and team lead for a software team modernising a legacy product.
 
 He also implemented a modern security solution in response to a hostile state-sponsored cyber attack.
 
@@ -28,20 +28,20 @@ As a tight deadline approached, Andrew was sent in to help a team build user int
 
 ## Tech Lead for Everflow 
 
-Andrew worked for a utility billing solutions company, building a new B2B and B2C solution. 
+Andrew led the build of a new B2B and B2C solution for a utility billing solutions company. 
 
 ## UK Government - Veterinary Medicines Directorate
 
-Andrew worked as a tech lead and platform engineer, analysing, troubleshooting and simplifying a problematic, overly-complex system. 
+Andrew took on the tech lead and platform engineer roles, analysing, troubleshooting and simplifying a problematic, overly complex system. 
 
 ## Potter Clarkson
 
-Andrew worked as a consultant engineer, fixing and modernising a broken application. 
+Andrew was brought in as a consultant engineer to fix and modernise a broken application. 
 
 ## Kingspan
 
-Andrew worked as tech lead, test lead and platform engineer, extending functionality of a customer-facing website and back office tools for designing complex insulation for the construction industry. 
+Andrew covered tech lead, test lead and platform engineering, extending a customer-facing website and the back-office tools used to design complex insulation for the construction industry. 
 
 ## Frasers Group 
 
-Andrew worked as a full stack software engineer, integrating an existing complex e-commerce platform with a third-party payment provider.
+Andrew integrated an existing, complex e-commerce platform with a third-party payment provider, working as a full stack software engineer.
