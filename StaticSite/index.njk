@@ -30,6 +30,7 @@ homePage: true
                             sizes="(max-width: 900px) min(320px, 88vw), 420px"
                             alt="Andrew MacLeod, seen from behind, walking along a beach" width="540" height="540"
                             fetchpriority="low" aria-hidden="true">
+                        <span class="quickening-stamp" role="status" aria-live="polite"></span>
                     </div>
                     <figcaption class="m">
                         <span class="v-front">Andrew MacLeod, shown by the sea for scale.</span>
@@ -200,6 +201,59 @@ homePage: true
             fig.classList.toggle("is-colour");
         }
     });
+
+    // Easter egg: five quick clicks or taps on the photo. Two brief flickers, then a
+    // stamp over the photo. Two flashes stays under the three-flashes-a-second
+    // accessibility limit, and with reduced motion it's just the stamp.
+    const stamp = fig.querySelector(".quickening-stamp");
+    const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    const flicker = [0, 70, 300, 360]; // ms from the start: on, off, on, off
+    let clicks = [];
+    let striking = false;
+    let hideTimer;
+
+    frame.addEventListener("click", () => {
+        const now = Date.now();
+        clicks = clicks.filter((at) => now - at < 1500);
+        clicks.push(now);
+        if (clicks.length >= 5) {
+            clicks = [];
+            strike();
+        }
+    });
+
+    // The stamp sits inside the photo, so a click on it would count as a photo click.
+    stamp.addEventListener("click", (e) => {
+        e.stopPropagation();
+        hide();
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") hide();
+    });
+
+    function strike() {
+        if (striking) return;
+        clearTimeout(hideTimer);
+        hide();
+        if (reduceMotion.matches) return show();
+        striking = true;
+        const root = document.documentElement;
+        flicker.forEach((at, i) => setTimeout(() => root.classList.toggle("is-zapped", i % 2 === 0), at));
+        setTimeout(() => {
+            striking = false;
+            show();
+        }, 650);
+    }
+
+    function show() {
+        stamp.textContent = "There can be only one.";
+        stamp.classList.add("is-shown");
+        hideTimer = setTimeout(hide, 4000);
+    }
+
+    function hide() {
+        stamp.classList.remove("is-shown");
+    }
 })();
 
 document
