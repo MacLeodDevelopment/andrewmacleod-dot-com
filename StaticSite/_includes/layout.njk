@@ -12,14 +12,15 @@
   <link rel="preload" href="/fonts/schibsted-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin>
 
+  {% if lightbox %}
+  <!-- PhotoSwipe's stylesheet comes first, so the overrides in main.css win. -->
+  <link rel="stylesheet" href="/vendor/photoswipe/photoswipe.css">
+  {% endif %}
+
   <!-- Render-blocking on purpose: the browser waits for the stylesheet before its first
        paint, so visitors never see the page unstyled. It's small and cached after the
        first visit. -->
   <link rel="stylesheet" href="/styles/main.css">
-
-  {% if lightbox %}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox@3.3.1/dist/css/glightbox.min.css" />
-  {% endif %}
 </head>
 
 <body>
