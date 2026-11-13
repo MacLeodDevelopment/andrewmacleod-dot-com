@@ -15,13 +15,13 @@ Design/                                  NOT built or deployed — reference onl
   design-concepts/                       Ten standalone redesign mock-ups plus a vote page (index.html). Concept 10 ("Spec Sheet") is the design the live site now uses. Image paths are relative to StaticSite/, so open them from the repo.
 StaticSite/                              The Eleventy project (all real work happens here)
   .eleventy.js                           Config
-  package.json                           Only dep: @11ty/eleventy ^3.1.6 (devDependency). No npm scripts.
+  package.json                           devDependencies: @11ty/eleventy ^3.1.6, and photoswipe 5.4.4 (pinned exactly, as it's served to visitors). No npm scripts.
   CNAME                                  "andrewmacleod.com" — passthrough-copied so the Pages repo keeps the custom domain
   index.njk                              Home page: datasheet title block, Compatibility, Revision history, Notes, Related documents, Enquiries (contact form)
   404.njk                                Not-found page, output as /404.html (GitHub Pages serves it for any missing address). Plain, factual copy, with one deadpan Highlander easter egg: a footnote, "Note 1 · There can be only one."
   _includes/layout.njk                   Base layout (head, header/nav, compact title block for inner pages, footer)
   _includes/experience-layout.njk        Extends layout.njk; detail panel (Rev, dates, role) beside the Markdown body
-  _includes/gallery-layout.njk           Extends layout.njk; adds PhotoSwipe (CDN) for photo galleries
+  _includes/gallery-layout.njk           Extends layout.njk; adds PhotoSwipe (self-hosted from /vendor/) for photo galleries
   experience/*.md                        One page per job → `experience` collection
   experience/experience.json             Directory data: layout: experience-layout.njk, tags: ["experience"]
   interests/index.njk                    Interests landing page (hand-written gallery-style cards)
@@ -49,6 +49,7 @@ StaticSite/                              The Eleventy project (all real work hap
 
 - `dir`: input `.`, includes `_includes`, output `_site`. There is no `_data/` directory.
 - Passthrough copies: `styles`, `images`, `fonts`, `interests/**/*.jpg`, `cheeky.htm`, `CNAME`.
+- **Third-party code is self-hosted, not loaded from a CDN** (Andrew's preference). It's installed with npm and copied from `node_modules` into `/vendor/<package>/` by an `addPassthroughCopy` mapping, along with its licence as `LICENSE.txt`. CI's `npm ci` installs it, so nothing under `node_modules` is committed. Currently only PhotoSwipe. Turnstile is the exception: Cloudflare requires it to load from `challenges.cloudflare.com`.
 - **Adding a new gallery's images**: `.jpg` files under `interests/**` are copied automatically. Other extensions (`.png`, `.webp`, …) or image folders elsewhere need a new `addPassthroughCopy` line.
 - `.md` and `.html` files anywhere under `StaticSite/` are rendered as templates. That's why the fonts note is `README.txt`, not `.md`.
 - `.md` files are processed with Liquid as the template engine (Eleventy default). `.njk` files use Nunjucks.
@@ -106,7 +107,7 @@ Uses `layout.njk` like any inner page, with `permalink: 404.html` and `eleventyE
 Chains to `layout.njk` and sets `lightbox: true` in its front matter. The photo viewer is **PhotoSwipe 5** (MIT), which replaced GLightbox in Nov 2026 because GLightbox's zoom and captions were poor on small screens.
 - When `lightbox` is true, `layout.njk` adds the PhotoSwipe stylesheet to `<head>`, **before** `main.css`, so our overrides win without `!important`.
 - `gallery-layout.njk` has one inline `<script type="module">`. It imports `PhotoSwipeLightbox` and points it at `.gallery-grid` > `a`. The core (`photoswipe.esm.min.js`) is only downloaded when a photo is first opened. Without JavaScript, each card simply links to the full-size photo.
-- All three files come from jsDelivr's npm path, pinned to `photoswipe@5.4.4`. When upgrading, change the version in both `layout.njk` and `gallery-layout.njk`.
+- All three files are served from `/vendor/photoswipe/`, copied from `node_modules/photoswipe/dist/` by `.eleventy.js`. To upgrade, run `npm install --save-dev --save-exact photoswipe@<version>` in `StaticSite/`; the templates don't change.
 - PhotoSwipe needs each photo's size up front, so every card has `data-pswp-width` and `data-pswp-height`. They come from `width` and `height` in the gallery's photos array.
 - **Caption:** our own UI element (`pswp.ui.registerElement`, name `caption`, appended to the root).
   - A bar along the bottom (`.pswp-bar`) shows `data-title` and a More/Less button (`aria-expanded`). More opens a scrollable panel (`.pswp-panel`) above the bar with `data-description`, split into paragraphs at its line breaks and set with `textContent`.
@@ -185,7 +186,7 @@ The current role (Principal Engineer at a London-based property-tech company, wo
   - Screen-reader text uses `.sr-only`, e.g. "(opens in a new tab)" on external links. External links use `target="_blank" rel="noopener"`.
   - Use semantic sections with `id`s as nav anchors (`#experience`, `#about`, `#contact`).
 - Performance and CLS matter. Images need explicit `width`/`height` and `srcset`, gallery thumbnails need `loading="lazy"`, fonts are self-hosted and preloaded, and the one stylesheet loads render-blocking so there's no flash of unstyled content.
-- No front-end framework or bundler. Keep JS inline and minimal; CDN libraries only when needed (PhotoSwipe, Turnstile).
+- No front-end framework or bundler. Keep JS inline and minimal; third-party libraries only when needed, self-hosted from `/vendor/` (PhotoSwipe). Turnstile is the one script loaded from elsewhere.
 - British English in content.
 - **Where Andrew is (keep copy consistent):** he's from Nottingham and lives there. His first job (graphic design for a financial company) was in London. His current role is with a London-based property-tech company, working remotely from Nottingham. Don't describe him as London-based or living in London. This applies to the mock-ups in `Design/design-concepts/` too.
 - Line endings: `core.autocrlf=true`, so files are LF in the repo and CRLF in the working tree. When editing files with scripts, keep CRLF consistent. A stray lone `\r` makes git treat the file as binary.

@@ -5,11 +5,12 @@ lightbox: true
 
 {{ content | safe }}
 
-<!-- PhotoSwipe photo viewer. Its stylesheet is added in layout.njk's <head> when
-     lightbox is true; keep both versions the same when upgrading. Without JavaScript,
-     each card simply links to the full-size photo. -->
+<!-- PhotoSwipe photo viewer, served from /vendor/ (copied from node_modules by
+     .eleventy.js; the version is pinned in package.json). Its stylesheet is added in
+     layout.njk's <head> when lightbox is true. Without JavaScript, each card simply
+     links to the full-size photo. -->
 <script type="module">
-import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
+import PhotoSwipeLightbox from '/vendor/photoswipe/photoswipe-lightbox.esm.min.js';
 
 const arrow = (d) => `<svg aria-hidden="true" class="pswp__icn" viewBox="0 0 32 32" width="32" height="32"><path d="${d}"/></svg>`;
 
@@ -21,7 +22,7 @@ const lightbox = new PhotoSwipeLightbox({
   gallery: '.gallery-grid',
   children: 'a',
   // The viewer itself only downloads when a photo is first opened.
-  pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js'),
+  pswpModule: () => import('/vendor/photoswipe/photoswipe.esm.min.js'),
   bgOpacity: 1,
   showHideAnimationType: 'fade',
   arrowPrevSVG: arrow('M19.5 7l2.1 2.1-6.9 6.9 6.9 6.9-2.1 2.1-9-9z'),
