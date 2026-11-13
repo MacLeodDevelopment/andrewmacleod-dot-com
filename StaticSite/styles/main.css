@@ -123,8 +123,8 @@ a:hover {
   outline-offset: 2px;
 }
 
-/* GLightbox sizes its own images, so leave them alone */
-img:not(.gslide-image img) {
+/* PhotoSwipe sizes its own images, so leave them alone */
+img:not(.pswp img) {
   display: block;
   max-width: 100%;
   height: auto;
@@ -1174,139 +1174,175 @@ a[target="_blank"][href^="http"]:focus-visible::after {
 }
 
 /* -----------------------------------------
-   GLIGHTBOX THEME OVERRIDES (glightbox@3.3.1)
+   PHOTO VIEWER (photoswipe@5.4.4)
+   Script and caption markup: _includes/gallery-layout.njk.
+   PhotoSwipe's stylesheet loads before this one, so equal selectors win.
 ----------------------------------------- */
-.goverlay {
-  background: #0a0a0a !important;
+.pswp {
+  --pswp-bg: #0a0a0a;
+  --pswp-icon-color: var(--on-orange);
+  --pswp-icon-color-secondary: var(--orange);
+  --pswp-icon-stroke-width: 0;
 }
 
-/* Caption panel follows the site's light/dark tokens */
-.gslide-description {
-  background: var(--panel) !important;
-  color: var(--ink) !important;
-  max-height: 140px;
-  overflow-y: auto !important;
-  overscroll-behavior: contain;
-  border-top: 2px solid var(--orange);
-  transition: opacity 0.2s ease;
-
-  /* Fades the bottom edge to signal that the text scrolls */
-  -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
-}
-
-.gslide-description::-webkit-scrollbar {
-  width: 6px;
-}
-
-.gslide-description::-webkit-scrollbar-thumb {
-  background-color: var(--hair);
-}
-
-.gslide-title {
-  font-family: var(--sans) !important;
-  font-size: 1.05rem !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.01em;
-  color: var(--ink) !important;
-  margin-bottom: 0.4rem !important;
-}
-
-.gslide-desc {
-  font-family: var(--sans) !important;
-  font-size: 0.95rem !important;
-  line-height: 1.55 !important;
-  color: var(--muted) !important;
-  opacity: 1 !important;
-  white-space: pre-line; /* keeps the \n line breaks in full_desc */
-}
-
-/* Square orange controls, visible on the dark overlay in both colour modes */
-.gbtn.gnext,
-.gbtn.gprev,
-.gbtn.gclose {
-  background-color: var(--orange) !important;
-  border-radius: 0 !important;
+/* Square orange buttons, visible on the dark backdrop in both colour modes */
+.pswp .pswp__button--close,
+.pswp .pswp__button--zoom,
+.pswp .pswp__button--arrow {
+  width: 44px;
+  height: 44px;
+  background: var(--orange);
   opacity: 1;
 }
 
-.gbtn.gnext:hover,
-.gbtn.gprev:hover,
-.gbtn.gclose:hover {
-  background-color: #ffffff !important;
+.pswp .pswp__button--close,
+.pswp .pswp__button--zoom {
+  margin: 8px 8px 0 0;
 }
 
-.gbtn.gnext path,
-.gbtn.gprev path,
-.gbtn.gclose path {
-  fill: var(--on-orange) !important;
+.pswp .pswp__button .pswp__icn {
+  top: 6px;
+  left: 6px;
 }
 
-.gbtn.disabled {
-  opacity: 0.35 !important;
+.pswp .pswp__button--arrow {
+  margin-top: -22px;
 }
 
-/* GLightbox sets overflow: hidden on html and body while open, and only
-   applies height: auto from 769px. Apply it at all widths so the page keeps
-   its scroll position on small screens when the lightbox closes. */
-.glightbox-open {
-  height: auto;
+.pswp .pswp__button--arrow--prev {
+  left: 14px;
 }
 
-/* While an image is pinch-zoomed (GLightbox writes scale3d into its inline
-   style), hide the caption and undim the image so the text doesn't cover it. */
-.gslide:has(.gslide-image img[style*="scale3d"]) .gslide-description {
+.pswp .pswp__button--arrow--next {
+  right: 14px;
+}
+
+.pswp .pswp__button--arrow .pswp__icn {
+  right: auto;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  transform: none;
+}
+
+@media (hover: hover) {
+  .pswp .pswp__button:hover {
+    background: #ffffff;
+  }
+}
+
+.pswp .pswp__button:disabled {
+  opacity: 0.35;
+}
+
+.pswp .pswp__preloader .pswp__icn {
+  fill: var(--orange);
+}
+
+.pswp .pswp__counter {
+  height: 44px;
+  margin: 8px 0 0 12px;
+  font: 400 0.72rem/44px var(--mono);
+  letter-spacing: 0.04em;
+  color: #f5f5f2;
+  text-shadow: none;
+  opacity: 1;
+}
+
+/* Caption: a bar with the title and a More button, and a panel above it
+   with the photo's history. It follows the site's light/dark tokens. */
+.pswp__caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: var(--ink);
+}
+
+.pswp-bar,
+.pswp-panel {
+  /* Full width, with the text kept to a readable column */
+  padding-inline: max(1rem, calc((100% - 46rem) / 2));
+  background: var(--panel);
+}
+
+.pswp-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 0.6rem calc(0.6rem + env(safe-area-inset-bottom, 0px));
+  border-top: 2px solid var(--orange);
+}
+
+.pswp__caption.is-open .pswp-bar {
+  border-top: 1px solid var(--hair);
+}
+
+.pswp-title {
+  flex: 1;
+  margin: 0;
+  font: 700 1rem/1.35 var(--sans);
+  letter-spacing: -0.01em;
+}
+
+.pswp-more {
+  flex: none;
+  min-width: 4.5rem;
+  min-height: 40px;
+  padding: 0 0.8rem;
+  font: 500 0.7rem/1 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .pswp-more:hover {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: var(--on-orange);
+  }
+}
+
+.pswp-panel {
+  max-height: min(55vh, 28rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+  padding-block: 1rem 0.4rem;
+  border-top: 2px solid var(--orange);
+  scrollbar-width: thin;
+  scrollbar-color: var(--hair) transparent;
+}
+
+.pswp-panel p {
+  margin: 0 0 0.8em;
+  font: 400 0.95rem/1.6 var(--sans);
+  color: var(--ink);
+}
+
+/* Phones on their side have little height, so the panel may take more of it */
+@media (max-height: 500px) {
+  .pswp-panel {
+    max-height: 65vh;
+  }
+}
+
+/* Hidden while the photo is zoomed in (set by the script) */
+.pswp .pswp__caption.is-hidden {
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
-.gslide:has(.gslide-image img[style*="scale3d"]) .gslide-media {
-  opacity: 1;
-}
-
-/* Small-screen layout. At 768px wide and below, on any device (including
-   iPads and narrow desktop windows), GLightbox adds .glightbox-mobile to the
-   body and positions the caption over the bottom of the image, letting it
-   grow to 78vh. Cap the caption at 38vh and reserve that space below the
-   image, so the image sits above the caption instead of under it.
-   GLightbox's stylesheet loads after ours, so these selectors start with
-   body to outrank its rules of the same shape. */
-body.glightbox-mobile .glightbox-container .ginner-container {
-  padding-bottom: 38vh;
-}
-
-body.glightbox-mobile .glightbox-container .gslide-image img {
-  max-height: calc(62vh - 16px);
-}
-
-body.glightbox-mobile .glightbox-container .gslide-description {
-  max-height: 38vh;
-  padding: 0 0 env(safe-area-inset-bottom, 0) !important;
-  /* The caption fills the bottom of the screen, so a fade would show the
-     page through it. It scrolls instead. */
-  -webkit-mask-image: none;
-  mask-image: none;
-}
-
-body.glightbox-mobile .glightbox-container .gdesc-inner {
-  padding: 16px 18px !important;
-}
-
-/* Phones get a shortened caption with a "See more" toggle, which GLightbox
-   colours white. Make it readable on the caption panel. */
-body.glightbox-mobile .glightbox-container .gslide-desc .desc-more {
-  color: var(--ink) !important;
-  opacity: 1 !important;
-  font-weight: 700;
-  text-decoration: underline;
-  text-decoration-color: var(--orange);
-  text-decoration-thickness: 2px;
-}
-
-/* After "See more", let the caption take most of the screen, as GLightbox
-   intends. It dims the image behind it while open. */
-body.gdesc-open.glightbox-mobile .glightbox-container .gslide-description {
-  max-height: 78vh;
+@media (forced-colors: active) {
+  .pswp .pswp__button,
+  .pswp-bar {
+    border: 1px solid CanvasText;
+  }
 }
 
 /* -----------------------------------------

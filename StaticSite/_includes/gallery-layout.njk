@@ -5,23 +5,114 @@ lightbox: true
 
 {{ content | safe }}
 
-<!-- Include GLightbox Script (styles are added in layout.njk <head> when lightbox is true) -->
-<script src="https://cdn.jsdelivr.net/npm/glightbox@3.3.1/dist/js/glightbox.min.js"></script>
-<script>
-const lightbox = GLightbox({
-  selector: '.glightbox',
-  zoomable: true
+<!-- PhotoSwipe photo viewer. Its stylesheet is added in layout.njk's <head> when
+     lightbox is true; keep both versions the same when upgrading. Without JavaScript,
+     each card simply links to the full-size photo. -->
+<script type="module">
+import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js';
+
+const arrow = (d) => `<svg aria-hidden="true" class="pswp__icn" viewBox="0 0 32 32" width="32" height="32"><path d="${d}"/></svg>`;
+
+// The caption bar along the bottom (title and a More button). The image is
+// sized to fit above it, so the caption never covers the photo.
+let bar = null;
+
+const lightbox = new PhotoSwipeLightbox({
+  gallery: '.gallery-grid',
+  children: 'a',
+  // The viewer itself only downloads when a photo is first opened.
+  pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.min.js'),
+  bgOpacity: 1,
+  showHideAnimationType: 'fade',
+  arrowPrevSVG: arrow('M19.5 7l2.1 2.1-6.9 6.9 6.9 6.9-2.1 2.1-9-9z'),
+  arrowNextSVG: arrow('M12.5 7l-2.1 2.1 6.9 6.9-6.9 6.9 2.1 2.1 9-9z'),
+  paddingFn: (viewport) => {
+    const sideArrows = viewport.x > 900;
+    return {
+      top: viewport.y > 500 ? 60 : 0, // clear of the counter and buttons
+      bottom: bar ? bar.offsetHeight : 0,
+      left: sideArrows ? 72 : 0,
+      right: sideArrows ? 72 : 0,
+    };
+  },
 });
 
-// GLightbox treats a drag that starts on the caption's title or padding as a
-// swipe, and closes the lightbox when it's vertical. Keep touches inside the
-// caption away from its swipe handler so the caption can be scrolled.
-lightbox.on('slide_after_load', ({ slideNode }) => {
-  const caption = slideNode.querySelector('.gslide-description');
-  if (!caption) return;
+// Split the description into paragraphs at its line breaks.
+const paragraphs = (text) =>
+  text.split('\n').map((line) => line.trim()).filter(Boolean).map((line) => {
+    const p = document.createElement('p');
+    p.textContent = line;
+    return p;
+  });
 
-  ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(type => {
-    caption.addEventListener(type, event => event.stopPropagation(), { passive: true });
+lightbox.on('uiRegister', () => {
+  const pswp = lightbox.pswp;
+
+  pswp.ui.registerElement({
+    name: 'caption',
+    appendTo: 'root',
+    onInit: (el) => {
+      el.innerHTML = `
+        <div class="pswp-panel" id="pswp-panel" role="region" aria-label="About this photo" tabindex="0" hidden></div>
+        <div class="pswp-bar">
+          <p class="pswp-title"></p>
+          <button type="button" class="pswp-more" aria-expanded="false" aria-controls="pswp-panel">More</button>
+        </div>`;
+      const panel = el.querySelector('.pswp-panel');
+      const title = el.querySelector('.pswp-title');
+      const more = el.querySelector('.pswp-more');
+      bar = el.querySelector('.pswp-bar');
+      let barHeight = 0;
+
+      const setOpen = (open) => {
+        panel.hidden = !open;
+        more.textContent = open ? 'Less' : 'More';
+        more.setAttribute('aria-expanded', String(open));
+        el.classList.toggle('is-open', open);
+      };
+      more.addEventListener('click', () => setOpen(panel.hidden));
+
+      // PhotoSwipe cancels every wheel event on its root, which would stop the
+      // panel scrolling with a mouse wheel. Keep them away from it.
+      el.addEventListener('wheel', (e) => e.stopPropagation());
+
+      pswp.on('change', () => {
+        const { title: text = '', description = '' } = pswp.currSlide.data.element?.dataset ?? {};
+        title.textContent = text;
+        panel.replaceChildren(...paragraphs(description));
+        panel.scrollTop = 0;
+        more.hidden = !description;
+        if (!description) setOpen(false);
+
+        // A longer title can wrap onto another line. Resize the photo to fit.
+        if (bar.offsetHeight !== barHeight) {
+          barHeight = bar.offsetHeight;
+          pswp.updateSize(true);
+        }
+      });
+
+      // Hide the caption while the photo is zoomed in, so it doesn't cover it.
+      pswp.on('zoomPanUpdate', ({ slide }) => {
+        if (slide === pswp.currSlide) {
+          el.classList.toggle('is-hidden', slide.currZoomLevel > slide.zoomLevels.initial * 1.01);
+        }
+      });
+
+      pswp.on('keydown', (e) => {
+        const key = e.originalEvent.key;
+        if (key === 'Escape' && !panel.hidden) {
+          // Esc closes the panel first, then the viewer.
+          e.preventDefault();
+          setOpen(false);
+          more.focus();
+        } else if (panel.contains(document.activeElement) && /^(ArrowUp|ArrowDown|PageUp|PageDown|Home|End)$/.test(key)) {
+          // Let these keys scroll the panel instead of panning the photo.
+          e.preventDefault();
+        }
+      });
+    },
   });
 });
+
+lightbox.init();
 </script>

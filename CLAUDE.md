@@ -21,7 +21,7 @@ StaticSite/                              The Eleventy project (all real work hap
   404.njk                                Not-found page, output as /404.html (GitHub Pages serves it for any missing address). Plain, factual copy, with one deadpan Highlander easter egg: a footnote, "Note 1 · There can be only one."
   _includes/layout.njk                   Base layout (head, header/nav, compact title block for inner pages, footer)
   _includes/experience-layout.njk        Extends layout.njk; detail panel (Rev, dates, role) beside the Markdown body
-  _includes/gallery-layout.njk           Extends layout.njk; adds GLightbox (CDN) for photo galleries
+  _includes/gallery-layout.njk           Extends layout.njk; adds PhotoSwipe (CDN) for photo galleries
   experience/*.md                        One page per job → `experience` collection
   experience/experience.json             Directory data: layout: experience-layout.njk, tags: ["experience"]
   interests/index.njk                    Interests landing page (hand-written gallery-style cards)
@@ -103,17 +103,22 @@ Uses `layout.njk` like any inner page, with `permalink: 404.html` and `eleventyE
 - `npx eleventy --serve` also serves it for missing pages, with a 404 status, so it can be tested locally. The dev server hangs on a malformed address (for example one containing `%E0`), which GitHub Pages doesn't.
 
 ### `gallery-layout.njk`
-Chains to `layout.njk` and sets `lightbox: true` in its front matter.
-- When `lightbox` is true, `layout.njk` adds the GLightbox stylesheet to `<head>`.
-- `gallery-layout.njk` loads the GLightbox script after the content and initialises it with `GLightbox({ selector: '.glightbox', zoomable: true })`.
-- Both files come from jsDelivr's npm path, pinned to `glightbox@3.3.1`. When upgrading, change the version in both `layout.njk` and `gallery-layout.njk`.
-- Workarounds. They rely on GLightbox 3.3.1 internals, so retest on a phone and at in-between widths after any upgrade.
-  - **Swipe-to-close from the caption:** GLightbox's swipe handler only ignores touches that start inside `.gslide-desc`. A vertical drag that starts on the caption's title or padding closes the lightbox. Fixed in `gallery-layout.njk`: on `slide_after_load`, touch events are stopped from propagating out of `.gslide-description`.
-  - **Caption over a zoomed image:** pinch zoom writes `scale3d(...)` into the image's inline style. CSS in `main.css` uses `.gslide:has(img[style*="scale3d"])` to hide the caption and undim the image while zoomed. Click zoom adds `.zoomed`, and GLightbox hides the caption itself.
-  - **Small-screen layout:** at ≤768px wide, on any device (phones, iPads, narrow desktop windows), GLightbox adds `body.glightbox-mobile` and positions the caption over the bottom of the image, up to 78vh. `main.css` caps the caption at 38vh and reserves that space under the image (`padding-bottom` on `.ginner-container`, `max-height` on the image), so they never overlap. After "See more", `body.gdesc-open` lets it grow to 78vh again. These selectors start with `body` because GLightbox's stylesheet loads after ours and would otherwise win.
-  - **"See more" link:** on phones GLightbox shortens long captions and colours the toggle white. `main.css` recolours `.desc-more`.
-  - **Controls:** the prev/next/close buttons are orange squares with dark icons, so they show on the dark overlay in both colour modes.
-  - **Scroll position lost on close:** `.glightbox-open { height: auto }` in `main.css` is kept at all widths. GLightbox sets `overflow: hidden` while open and only applies `height: auto` from 769px.
+Chains to `layout.njk` and sets `lightbox: true` in its front matter. The photo viewer is **PhotoSwipe 5** (MIT), which replaced GLightbox in Nov 2026 because GLightbox's zoom and captions were poor on small screens.
+- When `lightbox` is true, `layout.njk` adds the PhotoSwipe stylesheet to `<head>`, **before** `main.css`, so our overrides win without `!important`.
+- `gallery-layout.njk` has one inline `<script type="module">`. It imports `PhotoSwipeLightbox` and points it at `.gallery-grid` > `a`. The core (`photoswipe.esm.min.js`) is only downloaded when a photo is first opened. Without JavaScript, each card simply links to the full-size photo.
+- All three files come from jsDelivr's npm path, pinned to `photoswipe@5.4.4`. When upgrading, change the version in both `layout.njk` and `gallery-layout.njk`.
+- PhotoSwipe needs each photo's size up front, so every card has `data-pswp-width` and `data-pswp-height`. They come from `width` and `height` in the gallery's photos array.
+- **Caption:** our own UI element (`pswp.ui.registerElement`, name `caption`, appended to the root).
+  - A bar along the bottom (`.pswp-bar`) shows `data-title` and a More/Less button (`aria-expanded`). More opens a scrollable panel (`.pswp-panel`) above the bar with `data-description`, split into paragraphs at its line breaks and set with `textContent`.
+  - `paddingFn` reserves the bar's height at the bottom (plus 60px at the top for the counter and buttons, and 72px at each side above 900px for the arrows), so the caption never covers the photo. When a title wraps onto a different number of lines, the script calls `pswp.updateSize(true)`.
+  - The panel opens over the photo; that's deliberate, as the visitor asked for it. It stays open when moving to the next photo.
+  - It hides while the photo is zoomed in (`.is-hidden`, set on `zoomPanUpdate`), and with the other controls when a tap on a phone toggles them.
+- Things that rely on PhotoSwipe 5.4.4 internals, so retest on a phone after any upgrade:
+  - **Wheel:** PhotoSwipe cancels every wheel event on its root, which would stop the panel scrolling with a mouse wheel. The caption stops wheel events propagating.
+  - **Keys:** the script handles PhotoSwipe's `keydown` event. Esc closes the panel before the viewer, and the up/down/page/home/end keys scroll the panel when it has focus instead of panning the photo.
+  - **Touch:** PhotoSwipe's gestures are on `.pswp__scroll-wrap`, and the caption sits outside it, so swiping the panel scrolls it without changing photo. The panel has `touch-action: pan-y` because the root has `touch-action: none`.
+- Theme: PhotoSwipe's custom properties (`--pswp-bg`, `--pswp-icon-color`, …) are set on `.pswp`. The buttons are 44px orange squares with dark icons, visible on the dark backdrop in both colour modes. The arrow icons are our own SVGs (`arrowPrevSVG`, `arrowNextSVG`), because PhotoSwipe's sit off-centre.
+- PhotoSwipe turns its animations off by itself under `prefers-reduced-motion`.
 
 ## Content patterns
 
@@ -151,11 +156,12 @@ The current role (Principal Engineer at a London-based property-tech company, wo
 ### Galleries (`interests/<name>/index.njk`)
 - Use `layout: gallery-layout.njk`, and set `label` (e.g. "Interests · Gallery").
 - Content is a `.row.sec`: intro in `.sec-label`, the grid in a `.cell`.
-- Photos are defined inline with `{% set photos = [ {title, desc, full_title, full_desc, file}, ... ] %}`.
+- Photos are defined inline with `{% set photos = [ {title, desc, full_title, full_desc, file, width, height}, ... ] %}`.
 - `file` is the base name with no extension. The template expects both `images/<file>.jpg` (full size) and `images/<file>-Thumbnail.jpg`.
-- `full_desc` can be long, with `\n` line breaks. It is shown in the GLightbox description panel.
-- Markup: `.gallery-grid` > `a.gallery-card.glightbox[data-gallery][data-title][data-description]` > `img` (lazy, width/height set) + `.gallery-card-content`.
-- New interest pages also need a card in `interests/index.njk` (same `.gallery-card` markup, without `.glightbox`), and a link under "Related documents" on the home page if wanted.
+- `full_desc` can be long, with `\n` line breaks between paragraphs. It is shown in the viewer's More panel.
+- `width` and `height` are the full-size image's pixel size, which PhotoSwipe needs. Read them from the JPEG when adding photos.
+- Markup: `.gallery-grid` > `a.gallery-card[data-pswp-width][data-pswp-height][data-title][data-description]` > `img` (lazy, width/height set) + `.gallery-card-content`.
+- New interest pages also need a card in `interests/index.njk` (same `.gallery-card` markup, without the `data-` attributes), and a link under "Related documents" on the home page if wanted.
 
 ### Contact form (in `index.njk`, "Enquiries")
 - Uses Cloudflare Turnstile (sitekey `0x4AAAAAADmqC7wRlvnimFim`). `.turnstile-container` reserves 65px so the button doesn't jump.
@@ -171,15 +177,15 @@ The current role (Principal Engineer at a London-based property-tech company, wo
   - 900px: rows stack to one column (title block, split rows, section label above content); Compatibility goes to 2 columns.
   - 640px: the "Menu" button replaces the desktop nav; Compatibility goes to 1 column; the revision table turns into one block per row.
   - 420px: tighter `--gap`.
-- Component sections: header and navs; sheet (`.sheet`, `.row`, `.cell`, `.row.sec` + `.sec-label`, `.row.split`); home title block (`.r-title`, `.frame` crop marks, `.badge`, `table.specs`); inner-page `.page-head`; `.compat`; `table.rev`; `.notes`, `.related`, `.back-link`; `.prose`; contact form; footer; external-link icon (`a[target="_blank"][href^="http"]::after`); `.gallery-*`; GLightbox overrides.
-- `img:not(.gslide-image img)` applies the global image rules while leaving lightbox images alone.
+- Component sections: header and navs; sheet (`.sheet`, `.row`, `.cell`, `.row.sec` + `.sec-label`, `.row.split`); home title block (`.r-title`, `.frame` crop marks, `.badge`, `table.specs`); inner-page `.page-head`; `.compat`; `table.rev`; `.notes`, `.related`, `.back-link`; `.prose`; contact form; footer; external-link icon (`a[target="_blank"][href^="http"]::after`); `.gallery-*`; photo viewer (PhotoSwipe overrides and caption).
+- `img:not(.pswp img)` applies the global image rules while leaving the photo viewer's images alone (PhotoSwipe sizes them itself).
 
 ## Conventions and preferences
 - Accessibility matters:
   - Screen-reader text uses `.sr-only`, e.g. "(opens in a new tab)" on external links. External links use `target="_blank" rel="noopener"`.
   - Use semantic sections with `id`s as nav anchors (`#experience`, `#about`, `#contact`).
 - Performance and CLS matter. Images need explicit `width`/`height` and `srcset`, gallery thumbnails need `loading="lazy"`, fonts are self-hosted and preloaded, and the one stylesheet loads render-blocking so there's no flash of unstyled content.
-- No front-end framework or bundler. Keep JS inline and minimal; CDN libraries only when needed (GLightbox, Turnstile).
+- No front-end framework or bundler. Keep JS inline and minimal; CDN libraries only when needed (PhotoSwipe, Turnstile).
 - British English in content.
 - **Where Andrew is (keep copy consistent):** he's from Nottingham and lives there. His first job (graphic design for a financial company) was in London. His current role is with a London-based property-tech company, working remotely from Nottingham. Don't describe him as London-based or living in London. This applies to the mock-ups in `Design/design-concepts/` too.
 - Line endings: `core.autocrlf=true`, so files are LF in the repo and CRLF in the working tree. When editing files with scripts, keep CRLF consistent. A stray lone `\r` makes git treat the file as binary.
