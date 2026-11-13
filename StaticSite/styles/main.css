@@ -606,14 +606,16 @@ h2 {
 }
 
 /* The photo turns to colour on mouse-over, and when it's a link with keyboard focus
-   (inner pages, where it links home). Hover only applies on devices that can hover,
-   so a tap on a phone doesn't leave the photo stuck in colour. */
+   (inner pages, where it links home). Hover only applies with a real mouse or
+   trackpad (hover plus a fine pointer), and not once the home page script has seen
+   a touch (.has-touch), so a tap on a phone can't leave the photo stuck in colour
+   even in a browser that wrongly reports hover. */
 .frame img {
   transition: filter 0.3s ease;
 }
 
-@media (hover: hover) {
-  .frame:hover img {
+@media (hover: hover) and (pointer: fine) {
+  html:not(.has-touch) .frame:hover img {
     filter: none;
   }
 }
