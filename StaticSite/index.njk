@@ -193,11 +193,23 @@ homePage: true
     // instead, so mouse clicks are ignored). The class is on the figure, not the
     // photo, so the colour stays on when switching between Fig. 1 and Fig. 2.
     // A scroll that starts on the photo cancels the pointer, so no click fires.
+    //
+    // Browsers don't all report touch the same way (Opera on iOS was unreliable),
+    // so a tap counts as touch if EITHER the pointer says so OR the device has no
+    // mouse-style hover. The first real touch also adds .has-touch to <html>,
+    // which switches off the CSS hover colour, so a browser that wrongly claims
+    // hover can't leave the photo stuck in colour after a tap.
     const frame = fig.querySelector(".frame");
+    const mouseHover = matchMedia("(hover: hover) and (pointer: fine)");
     let pointerType = "mouse";
-    frame.addEventListener("pointerdown", (e) => { pointerType = e.pointerType; });
+    frame.addEventListener("pointerdown", (e) => {
+        pointerType = e.pointerType;
+        if (pointerType === "touch" || pointerType === "pen") {
+            document.documentElement.classList.add("has-touch");
+        }
+    });
     frame.addEventListener("click", () => {
-        if (pointerType !== "mouse") {
+        if (pointerType !== "mouse" || !mouseHover.matches) {
             fig.classList.toggle("is-colour");
         }
     });
