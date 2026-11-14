@@ -1557,3 +1557,64 @@ html.is-zapped body::after {
     animation: none !important;
   }
 }
+
+/* -----------------------------------------
+   LITE MODE (Opera Mini)
+   .lite is added to <html> by the script at the top of layout.njk, only in
+   Opera Mini (or with ?lite=1 for testing). Every rule here must start with
+   html.lite, so no other browser is affected.
+----------------------------------------- */
+html.lite .site-header {
+  position: static;
+}
+
+html.lite .site-header .bar {
+  height: auto;
+  min-height: var(--header-height);
+  flex-wrap: wrap;
+}
+
+/* The menu button relies on <details>; show the plain row of links instead */
+html.lite .nav-mobile {
+  display: none;
+}
+
+html.lite nav.nav-desktop {
+  display: block;
+}
+
+html.lite nav.nav-desktop ul {
+  flex-wrap: wrap;
+  height: auto;
+}
+
+html.lite nav.nav-desktop a {
+  height: auto;
+  min-height: var(--header-height);
+}
+
+/* On phones, the links go in a slim full-width row under the name */
+@media (max-width: 640px) {
+  html.lite .home-link {
+    min-height: var(--header-height);
+  }
+
+  html.lite nav.nav-desktop {
+    flex-basis: 100%;
+    border-top: 1px solid var(--line);
+  }
+
+  html.lite nav.nav-desktop li {
+    flex: 1 1 auto;
+  }
+
+  html.lite nav.nav-desktop a {
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 0.6rem;
+  }
+
+  html.lite nav.nav-desktop li:first-child a {
+    border-left: 0;
+  }
+}

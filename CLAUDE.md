@@ -68,6 +68,15 @@ The site is styled as an industrial product **datasheet**: a ruled panel (`.shee
   - These are separate from `title` because `title` can contain HTML and is used as the page heading.
   - Nunjucks autoescape is on, so `&` and `"` in these values are escaped correctly.
 - Both fonts are preloaded. `main.css` is an ordinary, render-blocking `<link rel="stylesheet">` on purpose: the browser waits for it before the first paint, so the page never shows unstyled. (It used to load non-blocking with a `preload` + `onload` swap, which caused a visible flash of unstyled content on every load.) Don't add inline critical CSS or make it async again. `<meta name="color-scheme" content="light dark">` makes the browser start with a dark canvas in dark mode, before the CSS arrives.
+- **Lite mode (Opera Mini):** in Nov 2026, Opera Mini 16 on an iPhone SE showed the mobile menu in the middle of the page and crashed when a gallery photo was opened. Every other browser was fine, and Andrew didn't want much effort spent on it or any risk to other browsers.
+  - **Detection:** a small inline script, first in `<head>`, adds `lite` to `<html>` when the user agent matches `/Opera Mini|OPiOS/` (`OPiOS` is Opera Mini on iOS).
+  - **Testing switch:** `?lite=1` turns it on for the rest of the tab (in `sessionStorage`), in any browser, and `?lite=0` turns it off.
+  - **What changes:** the `LITE MODE` section at the end of `main.css`:
+    - the header isn't sticky;
+    - the `<details>` Menu button is hidden and the ordinary row of links shows instead. On phones, it's a slim full-width row under the name; at 320px, Contact wraps onto its own row.
+  - The gallery doesn't load PhotoSwipe, so a tap opens the plain JPEG (see `gallery-layout.njk`).
+  - **Rule:** every lite style must start with `html.lite`, so no other browser is affected. When it was added, screenshots of the home page, an inner page and the gallery without lite mode matched `main` exactly, apart from photo decoding noise.
+  - It was built without access to Opera Mini, so it's based on the reported symptoms. The likely cause is Opera's data-saving mode, which passes pages through Opera's servers.
 - A skip link (`.skip-link`) jumps to `#main`.
 - Header is sticky (`--header-height`, 52px) and has two navs with the same links (Experience, About, Interests, Contact):
   - `nav.nav-desktop` uses the `url` filter.
@@ -120,6 +129,7 @@ Chains to `layout.njk` and sets `lightbox: true` in its front matter. The photo 
   - **Touch:** PhotoSwipe's gestures are on `.pswp__scroll-wrap`, and the caption sits outside it, so swiping the panel scrolls it without changing photo. The panel has `touch-action: pan-y` because the root has `touch-action: none`.
 - Theme: PhotoSwipe's custom properties (`--pswp-bg`, `--pswp-icon-color`, …) are set on `.pswp`. The buttons are 44px orange squares with dark icons, visible on the dark backdrop in both colour modes. The arrow icons are our own SVGs (`arrowPrevSVG`, `arrowNextSVG`), because PhotoSwipe's sit off-centre.
 - PhotoSwipe turns its animations off by itself under `prefers-reduced-motion`.
+- **Lite mode (Opera Mini, see `layout.njk`):** the whole viewer script is inside `if (!document.documentElement.classList.contains('lite'))`, and PhotoSwipe is loaded with a dynamic `await import(...)` inside it. So in lite mode nothing is downloaded, and a tap opens the full-size JPEG, as without JavaScript. The histories aren't shown there.
 
 ## Content patterns
 
