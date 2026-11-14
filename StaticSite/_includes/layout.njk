@@ -3,6 +3,21 @@
 
 <head>
   <meta charset="UTF-8" />
+  <!-- Lite mode for Opera Mini, which can't draw the menu and crashes in the photo
+       viewer. Adds .lite to <html>; every lite rule in main.css is scoped to html.lite,
+       so no other browser is affected. ?lite=1 turns it on for this tab (for testing
+       in any browser), ?lite=0 turns it off. -->
+  <script>
+    (function () {
+      var on = /Opera Mini|OPiOS/.test(navigator.userAgent);
+      try {
+        var q = location.search.match(/[?&]lite=([01])/);
+        if (q) q[1] === "1" ? sessionStorage.setItem("lite", "1") : sessionStorage.removeItem("lite");
+        on = on || sessionStorage.getItem("lite") === "1";
+      } catch (e) {}
+      if (on) document.documentElement.className += " lite";
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Lets the browser use a dark canvas from the very start in dark mode -->
   <meta name="color-scheme" content="light dark" />
