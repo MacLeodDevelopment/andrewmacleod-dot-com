@@ -49,7 +49,7 @@ StaticSite/                              The Eleventy project (all real work hap
 
 - `dir`: input `.`, includes `_includes`, output `_site`. There is no `_data/` directory.
 - Passthrough copies: `styles`, `images`, `fonts`, `interests/**/*.jpg`, `cheeky.htm`, `CNAME`.
-- **Third-party code is self-hosted, not loaded from a CDN** (Andrew's preference). It's installed with npm and copied from `node_modules` into `/vendor/<package>/` by an `addPassthroughCopy` mapping, along with its licence as `LICENSE.txt`. CI's `npm ci` installs it, so nothing under `node_modules` is committed. Currently only PhotoSwipe. Turnstile is the exception: Cloudflare requires it to load from `challenges.cloudflare.com`.
+- **Third-party code is self-hosted, not loaded from a CDN** (Andrew's preference). It's installed with npm and copied from `node_modules` into `/vendor/<package>/` by an `addPassthroughCopy` mapping, along with its licence as `LICENSE.txt`. CI's `npm ci` installs it, so nothing under `node_modules` is committed. Currently only PhotoSwipe. Turnstile is the exception: Cloudflare requires it to load from `challenges.cloudflare.com` (and it only loads once the contact form is used).
 - **Adding a new gallery's images**: `.jpg` files under `interests/**` are copied automatically. Other extensions (`.png`, `.webp`, …) or image folders elsewhere need a new `addPassthroughCopy` line.
 - `.md` and `.html` files anywhere under `StaticSite/` are rendered as templates. That's why the fonts note is `README.txt`, not `.md`.
 - `.md` files are processed with Liquid as the template engine (Eleventy default). `.njk` files use Nunjucks.
@@ -165,8 +165,17 @@ The current role (Principal Engineer at a London-based property-tech company, wo
 - New interest pages also need a card in `interests/index.njk` (same `.gallery-card` markup, without the `data-` attributes), and a link under "Related documents" on the home page if wanted.
 
 ### Contact form (in `index.njk`, "Enquiries")
-- Uses Cloudflare Turnstile (sitekey `0x4AAAAAADmqC7wRlvnimFim`). `.turnstile-container` reserves 65px so the button doesn't jump.
-- On submit, JS POSTs JSON `{email, message, token}` to the Cloudflare Worker `https://api-email-worker.andrewmacleod-com.workers.dev`.
+- Uses Cloudflare Turnstile (sitekey `0x4AAAAAADmqC7wRlvnimFim`, set in the script).
+- **Turnstile only runs when Send is pressed.** Don't go back to a static `<script src=".../api.js">` tag or a `.cf-turnstile` div.
+  - **Why:** loading it with the page started its check straight away. On iPads every browser is WebKit, which runs the check's cross-origin iframe on the page's own main thread. In a test at iPad size (Nov 2026), that froze the whole home page for up to 7 seconds at a time.
+  - **Loading:** the script inserts `api.js?render=explicit` on the form's first `focusin`. That only downloads the script; it doesn't start a check.
+  - **Checking:** on submit, `getToken()` renders the widget into `#turnstile` the first time, or calls `turnstile.reset()` after that. It resolves with a fresh, single-use token from `callback`.
+  - **Options:**
+    - `appearance: "interaction-only"`: the widget is invisible unless Cloudflare wants a click. `.turnstile-container` then gets `.is-shown` (from the before- and after-interactive callbacks) for its margin.
+    - `retry: "never"` and `"refresh-expired": "never"`: Turnstile never runs again in the background.
+  - **Statuses:** "Checking…", then "Sending…". If the check fails or the script is blocked: "The verification couldn't run. Please try again." The button is disabled while this happens.
+  - **Testing locally:** the real sitekey only works on andrewmacleod.com. Use Cloudflare's test sitekeys (`1x00000000000000000000AA` passes, `2x00000000000000000000AB` fails, `3x00000000000000000000FF` forces a click), swapped in during the test rather than in the code. The Worker rejects their dummy token, so fake its response too.
+- On submit, after the check, JS POSTs JSON `{email, message, token}` to the Cloudflare Worker `https://api-email-worker.andrewmacleod-com.workers.dev`.
 - The Worker is a separate project and is not in this repo.
 - Status messages go to `#contact-status` (`aria-live`).
 
