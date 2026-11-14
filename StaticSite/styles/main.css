@@ -1041,11 +1041,16 @@ table.rev td.ds {
 }
 
 /* Reserve the widget's height so the button doesn't jump when it loads */
+/* Turnstile is invisible unless Cloudflare asks for a click after Send,
+   so no space is reserved for it. */
 .turnstile-container {
   width: 100%;
-  min-height: 65px;
-  margin-bottom: 1rem;
   overflow-x: auto;
+}
+
+/* Set by the script while the widget is showing */
+.turnstile-container.is-shown {
+  margin-bottom: 1rem;
 }
 
 #contact-form button {

@@ -148,12 +148,9 @@ homePage: true
                 <label for="message">Message</label>
                 <textarea id="message" name="message" maxlength="1000" required></textarea>
 
+                <!-- Cloudflare Turnstile goes here, only after Send is pressed (see the script below) -->
                 <div class="turnstile-container">
-                    <div
-                        class="cf-turnstile"
-                        data-sitekey="0x4AAAAAADmqC7wRlvnimFim"
-                        data-size="flexible">
-                    </div>
+                    <div id="turnstile"></div>
                 </div>
 
                 <button type="submit">Send enquiry</button>
@@ -165,12 +162,6 @@ homePage: true
     </div>
 
 </div>
-
-<script
-    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-    async
-    defer>
-</script>
 
 <script>
 
@@ -268,25 +259,87 @@ homePage: true
     }
 })();
 
-document
-    .getElementById("contact-form")
-    .addEventListener("submit", async (e) => {
+/* Contact form. The Cloudflare Turnstile bot check only loads and runs when Send
+   is pressed. Loading it with the page froze the whole page for seconds on iPads,
+   where the check's iframe runs on the page's own main thread. */
+(() => {
+    const form = document.getElementById("contact-form");
+    const status = document.getElementById("contact-status");
+    const button = form.querySelector('button[type="submit"]');
+    const container = form.querySelector(".turnstile-container");
+
+    // Download Turnstile's script (it doesn't start a check by itself).
+    let loading;
+    function loadTurnstile() {
+        loading ??= new Promise((resolve, reject) => {
+            const script = document.createElement("script");
+            script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+            script.onload = resolve;
+            script.onerror = () => {
+                loading = null; // let the next Send try again
+                script.remove();
+                reject(new Error("Turnstile didn't load"));
+            };
+            document.head.appendChild(script);
+        });
+        return loading;
+    }
+
+    // Fetch the script early, once someone starts filling in the form.
+    form.addEventListener("focusin", () => loadTurnstile().catch(() => {}), { once: true });
+
+    // Run the check and resolve with a fresh, single-use token.
+    let widgetId;
+    let pending;
+    async function getToken() {
+        await loadTurnstile();
+        return new Promise((resolve, reject) => {
+            pending = { resolve, reject };
+            if (widgetId === undefined) {
+                widgetId = turnstile.render("#turnstile", {
+                    sitekey: "0x4AAAAAADmqC7wRlvnimFim",
+                    size: "flexible",
+                    theme: "auto",
+                    // Only shown if Cloudflare wants a click
+                    appearance: "interaction-only",
+                    // No checks in the background: not after an error, and not
+                    // when a used token expires. The next Send starts a new one.
+                    retry: "never",
+                    "refresh-expired": "never",
+                    callback: (token) => pending?.resolve(token),
+                    "error-callback": () => pending?.reject(new Error("Turnstile error")),
+                    "timeout-callback": () => pending?.reject(new Error("Turnstile timed out")),
+                    "before-interactive-callback": () => {
+                        container.classList.add("is-shown");
+                        status.textContent = "Please complete the check above.";
+                    },
+                    "after-interactive-callback": () => {
+                        container.classList.remove("is-shown");
+                    },
+                });
+            } else {
+                turnstile.reset(widgetId);
+            }
+        });
+    }
+
+    form.addEventListener("submit", async (e) => {
 
         e.preventDefault();
+        button.disabled = true;
+        status.textContent = "Checking…";
 
-        const form = e.target;
-        const status = document.getElementById("contact-status");
-
-        const token = document.querySelector(
-            'input[name="cf-turnstile-response"]'
-        )?.value;
-
-        if (!token) {
-            status.textContent = "Please complete the verification.";
+        let token;
+        try {
+            token = await getToken();
+        } catch (err) {
+            console.error(err);
+            status.textContent = "The verification couldn't run. Please try again.";
+            button.disabled = false;
             return;
         }
 
-        status.textContent = "Sending...";
+        status.textContent = "Sending…";
 
         try {
 
@@ -312,10 +365,6 @@ document
 
                 form.reset();
 
-                if (window.turnstile) {
-                    turnstile.reset();
-                }
-
             } else {
 
                 status.textContent = text;
@@ -327,8 +376,13 @@ document
             console.error(err);
             status.textContent = "Network error.";
 
+        } finally {
+
+            button.disabled = false;
+
         }
 
     });
+})();
 
 </script>
