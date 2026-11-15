@@ -23,6 +23,8 @@
    TOKENS, COLOUR MODES
    One accent (--orange), used as a fill only, never as text on the page
    background, so it never has to meet text contrast on its own.
+   A muted secondary accent (--steel, a greyed blue, orange's complement) is
+   also fill only, for quieter hover states such as the revision letters.
 ----------------------------------------- */
 :root {
   --bg: #e8e8e4;
@@ -33,6 +35,8 @@
   --hair: #c9c9c3;
   --orange: #ff5a1f;
   --on-orange: #111111;
+  --steel: #4b768b;
+  --on-steel: #ffffff;
   --focus: #ff5a1f;
   --max-width: min(1200px, 94%);
   --header-height: 52px;
@@ -50,6 +54,8 @@
     --muted: #a2a29d;
     --line: #3a3a38;
     --hair: #2a2a28;
+    --steel: #81a8bb;
+    --on-steel: #111111;
   }
 }
 
@@ -71,6 +77,8 @@
     --hair: CanvasText;
     --orange: Highlight;
     --on-orange: HighlightText;
+    --steel: Highlight;
+    --on-steel: HighlightText;
     --focus: Highlight;
   }
 
@@ -873,6 +881,65 @@ table.rev th[scope="row"] a:hover {
   text-decoration-thickness: 2px;
 }
 
+/* The whole row links to the job's page. The company link's ::after is
+   stretched over its row (a "stretched link"), so there's still only one link
+   per row for keyboards and screen readers, named after the company. Hovering
+   anywhere in the row hovers the link, which underlines the company name. */
+table.rev tbody tr {
+  position: relative;
+}
+
+table.rev th[scope="row"] a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* A light tint on the row under the pointer. The current role has no page,
+   so it has no link and no tint. */
+table.rev tbody tr:has(a) {
+  transition: background-color 0.15s ease;
+}
+
+@media (hover: hover) {
+  table.rev tbody tr:has(a):hover {
+    background: color-mix(in srgb, var(--ink) 5%, transparent);
+  }
+}
+
+/* The revision letter fills with the muted secondary accent on hover and on
+   keyboard focus. The current role's letter stays orange. */
+table.rev tbody tr:has(a) .rev-mark {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+@media (hover: hover) {
+  table.rev tbody tr:has(a):hover .rev-mark {
+    background: var(--steel);
+    border-color: var(--steel);
+    color: var(--on-steel);
+  }
+}
+
+table.rev tbody tr:has(a:focus-visible) .rev-mark {
+  background: var(--steel);
+  border-color: var(--steel);
+  color: var(--on-steel);
+}
+
+/* Keyboard focus outlines the whole row rather than just the name. Browsers
+   without :has() keep the ordinary outline on the name. */
+@supports selector(:has(a)) {
+  table.rev th[scope="row"] a:focus-visible {
+    outline: none;
+  }
+
+  table.rev tbody tr:has(a:focus-visible) {
+    outline: 3px solid var(--focus);
+    outline-offset: -3px;
+  }
+}
+
 table.rev th[scope="row"] small {
   display: block;
   font-size: 0.92rem;
@@ -1591,6 +1658,12 @@ html.lite nav.nav-desktop ul {
 html.lite nav.nav-desktop a {
   height: auto;
   min-height: var(--header-height);
+}
+
+/* Revision history: just the company name is the link, not the whole row,
+   in case an old engine can't position against a table row */
+html.lite table.rev th[scope="row"] a::after {
+  content: none;
 }
 
 /* On phones, the links go in a slim full-width row under the name */
