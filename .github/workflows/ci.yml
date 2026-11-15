@@ -1,0 +1,42 @@
+name: CI
+
+# Pull request checks. Nothing here deploys, and no secrets are used, so it also
+# works for Dependabot's PRs (which can't read repository secrets).
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: StaticSite
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: StaticSite/package-lock.json
+
+      - run: npm ci
+      # The same build as build-and-deploy.yml, so a PR that breaks it fails here
+      # instead of on main.
+      - run: npx @11ty/eleventy
+
+  # Fails the PR if it adds or upgrades a dependency (npm or GitHub Actions) with a
+  # known moderate-or-worse vulnerability. Unlike `npm audit`, it only looks at what
+  # the PR changes, so existing advisories without a fix don't block every PR.
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/dependency-review-action@v5
+        with:
+          fail-on-severity: moderate

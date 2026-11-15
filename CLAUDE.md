@@ -7,7 +7,9 @@ This repo holds the **source only**. A GitHub Action builds the site and force-p
 ## Repo layout (git root = this folder)
 
 ```
-.github/workflows/build-and-deploy.yml   CI: build + deploy (see below)
+.github/workflows/build-and-deploy.yml   Build + deploy on every push to main (see below)
+.github/workflows/ci.yml                 PR checks: build, and dependency review
+.github/dependabot.yml                   Weekly dependency update PRs
 .gitignore                               `_site`, `node_modules`
 README.md, LICENSE (MIT, code), CONTENT_LICENSE (content © Andrew MacLeod, no reuse)
 Design/                                  NOT built or deployed — reference only.
@@ -39,11 +41,28 @@ StaticSite/                              The Eleventy project (all real work hap
 - Local dev (from `StaticSite/`): `npx eleventy --serve` → http://localhost:8080. Restart it after changing `.eleventy.js`.
 - Local build: `npx @11ty/eleventy` → `StaticSite/_site/`
 - Eleventy does **not** clean `_site`, so stale pages from renamed or deleted files stay there locally. Delete `_site` before you check output. CI always starts clean.
+  - **First check that Andrew's own `npx eleventy --serve` isn't running** (look for an `eleventy --serve` process without a `--port`). It keeps `_site` open, so `rm -rf _site` fails partway and leaves his dev server serving 404s. If it's running, just run `npx @11ty/eleventy` over the top instead, and test against his server on port 8080.
 - Don't build with a different `--output` while `StaticSite/_site` exists. The input dir is `.`, so Eleventy would treat the old `_site/` as input and re-render it.
 - **Deploy**: any push to `main` triggers `.github/workflows/build-and-deploy.yml`. It uses `actions/checkout@v7` and `actions/setup-node@v7`, and runs Node 22 (matching local), `npm ci`, and `npx @11ty/eleventy` in `StaticSite/`. `npm ci` needs `package-lock.json` to stay in sync with `package.json`. It then `git init`s `_site/` and **force-pushes** it to `MacLeodDevelopment/macleoddevelopment.github.io` (main), authenticating with the `DEPLOY_TOKEN` secret.
   - Pushing to `main` publishes live. Treat it as outward-facing.
   - The hosting repo's history is overwritten on every deploy, so nothing should be edited there by hand.
 - There are no tests, linting, or formatting tools.
+- **Pull requests** run `.github/workflows/ci.yml`:
+  - **Build:** `npm ci` and the Eleventy build, the same as the deploy, so a PR that breaks the build fails before it reaches `main`.
+  - **Dependency review:** fails the PR if it adds or upgrades a dependency with a known moderate-or-worse vulnerability.
+  - It uses no secrets, so it also runs for Dependabot's PRs, which can't read `DEPLOY_TOKEN`.
+  - To make the build required before merging, add it as a required check in the repo's branch protection (a GitHub setting, not in this repo).
+
+## Keeping dependencies up to date
+
+This copies the setup in the family tree repo, scaled down.
+- **Dependabot version updates** (`.github/dependabot.yml`): every Monday, for:
+  - npm in `StaticSite/`. Eleventy's minor and patch updates are grouped into one PR, and each major update gets its own. **PhotoSwipe is excluded from the group**, so every PhotoSwipe update is its own PR: retest the gallery viewer on a phone before merging it (see `gallery-layout.njk`).
+  - GitHub Actions used by the workflows, with minor and patch updates grouped.
+- **Dependabot alerts and security updates:** turned on in the repo's Settings → Code security, not in a file. When an advisory has a fix, Dependabot opens a PR straight away.
+- **Dependency review** on every PR (in `ci.yml`, above).
+- `npm audit` isn't a pass/fail check, because advisories with no upstream fix would fail every PR (see Known quirks). The dependency review only looks at what a PR changes.
+- **Review Dependabot PRs like any other:** check the build passed, and remember that merging deploys the site.
 
 ## Eleventy config (`StaticSite/.eleventy.js`)
 
@@ -57,7 +76,7 @@ StaticSite/                              The Eleventy project (all real work hap
 
 ## Design
 
-The site is styled as an industrial product **datasheet**: a ruled panel (`.sheet`) made of rows and cells, monospaced uppercase labels, Schibsted Grotesk for text, Martian Mono for labels, and one safety-orange accent (`--orange`) used only as a fill (badges, current revision, crop marks, the Contact nav item, lightbox controls), never as text.
+The site is styled as an industrial product **datasheet**: a ruled panel (`.sheet`) made of rows and cells, monospaced uppercase labels, Schibsted Grotesk for text, Martian Mono for labels, and one safety-orange accent (`--orange`) used only as a fill (badges, current revision, crop marks, the Contact nav item, lightbox controls), never as text. A muted secondary accent, `--steel` (a greyed blue, orange's complement), is also fill only, for quieter hover states. So far it's only used on the revision letters.
 
 ## Templates
 
@@ -164,6 +183,14 @@ Current order:
 
 The current role (Principal Engineer at a London-based property-tech company, working remotely from Nottingham) appears as Rev F in the home page revision table and in the title block's spec table and badge. It has no detail page.
 
+**Revision table rows are clickable.** Each experience row links to its page from anywhere in the row:
+- **How:** a "stretched link". The company name is still the row's only `<a>` (so keyboards and screen readers get one link per job, named after the company). Its `::after` is absolutely positioned over the whole `tr`, which has `position: relative`. Hovering anywhere hovers the link, so the company name gets its orange underline.
+- **Hover:** a light tint on the row (`color-mix` of `--ink` at 5%), only under `@media (hover: hover)` and only on rows with a link (`tr:has(a)`), so the current role (no link) isn't tinted.
+- **Revision letter:** on hover and on keyboard focus, the letter box (`.rev-mark`) fills with `--steel`, with `--on-steel` text. The current role's letter stays orange.
+- **Keyboard focus:** the outline goes on the whole row (`tr:has(a:focus-visible)`), inside `@supports selector(:has(a))`, so browsers without `:has()` keep the normal outline on the name.
+- **Side effect:** text in those rows can't be selected by dragging.
+- **Lite mode:** the stretched link is switched off (`html.lite ... a::after { content: none }`), so only the name is a link there.
+
 ### Galleries (`interests/<name>/index.njk`)
 - Use `layout: gallery-layout.njk`, and set `label` (e.g. "Interests · Gallery").
 - Content is a `.row.sec`: intro in `.sec-label`, the grid in a `.cell`.
@@ -191,7 +218,7 @@ The current role (Principal Engineer at a London-based property-tech company, wo
 
 ## CSS (`styles/main.css`)
 - `@font-face` for the two self-hosted fonts (Latin `unicode-range`, `font-display: swap`). Characters outside Latin (arrows) fall back to system fonts.
-- Design tokens are custom properties on `:root`: `--bg`, `--panel`, `--ink`, `--muted`, `--line` (strong rules), `--hair` (light rules), `--orange`, `--on-orange`, `--focus`, `--max-width` (min(1200px, 94%)), `--header-height`, `--gap`, `--sans`, `--mono`.
+- Design tokens are custom properties on `:root`: `--bg`, `--panel`, `--ink`, `--muted`, `--line` (strong rules), `--hair` (light rules), `--orange`, `--on-orange`, `--steel`, `--on-steel` (light: `#4b768b` with white text; dark: `#81a8bb` with near-black text; both pass AA for small text; `Highlight` in forced colours), `--focus`, `--max-width` (min(1200px, 94%)), `--header-height`, `--gap`, `--sans`, `--mono`.
 - Themes and accessibility modes follow the OS through media queries: `prefers-color-scheme: dark`, `prefers-contrast: more`, `forced-colors: active` and `prefers-reduced-motion`. There is no manual theme toggle.
 - Breakpoints:
   - 900px: rows stack to one column (title block, split rows, section label above content); Compatibility goes to 2 columns.
@@ -214,8 +241,7 @@ The current role (Principal Engineer at a London-based property-tech company, wo
 - Commit messages are short and imperative ("Update text", "Add CNAME").
 
 ## Known quirks / possible improvements (not yet fixed)
-- `npm audit` (Oct 2026, Eleventy 3.1.6) reports 9 remaining vulnerabilities (5 high, 4 moderate). None has an upstream fix, and nothing from them is shipped to the live site:
-  - `braces` (every version), via `chokidar@3`, which is used by `nunjucks` and `eleventy-dev-server`. This is a DoS from untrusted glob patterns, and the only glob patterns here are our own.
-  - `sprintf-js` (every version), via `argparse` → `js-yaml@3` → `gray-matter`. This is a DoS from untrusted format strings, which we don't use.
-  - Accepted risk. Recheck when Eleventy 4 is stable.
+- `npm audit` (Nov 2026, Eleventy 3.1.6) reports 1 high-severity advisory: `markdown-it` (≤14.3.2), a slow-down from specially crafted Markdown. It only runs at build time on our own `.md` files, so nothing from it reaches the live site.
+  - A fix exists, so Dependabot's security updates should open a PR for it, once alerts and security updates are turned on.
+  - The older `braces` and `sprintf-js` advisories reported in Oct 2026 no longer appear.
   - **Never run `npm audit fix --force`.** It "fixes" these by downgrading Eleventy to 0.6.0.
