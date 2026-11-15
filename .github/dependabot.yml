@@ -1,0 +1,35 @@
+# Dependabot opens pull requests to keep dependencies up to date. Each one runs the
+# PR checks in ci.yml (build, plus dependency review); review it and merge it if it's
+# green. Merging deploys the site, like any other merge to main.
+#
+# Security fixes for known vulnerabilities also come from Dependabot, as soon as an
+# advisory is published, if alerts and security updates are enabled in the repository
+# settings (Settings > Code security).
+
+version: 2
+updates:
+  # The site's npm packages (StaticSite/package.json).
+  - package-ecosystem: npm
+    directory: /StaticSite
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      # One PR a week for Eleventy's minor and patch updates. Major updates get
+      # their own PR, as they may need changes.
+      npm-minor-and-patch:
+        update-types: [minor, patch]
+        # PhotoSwipe is served to visitors and the gallery relies on its internals,
+        # so every PhotoSwipe update gets its own PR, to retest the viewer on a phone
+        # before merging (see CLAUDE.md, gallery-layout.njk).
+        exclude-patterns: [photoswipe]
+
+  # Actions used by the workflows in .github/workflows.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions-minor-and-patch:
+        update-types: [minor, patch]
